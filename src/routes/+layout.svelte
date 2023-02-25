@@ -1,7 +1,9 @@
 <script>
+	import Footer from '$lib/layout/Footer.svelte';
+	import Header from '$lib/layout/Header.svelte';
 	import '../app.css';
 </script>
 
-<header>Job Finder (Header)</header>
+<Header />
 <main><slot /></main>
-<footer>Job Finder (Footer)</footer>
+<Footer />
