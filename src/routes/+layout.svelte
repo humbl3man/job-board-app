@@ -1,9 +1,36 @@
 <script>
 	import Footer from '$lib/layout/Footer.svelte';
 	import Header from '$lib/layout/Header.svelte';
+	import { APP_NAME } from '$lib/meta';
 	import '../app.css';
 </script>
+
+<svelte:head>
+	<title>{APP_NAME}</title>
+	<link
+		rel="preconnect"
+		href="https://fonts.googleapis.com"
+	/>
+	<link
+		rel="preconnect"
+		href="https://fonts.gstatic.com"
+		crossorigin="anonymous"
+	/>
+	<link
+		href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap"
+		rel="stylesheet"
+	/>
+</svelte:head>
 
 <Header />
 <main><slot /></main>
 <Footer />
+
+<style lang="postcss">
+	:global(a.link) {
+		@apply text-blue-500 inline-block underline focus:text-blue-700 hover:text-blue-700;
+	}
+	:global(h1, h2, h3, h4) {
+		@apply font-bold;
+	}
+</style>
