@@ -17,7 +17,11 @@
 				{#if $auth}
 					Welcome, <a href="/dashboard">{$auth.displayName || $auth.email}</a>
 				{:else if $auth === null}
-					<a href="/login">Login</a>
+					<a
+						href="/login"
+						class="mr-2">Login</a
+					>
+					<a href="/register">Register</a>
 				{/if}
 			</div>
 		</div>

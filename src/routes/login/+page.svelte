@@ -3,7 +3,7 @@
 	import { auth } from '$lib/auth';
 	import type { AuthError } from 'firebase/auth';
 	import { afterUpdate } from 'svelte';
-	import { Alert, Button, TextInput } from '@svelteuidev/core';
+	import { Alert, Button, TextInput, Grid } from '@svelteuidev/core';
 	import { CrossCircled } from 'radix-icons-svelte';
 
 	let emailInput: string;
@@ -75,12 +75,26 @@
 			required
 		/>
 	</div>
-	<Button
-		color="pink"
-		size="md"
-		loading={processing}
-		uppercase
+
+	<Grid
+		spacing={10}
+		align="center"
 	>
-		{processing ? 'Logging In...' : 'Login'}
-	</Button>
+		<Grid.Col span={4}>
+			<Button
+				color="pink"
+				size="md"
+				loading={processing}
+				uppercase
+			>
+				Login
+			</Button>
+		</Grid.Col>
+		<Grid.Col span={8}>
+			Don't have an account? <a
+				href="/register"
+				class="text-blue-500 underline">Register</a
+			>
+		</Grid.Col>
+	</Grid>
 </form>

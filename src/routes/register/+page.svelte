@@ -1,1 +1,99 @@
-<h1>Register</h1>
+<script lang="ts">
+	import { goto } from '$app/navigation';
+	import { auth } from '$lib/auth';
+	import type { AuthError } from 'firebase/auth';
+	import { afterUpdate } from 'svelte';
+	import { Alert, Button, TextInput, Grid, Anchor } from '@svelteuidev/core';
+	import { CrossCircled } from 'radix-icons-svelte';
+
+	let emailInput: string;
+	let passwordInput: string;
+	let authError: string;
+	let processing = false;
+
+	async function handleRegister() {
+		try {
+			authError = '';
+			processing = true;
+			await auth.registerWithEmail(emailInput, passwordInput);
+			goto('/dashboard');
+		} catch (error) {
+			const fbLoginError = error as AuthError;
+			authError = fbLoginError.code;
+			processing = false;
+		}
+	}
+
+	afterUpdate(() => {
+		if ($auth) {
+			goto('/dashboard');
+		}
+	});
+</script>
+
+<form
+	class="block mx-auto my-24 max-w-md p-8 shadow-sm rounded-md bg-white"
+	on:submit|preventDefault={handleRegister}
+>
+	<h1 class="text-2xl">Create Account</h1>
+	{#if authError}
+		<div class="my-5">
+			<Alert
+				title="Authentication Error"
+				variant="outline"
+				radius="sm"
+				color="pink"
+				icon={CrossCircled}
+			>
+				{authError}
+			</Alert>
+		</div>
+	{/if}
+	<div class="my-4">
+		<label
+			for="email"
+			class="sr-only">Email</label
+		>
+		<TextInput
+			label="Email"
+			type="email"
+			name="email"
+			size="lg"
+			radius="sm"
+			bind:value={emailInput}
+			required
+		/>
+	</div>
+	<div class="my-4">
+		<TextInput
+			label="Password"
+			type="password"
+			name="password"
+			size="lg"
+			radius="sm"
+			bind:value={passwordInput}
+			required
+		/>
+	</div>
+	<Grid
+		spacing={10}
+		align="center"
+	>
+		<Grid.Col span={4}>
+			<Button
+				color="pink"
+				size="md"
+				loading={processing}
+				uppercase
+			>
+				Create
+			</Button>
+		</Grid.Col>
+		<Grid.Col span={8}>
+			Already have account? <a
+				href="/login"
+				class="text-blue-500 underline">Login</a
+			>
+		</Grid.Col>
+	</Grid>
+</form>

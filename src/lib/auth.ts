@@ -30,6 +30,10 @@ function createAuth() {
 			const { signInWithEmailAndPassword } = await import('firebase/auth');
 			await signInWithEmailAndPassword(auth, email, password);
 		},
+		registerWithEmail: async (email: string, password: string) => {
+			const { createUserWithEmailAndPassword } = await import('firebase/auth');
+			await createUserWithEmailAndPassword(auth, email, password);
+		},
 		logout: async () => {
 			const { signOut } = await import('firebase/auth');
 			await signOut(auth);
