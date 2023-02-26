@@ -11,16 +11,33 @@
 	let authError: string;
 	let processing = false;
 
+	function beforeStart() {
+		authError = '';
+		processing = true;
+	}
+
+	function handleAuthError(error: AuthError) {
+		authError = error.code;
+		processing = false;
+	}
+
 	async function handleLogin() {
 		try {
-			authError = '';
-			processing = true;
+			beforeStart();
 			await auth.emailLogin(emailInput, passwordInput);
 			goto('/dashboard');
 		} catch (error) {
-			const fbLoginError = error as AuthError;
-			authError = fbLoginError.code;
-			processing = false;
+			handleAuthError(error as AuthError);
+		}
+	}
+
+	async function handleGoogleSignIn() {
+		try {
+			beforeStart();
+			await auth.signInWithGoogle();
+			goto('/dashboard');
+		} catch (error) {
+			handleAuthError(error as AuthError);
 		}
 	}
 
@@ -97,4 +114,13 @@
 			>
 		</Grid.Col>
 	</Grid>
+	<div class="mt-6">
+		<Button
+			color="blue"
+			variant="filled"
+			size="md"
+			loading={processing}
+			on:click={handleGoogleSignIn}>Sign In With Google</Button
+		>
+	</div>
 </form>

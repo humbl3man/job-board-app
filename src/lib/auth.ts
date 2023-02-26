@@ -34,6 +34,11 @@ function createAuth() {
 			const { createUserWithEmailAndPassword } = await import('firebase/auth');
 			await createUserWithEmailAndPassword(auth, email, password);
 		},
+		signInWithGoogle: async () => {
+			const { signInWithPopup, GoogleAuthProvider } = await import('firebase/auth');
+			const provider = new GoogleAuthProvider();
+			await signInWithPopup(auth, provider);
+		},
 		logout: async () => {
 			const { signOut } = await import('firebase/auth');
 			await signOut(auth);
