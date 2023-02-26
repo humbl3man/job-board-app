@@ -6,8 +6,8 @@
 	import { Alert, Button, TextInput } from '@svelteuidev/core';
 	import { CrossCircled } from 'radix-icons-svelte';
 
-	let emailInput: string = 'test@example.com';
-	let passwordInput: string = 'password123';
+	let emailInput: string;
+	let passwordInput: string;
 	let authError: string;
 	let processing = false;
 
