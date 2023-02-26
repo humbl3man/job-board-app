@@ -3,6 +3,8 @@
 	import { auth } from '$lib/auth';
 	import type { AuthError } from 'firebase/auth';
 	import { afterUpdate } from 'svelte';
+	import { Alert, Button, TextInput } from '@svelteuidev/core';
+	import { CrossCircled } from 'radix-icons-svelte';
 
 	let emailInput: string = 'test@example.com';
 	let passwordInput: string = 'password123';
@@ -34,41 +36,51 @@
 	on:submit|preventDefault={handleLogin}
 >
 	<h1 class="text-2xl">Login</h1>
+	{#if authError}
+		<div class="my-5">
+			<Alert
+				title="Authentication Error"
+				variant="outline"
+				radius="sm"
+				color="pink"
+				icon={CrossCircled}
+			>
+				{authError}
+			</Alert>
+		</div>
+	{/if}
 	<div class="my-4">
 		<label
 			for="email"
 			class="sr-only">Email</label
 		>
-		<input
+		<TextInput
+			label="Email"
 			type="email"
 			name="email"
-			class="p-2 border bg-white w-full block rounded-md"
-			placeholder="email"
-			required
+			size="lg"
+			radius="sm"
 			bind:value={emailInput}
+			required
 		/>
 	</div>
 	<div class="my-4">
-		<label
-			for="password"
-			class="sr-only">Password</label
-		>
-		<input
+		<TextInput
+			label="Password"
 			type="password"
 			name="password"
-			class="p-2 border bg-white w-full block rounded-md"
-			placeholder="password"
-			required
+			size="lg"
+			radius="sm"
 			bind:value={passwordInput}
+			required
 		/>
 	</div>
-	<button
-		disabled={processing}
-		class="bg-pink-800 text-white py-2 px-12 border-pink-800 inline-block rounded-md disabled:opacity-50"
+	<Button
+		color="pink"
+		size="md"
+		loading={processing}
+		uppercase
 	>
 		{processing ? 'Logging In...' : 'Login'}
-	</button>
-	{#if authError}
-		<p class="text-red-800 my-4">Authentication Error: <strong>{authError}</strong></p>
-	{/if}
+	</Button>
 </form>

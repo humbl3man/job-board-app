@@ -2,6 +2,7 @@
 	import Footer from '$lib/layout/Footer.svelte';
 	import Header from '$lib/layout/Header.svelte';
 	import { APP_NAME } from '$lib/meta';
+	import { SvelteUIProvider } from '@svelteuidev/core';
 	import '../app.css';
 </script>
 
@@ -22,9 +23,11 @@
 	/>
 </svelte:head>
 
-<Header />
-<main><slot /></main>
-<Footer />
+<SvelteUIProvider>
+	<Header />
+	<main><slot /></main>
+	<Footer />
+</SvelteUIProvider>
 
 <style lang="postcss">
 	:global(html) {

@@ -36,6 +36,9 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"firebase": "^9.17.1"
+		"@svelteuidev/composables": "^0.10.0",
+		"@svelteuidev/core": "^0.10.0",
+		"firebase": "^9.17.1",
+		"radix-icons-svelte": "^1.2.1"
 	}
 }
