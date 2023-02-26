@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { auth } from '$lib/auth';
 	import { APP_NAME } from '$lib/meta';
 </script>
 
@@ -13,7 +14,11 @@
 				<a href="/jobs">Jobs</a>
 			</nav>
 			<div>
-				<a href="/login">Login</a>
+				{#if $auth}
+					Welcome, <a href="/dashboard">{$auth.displayName || $auth.email}</a>
+				{:else if $auth === null}
+					<a href="/login">Login</a>
+				{/if}
 			</div>
 		</div>
 	</div>

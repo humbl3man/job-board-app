@@ -27,6 +27,9 @@
 <Footer />
 
 <style lang="postcss">
+	:global(html) {
+		@apply bg-slate-100;
+	}
 	:global(a.link) {
 		@apply text-blue-500 inline-block underline focus:text-blue-700 hover:text-blue-700;
 	}
