@@ -31,11 +31,18 @@
 					<a href="/dashboard">{$auth.displayName || $auth.email}</a>
 				{:else if $auth === null}
 					<Button
+						variant="filled"
+						color="orange"
+						target=""
+						href="/login"
+						class="mr-4 font-bold">Login</Button
+					>
+					<Button
 						variant="light"
 						color="indigo"
 						target=""
 						href="/login"
-						class="mr-4 font-bold">Login</Button
+						class="mr-4 font-bold">Register</Button
 					>
 				{/if}
 			</div>

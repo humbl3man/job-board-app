@@ -5,7 +5,8 @@ module.exports = {
 	content: ['./src/**/*.{html,js,svelte,ts}'],
 	theme: {
 		fontFamily: {
-			sans: ['Inter', ...defaultTheme.fontFamily.sans]
+			sans: ['Inter', ...defaultTheme.fontFamily.sans],
+			serif: ['Playfair Display', ...defaultTheme.fontFamily.serif]
 		},
 		extend: {}
 	},
