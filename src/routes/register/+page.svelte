@@ -95,7 +95,7 @@
 	</div>
 	<div class="mt-4 mb-8">
 		<Switch
-			color="pink"
+			color="grape"
 			radius="xl"
 			size="md"
 			label="Are you an employer?"
@@ -109,7 +109,7 @@
 	>
 		<Grid.Col span={4}>
 			<Button
-				color="pink"
+				color="grape"
 				size="md"
 				loading={processing}
 				uppercase

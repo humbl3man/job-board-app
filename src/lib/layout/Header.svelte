@@ -1,6 +1,14 @@
 <script lang="ts">
 	import { auth } from '$lib/auth';
 	import { APP_NAME } from '$lib/meta';
+	import { Button } from '@svelteuidev/core';
+
+	let links = [
+		{
+			href: '/jobs',
+			label: 'Jobs'
+		}
+	];
 </script>
 
 <header class="bg-white border-b border-slate-300">
@@ -11,17 +19,24 @@
 				class="uppercase font-bold text-2xl">{APP_NAME}</a
 			>
 			<nav>
-				<a href="/jobs">Jobs</a>
-			</nav>
-			<div>
-				{#if $auth}
-					Welcome, <a href="/dashboard">{$auth.displayName || $auth.email}</a>
-				{:else if $auth === null}
+				{#each links as { href, label }}
 					<a
-						href="/login"
-						class="mr-2">Login</a
+						{href}
+						class="text-slate-800 font-bold uppercase">{label}</a
 					>
-					<a href="/register">Register</a>
+				{/each}
+			</nav>
+			<div class="flex items-center">
+				{#if $auth}
+					<a href="/dashboard">{$auth.displayName || $auth.email}</a>
+				{:else if $auth === null}
+					<Button
+						variant="light"
+						color="indigo"
+						target=""
+						href="/login"
+						class="mr-4 font-bold">Login</Button
+					>
 				{/if}
 			</div>
 		</div>

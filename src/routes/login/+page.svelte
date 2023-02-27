@@ -99,7 +99,7 @@
 	>
 		<Grid.Col span={4}>
 			<Button
-				color="pink"
+				color="grape"
 				size="md"
 				loading={processing}
 				uppercase

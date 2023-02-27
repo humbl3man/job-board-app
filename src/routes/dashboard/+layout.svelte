@@ -13,6 +13,7 @@
 				<Skeleton visible={loading}>
 					<Button
 						href="/dashboard"
+						target=""
 						variant="subtle"
 						color="indigo"
 						class="w-full rounded-none"
