@@ -114,7 +114,7 @@
 			>
 		</Grid.Col>
 	</Grid>
-	<div class="mt-6">
+	<!-- <div class="mt-6">
 		<Button
 			color="blue"
 			variant="filled"
@@ -122,5 +122,5 @@
 			loading={processing}
 			on:click={handleGoogleSignIn}>Sign In With Google</Button
 		>
-	</div>
+	</div> -->
 </form>

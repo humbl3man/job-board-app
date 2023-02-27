@@ -3,12 +3,13 @@
 	import { auth } from '$lib/auth';
 	import type { AuthError } from 'firebase/auth';
 	import { afterUpdate } from 'svelte';
-	import { Alert, Button, TextInput, Grid, Anchor } from '@svelteuidev/core';
+	import { Alert, Button, TextInput, Grid, Anchor, Switch } from '@svelteuidev/core';
 	import { CrossCircled } from 'radix-icons-svelte';
 
 	let emailInput: string;
 	let passwordInput: string;
 	let authError: string;
+	let isEmployeer = false;
 	let processing = false;
 
 	function beforeStart() {
@@ -92,6 +93,16 @@
 			required
 		/>
 	</div>
+	<div class="mt-4 mb-8">
+		<Switch
+			color="pink"
+			radius="xl"
+			size="md"
+			label="Are you an employer?"
+			checked={isEmployeer}
+			on:change={() => (isEmployeer = !isEmployeer)}
+		/>
+	</div>
 	<Grid
 		spacing={10}
 		align="center"
@@ -113,7 +124,7 @@
 			>
 		</Grid.Col>
 	</Grid>
-	<div class="mt-6">
+	<!-- <div class="mt-6">
 		<Button
 			color="blue"
 			variant="filled"
@@ -121,5 +132,5 @@
 			loading={processing}
 			on:click={handleGoogleSignIn}>Sign In With Google</Button
 		>
-	</div>
+	</div> -->
 </form>
