@@ -4,20 +4,21 @@
 	import JobHuntIllustration from '$lib/assets/JobHuntIllustration.svelte';
 </script>
 
-<div class="py-40">
-	<div class="mx-auto max-w-7xl px-4">
+<div class="py-10 lg:py-14">
+	<div class="mx-auto max-w-lg md:max-w-screen-xl px-4">
 		<div class="grid gap-8 md:gap-12 md:grid-cols-2 items-center">
 			<div>
-				<h1 class="text-[50px] lg:text-[80px] leading-none text-indigo-900 mb-8 font-serif">
-					Find your Perfect Match. <br /> From Job to Career.
+				<h1
+					class="text-[36px] md:text-[52px] xl:text-[72px] leading-none text-indigo-900 mb-8 font-serif"
+				>
+					Discover your next career move with us.
 				</h1>
-				<p class="text-[20px]">
-					Are you tired of endlessly browsing through multiple job websites, only to be disappointed
-					with the available options? Look no further, because {APP_NAME} is here to help you find your
-					dream job.
+				<p class="md:text-[20px] text-slate-600">
+					Take the next step in your career. Browse job openings, create a profile, and apply with
+					ease!
 				</p>
 			</div>
-			<div class="flex justify-center">
+			<div class="hidden justify-center md:flex">
 				<svelte:component this={JobHuntIllustration} />
 			</div>
 		</div>
