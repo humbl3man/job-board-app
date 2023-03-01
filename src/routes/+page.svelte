@@ -1,6 +1,11 @@
 <script>
 	import JobHuntIllustration from '$lib/assets/JobHuntIllustration.svelte';
+	import { APP_NAME } from '$lib/meta';
 </script>
+
+<svelte:head>
+	<title>{APP_NAME}</title>
+</svelte:head>
 
 <div class="py-10 lg:py-14">
 	<div class="mx-auto max-w-lg md:max-w-screen-xl px-4">

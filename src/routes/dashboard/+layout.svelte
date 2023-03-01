@@ -1,10 +1,15 @@
 <script lang="ts">
 	import { auth } from '$lib/auth';
+	import { APP_NAME } from '$lib/meta';
 	import { Button, Skeleton, Alert } from '@svelteuidev/core';
 	import { CrossCircled } from 'radix-icons-svelte';
 
 	$: loading = $auth === undefined;
 </script>
+
+<svelte:head>
+	<title>{APP_NAME} | Dashboard</title>
+</svelte:head>
 
 {#if $auth !== null}
 	<div class="mx-auto max-w-7xl px-4">

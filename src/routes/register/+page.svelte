@@ -5,6 +5,7 @@
 	import { afterUpdate } from 'svelte';
 	import { Alert, Button, TextInput, Grid, Anchor, Switch } from '@svelteuidev/core';
 	import { CrossCircled } from 'radix-icons-svelte';
+	import { APP_NAME } from '$lib/meta';
 
 	let emailInput: string;
 	let passwordInput: string;
@@ -49,6 +50,9 @@
 	});
 </script>
 
+<svelte:head>
+	<title>{APP_NAME} | Register</title>
+</svelte:head>
 <form
 	class="block mx-auto my-24 max-w-md p-8 shadow-sm rounded-md bg-white"
 	on:submit|preventDefault={handleRegister}
