@@ -1,6 +1,4 @@
 <script>
-	import { APP_NAME } from '$lib/meta';
-	// import heroIllustration from '$lib/assets/hero-illustration.svg';
 	import JobHuntIllustration from '$lib/assets/JobHuntIllustration.svelte';
 </script>
 

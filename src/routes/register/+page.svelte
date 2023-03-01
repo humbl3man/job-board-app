@@ -95,7 +95,7 @@
 	</div>
 	<div class="mt-4 mb-8">
 		<Switch
-			color="grape"
+			color="indigo"
 			radius="xl"
 			size="md"
 			label="Are you an employer?"

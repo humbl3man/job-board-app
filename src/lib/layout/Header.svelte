@@ -1,18 +1,16 @@
 <script lang="ts">
 	import { auth } from '$lib/auth';
 	import { APP_NAME } from '$lib/meta';
-	import { Button } from '@svelteuidev/core';
+	import { Button, Skeleton } from '@svelteuidev/core';
 
 	let links = [
 		{
 			href: '/jobs',
 			label: 'Jobs'
-		},
-		{
-			href: '/about',
-			label: 'About'
 		}
 	];
+
+	$: unknownLoginStatus = typeof $auth === 'undefined';
 </script>
 
 <header class="bg-white border-b border-slate-300">
@@ -34,7 +32,20 @@
 				{/each}
 			</nav>
 			<div class="flex items-center">
-				{#if $auth}
+				{#if unknownLoginStatus}
+					<Skeleton
+						animate
+						radius="sm"
+						class="w-[90px] mr-4"
+						height={36}
+					/>
+					<Skeleton
+						animate
+						radius="sm"
+						class="w-[90px] mr-4"
+						height={36}
+					/>
+				{:else if $auth}
 					<Button
 						target=""
 						variant="light"
@@ -53,7 +64,7 @@
 						variant="light"
 						color="indigo"
 						target=""
-						href="/login"
+						href="/register"
 						class="mr-4 font-bold">Register</Button
 					>
 				{/if}
