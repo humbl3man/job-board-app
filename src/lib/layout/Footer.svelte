@@ -5,7 +5,7 @@
 
 <footer class="py-6 bg-white">
 	<div class="mx-auto max-w-screen-xl px-2">
-		<div class="text-center text-sm text-gray-700">{copyrightYear} &copy; {APP_NAME}</div>
+		<div class="text-center text-sm text-gray-700">{copyrightYear}&nbsp;{APP_NAME}</div>
 		<div class="text-center">
 			<a
 				href="https://storyset.com/job"

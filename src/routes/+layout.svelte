@@ -24,9 +24,11 @@
 </svelte:head>
 
 <SvelteUIProvider>
-	<Header />
-	<main><slot /></main>
-	<Footer />
+	<div class="grid h-screen root">
+		<Header />
+		<main><slot /></main>
+		<Footer />
+	</div>
 </SvelteUIProvider>
 
 <style lang="postcss">
@@ -38,5 +40,9 @@
 	}
 	:global(h1, h2, h3, h4) {
 		@apply font-bold;
+	}
+
+	.root {
+		grid-template-rows: max-content 1fr max-content;
 	}
 </style>
