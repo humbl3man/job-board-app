@@ -1,0 +1,52 @@
+[
+	{
+		"id": "1",
+		"title": "Software Developer",
+		"company": "Acme Inc.",
+		"category": "Technology",
+		"salary": 100000,
+		"description": "Acme Inc. is seeking a skilled software developer to join our team. The ideal candidate will have experience in web development and be comfortable working with modern frontend frameworks and backend technologies.",
+		"skills": ["JavaScript", "React", "Node.js", "MongoDB"],
+		"expectations": "Develop, test, and deploy high-quality software applications that meet customer needs."
+	},
+	{
+		"id": "2",
+		"title": "Project Manager",
+		"company": "XYZ Corp.",
+		"category": "Business",
+		"salary": 120000,
+		"description": "XYZ Corp. is seeking an experienced project manager to lead the development and execution of our project roadmap. The ideal candidate will be comfortable working with cross-functional teams and have a proven track record of successfully delivering projects on time and within budget.",
+		"skills": ["Project Management", "Agile Methodologies", "Risk Management", "Budgeting"],
+		"expectations": "Collaborate with cross-functional teams to deliver projects on time and within budget."
+	},
+	{
+		"id": "3",
+		"title": "Data Scientist",
+		"company": "ABC Inc.",
+		"category": "Analytics",
+		"salary": 90000,
+		"description": "ABC Inc. is seeking a data scientist to help us make better data-driven decisions. The ideal candidate will have experience working with large datasets and be comfortable using tools like Python, R, and SQL.",
+		"skills": ["Data Analysis", "Python", "R", "SQL"],
+		"expectations": "Analyze large datasets, build predictive models, and present insights to stakeholders."
+	},
+	{
+		"id": "4",
+		"title": "Marketing Coordinator",
+		"company": "123 Corp.",
+		"category": "Marketing",
+		"salary": 70000,
+		"description": "123 Corp. is seeking a marketing coordinator to help us drive customer acquisition and engagement. The ideal candidate will have experience in digital marketing and be comfortable using tools like Google Analytics, Facebook Ads, and email marketing platforms.",
+		"skills": ["Digital Marketing", "Google Analytics", "Facebook Ads", "Email Marketing"],
+		"expectations": "Assist in the development and execution of marketing campaigns that drive customer acquisition and engagement."
+	},
+	{
+		"id": "5",
+		"title": "Sales Manager",
+		"company": "Big Sales Inc.",
+		"category": "Sales",
+		"salary": 120000,
+		"description": "Big Sales Inc. is seeking a highly motivated sales manager to lead our sales team. The ideal candidate will have experience in B2B sales and be comfortable coaching, mentoring, and motivating a team of sales representatives.",
+		"skills": ["Sales", "Coaching", "Mentoring", "Leadership"],
+		"expectations": "Manage and motivate a team of sales representatives to achieve sales targets."
+	}
+]

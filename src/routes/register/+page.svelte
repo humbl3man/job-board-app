@@ -26,7 +26,7 @@
 	async function handleRegister() {
 		try {
 			beforeStart();
-			await auth.registerWithEmail(emailInput, passwordInput);
+			await auth.registerWithEmail(emailInput, passwordInput, isEmployeer);
 			goto('/dashboard');
 		} catch (error) {
 			handleAuthError(error as AuthError);
