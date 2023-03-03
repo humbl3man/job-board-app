@@ -6,12 +6,15 @@
 	import { Alert, Button, TextInput, Grid, Anchor, Switch } from '@svelteuidev/core';
 	import { CrossCircled } from 'radix-icons-svelte';
 	import { APP_NAME } from '$lib/meta';
+	import { page } from '$app/stores';
 
 	let emailInput: string;
 	let passwordInput: string;
 	let authError: string;
 	let isEmployeer = false;
 	let processing = false;
+
+	let returnURL = new URLSearchParams($page.url.search)?.get('returnURL') ?? null;
 
 	function beforeStart() {
 		authError = '';
@@ -27,7 +30,11 @@
 		try {
 			beforeStart();
 			await auth.registerWithEmail(emailInput, passwordInput, isEmployeer);
-			goto('/dashboard');
+			if (returnURL) {
+				goto(returnURL);
+			} else {
+				goto('/dashboard');
+			}
 		} catch (error) {
 			handleAuthError(error as AuthError);
 		}

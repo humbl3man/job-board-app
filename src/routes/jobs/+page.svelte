@@ -15,18 +15,20 @@
 	<section>
 		{#each data.jobs as { id, title, company, category, salary, description, skills, expectations }}
 			<a href="/jobs/{id}">
-				<article class="grid p-4 border-b-2 border-slate-200 bg-white job-post">
+				<article
+					class="grid p-6 border-b-2 border-slate-200 bg-white gap-4 hover:bg-slate-50 transition duration-100"
+				>
 					<div>
-						<div class="text-indigo-900 font-bold text-lg">{title}</div>
-						<div class="text-slate-700">{category}</div>
+						<div class="text-indigo-700 font-bold">{title}</div>
+						<div class="text-slate-700 text-sm">{company} | {category}</div>
 					</div>
-					<div class="flex skill-list justify-end">
+					<div class="flex">
 						{#each skills as skill}
 							<Badge
-								radius="sm"
-								size="sm"
+								radius="lg"
+								size="md"
 								variant="light"
-								color="indigo"
+								color="blue"
 								class="capitalize mr-2">{skill}</Badge
 							>
 						{/each}
@@ -36,11 +38,3 @@
 		{/each}
 	</section>
 </div>
-
-<style>
-	@media screen and (min-width: 767px) {
-		.job-post {
-			grid-template-columns: 2fr 1fr;
-		}
-	}
-</style>
