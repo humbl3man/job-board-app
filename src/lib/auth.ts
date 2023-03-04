@@ -2,7 +2,7 @@
 import { browser } from '$app/environment';
 import { goto } from '$app/navigation';
 import type { Auth, AuthError, User } from 'firebase/auth';
-import { addDoc, collection } from 'firebase/firestore';
+import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
 import { readable } from 'svelte/store';
 import { db } from './firebase/db';
 
@@ -37,13 +37,13 @@ function createAuth() {
 			try {
 				const createResponse = await createUserWithEmailAndPassword(auth, email, password);
 				// now we add this user to firestore db
-				const docRef = await addDoc(collection(db, 'users'), {
+				const docRef = await setDoc(doc(db, 'users', createResponse.user.uid), {
 					email: createResponse.user.email,
-					uid: createResponse.user.uid,
 					displayName: createResponse.user.displayName ?? null,
-					isEmployer
+					isEmployer,
+					createdAt: new Date()
 				});
-				console.log('Document written with docRef ID', docRef.id);
+				console.log('Document written with docRef ID', docRef);
 			} catch (error: any) {
 				throw new Error(error.message);
 			}

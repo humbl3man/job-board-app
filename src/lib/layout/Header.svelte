@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { auth } from '$lib/auth';
 	import { APP_NAME } from '$lib/meta';
+	import { user } from '$lib/user';
 	import { Button, Skeleton } from '@svelteuidev/core';
 
-	let links = [
+	let defaultLinks = [
 		{
 			href: '/jobs',
 			label: 'Jobs'
@@ -21,7 +22,7 @@
 				class="uppercase font-bold text-2xl">{APP_NAME}</a
 			>
 			<nav class="flex">
-				{#each links as { href, label }}
+				{#each defaultLinks as { href, label }}
 					<Button
 						{href}
 						target=""
@@ -30,6 +31,15 @@
 						class="text-gray-700 mx-2 text-base font-bold">{label}</Button
 					>
 				{/each}
+				{#if $auth && $user?.isEmployer}
+					<Button
+						href="/jobs/create"
+						target=""
+						variant="subtle"
+						color="indigo"
+						class="text-gray-700 mx-2 text-base font-bold">Post Job</Button
+					>
+				{/if}
 			</nav>
 			<div class="flex items-center">
 				{#if unknownLoginStatus}
