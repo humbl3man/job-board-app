@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { auth } from '$lib/auth';
-	import { Alert, Badge, Button } from '@svelteuidev/core';
+	import { Alert, Badge, Button, Skeleton } from '@svelteuidev/core';
 	import { InfoCircled } from 'radix-icons-svelte';
 	import type { PageData } from './$types';
 
@@ -42,8 +42,8 @@
 		</div>
 	{/if}
 
-	{#if auth !== undefined}
-		<div class="my-6">
+	<div class="my-6">
+		{#if typeof $auth !== 'undefined'}
 			{#if $auth}
 				<Button
 					color="red"
@@ -66,6 +66,13 @@
 					>
 				</Alert>
 			{/if}
-		</div>
-	{/if}
+		{:else}
+			<div class="w-[100px]">
+				<Skeleton
+					height={50}
+					animate
+				/>
+			</div>
+		{/if}
+	</div>
 </div>
