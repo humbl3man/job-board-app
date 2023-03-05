@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { browser } from '$app/environment';
 import { goto } from '$app/navigation';
-import type { Auth, AuthError, User } from 'firebase/auth';
-import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
+import type { Auth, User } from 'firebase/auth';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { readable } from 'svelte/store';
 import { db } from './firebase/db';
+import { user as userStore } from './user';
 
 function createAuth() {
 	let auth: Auth;
@@ -17,7 +18,20 @@ function createAuth() {
 				const { app } = await import('$lib/firebase/app');
 				const { getAuth, onAuthStateChanged } = await import('firebase/auth');
 				auth = getAuth(app);
-				unsubscribe = onAuthStateChanged(auth, set);
+				unsubscribe = onAuthStateChanged(auth, async (user) => {
+					if (user) {
+						set(user);
+						const userDoc = await getDoc(doc(db, 'users', user.uid));
+						if (userDoc.exists()) {
+							userStore.set({ ...userDoc.data(), id: userDoc.id });
+						} else {
+							userStore.set(undefined);
+						}
+					} else {
+						set(null);
+						userStore.set(undefined);
+					}
+				});
 			}
 		}
 
@@ -29,21 +43,26 @@ function createAuth() {
 	return {
 		subscribe,
 		emailLogin: async (email: string, password: string) => {
-			const { signInWithEmailAndPassword } = await import('firebase/auth');
-			await signInWithEmailAndPassword(auth, email, password);
+			try {
+				const { signInWithEmailAndPassword } = await import('firebase/auth');
+				await signInWithEmailAndPassword(auth, email, password);
+			} catch (error: any) {
+				throw new Error(error.message);
+			}
 		},
-		registerWithEmail: async (email: string, password: string, isEmployer = false) => {
+		registerWithEmail: async (email: string, password: string, companyName?: string) => {
 			const { createUserWithEmailAndPassword } = await import('firebase/auth');
 			try {
-				const createResponse = await createUserWithEmailAndPassword(auth, email, password);
+				const registerObj = await createUserWithEmailAndPassword(auth, email, password);
 				// now we add this user to firestore db
-				const docRef = await setDoc(doc(db, 'users', createResponse.user.uid), {
-					email: createResponse.user.email,
-					displayName: createResponse.user.displayName ?? null,
-					isEmployer,
-					createdAt: new Date()
+				await setDoc(doc(db, 'users', registerObj.user.uid), {
+					email: registerObj.user.email,
+					displayName: registerObj.user.displayName ?? null,
+					isEmployer: Boolean(companyName),
+					companyName,
+					createdAt: new Date(),
+					updatedAt: null
 				});
-				console.log('Document written with docRef ID', docRef);
 			} catch (error: any) {
 				throw new Error(error.message);
 			}

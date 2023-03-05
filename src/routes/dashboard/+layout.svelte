@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { auth } from '$lib/auth';
 	import { APP_NAME } from '$lib/meta';
+	import { user } from '$lib/user';
 	import { Button, Skeleton, Alert } from '@svelteuidev/core';
 	import { CrossCircled } from 'radix-icons-svelte';
 
@@ -24,7 +25,16 @@
 						class="w-full rounded-none"
 						size="md">Dashboard</Button
 					>
-
+					{#if $user?.isEmployer}
+						<Button
+							href="/dashboard/created"
+							target=""
+							variant="subtle"
+							color="indigo"
+							class="w-full rounded-none"
+							size="md">Created Jobs</Button
+						>
+					{/if}
 					<Button
 						variant="subtle"
 						color="pink"

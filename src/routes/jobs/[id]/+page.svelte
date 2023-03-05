@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { auth } from '$lib/auth';
+	import { user } from '$lib/user';
 	import { Alert, Badge, Button, Skeleton } from '@svelteuidev/core';
 	import { InfoCircled } from 'radix-icons-svelte';
 	import type { PageData } from './$types';
@@ -45,11 +46,13 @@
 	<div class="my-6">
 		{#if typeof $auth !== 'undefined'}
 			{#if $auth}
-				<Button
-					color="red"
-					size="md"
-					variant="filled">Apply</Button
-				>
+				{#if !$user?.isEmployer}
+					<Button
+						color="red"
+						size="md"
+						variant="filled">Apply</Button
+					>
+				{/if}
 			{:else}
 				<Alert
 					icon={InfoCircled}

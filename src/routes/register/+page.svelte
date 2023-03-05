@@ -8,8 +8,9 @@
 	import { APP_NAME } from '$lib/meta';
 	import { page } from '$app/stores';
 
-	let emailInput: string;
-	let passwordInput: string;
+	let email: string;
+	let password: string;
+	let companyName: string;
 	let authError: string;
 	let isEmployeer = false;
 	let processing = false;
@@ -29,7 +30,7 @@
 	async function handleRegister() {
 		try {
 			beforeStart();
-			await auth.registerWithEmail(emailInput, passwordInput, isEmployeer);
+			await auth.registerWithEmail(email, password, companyName);
 			if (returnURL) {
 				goto(returnURL);
 			} else {
@@ -89,7 +90,7 @@
 			name="email"
 			size="lg"
 			radius="sm"
-			bind:value={emailInput}
+			bind:value={email}
 			required
 		/>
 	</div>
@@ -100,7 +101,7 @@
 			name="password"
 			size="lg"
 			radius="sm"
-			bind:value={passwordInput}
+			bind:value={password}
 			required
 		/>
 	</div>
@@ -114,6 +115,19 @@
 			on:change={() => (isEmployeer = !isEmployeer)}
 		/>
 	</div>
+	{#if isEmployeer}
+		<div class="my-4">
+			<TextInput
+				label="Company Name"
+				type="text"
+				name="companyname"
+				size="lg"
+				radius="sm"
+				bind:value={companyName}
+				required
+			/>
+		</div>
+	{/if}
 	<Grid
 		spacing={10}
 		align="center"

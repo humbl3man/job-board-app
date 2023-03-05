@@ -37,7 +37,7 @@
 						target=""
 						variant="subtle"
 						color="indigo"
-						class="text-gray-700 mx-2 text-base font-bold">Post Job</Button
+						class="text-gray-700 mx-2 text-base font-bold">Create Job</Button
 					>
 				{/if}
 			</nav>

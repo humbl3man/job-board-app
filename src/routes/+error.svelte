@@ -9,4 +9,3 @@
 		class="link">Navigate Home</a
 	>
 {/if}
-{@debug $page}
