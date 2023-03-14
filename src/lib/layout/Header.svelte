@@ -1,8 +1,6 @@
 <script lang="ts">
-	import { auth } from '$lib/auth';
 	import { APP_NAME } from '$lib/meta';
-	import { user } from '$lib/user';
-	import { Button, Skeleton } from '@svelteuidev/core';
+	import { Button } from '@svelteuidev/core';
 
 	let defaultLinks = [
 		{
@@ -10,8 +8,6 @@
 			label: 'Jobs'
 		}
 	];
-
-	$: unknownLoginStatus = typeof $auth === 'undefined';
 </script>
 
 <header class="bg-white border-b border-slate-300">
@@ -31,53 +27,29 @@
 						class="text-gray-700 mx-2 text-base font-bold">{label}</Button
 					>
 				{/each}
-				{#if $auth && $user?.isEmployer}
-					<Button
-						href="/jobs/create"
-						target=""
-						variant="subtle"
-						color="indigo"
-						class="text-gray-700 mx-2 text-base font-bold">Create Job</Button
-					>
-				{/if}
 			</nav>
 			<div class="flex items-center">
-				{#if unknownLoginStatus}
-					<Skeleton
-						animate
-						radius="sm"
-						class="w-[90px] mr-4"
-						height={36}
-					/>
-					<Skeleton
-						animate
-						radius="sm"
-						class="w-[90px] mr-4"
-						height={36}
-					/>
-				{:else if $auth}
-					<Button
-						target=""
-						variant="light"
-						color="indigo"
-						href="/dashboard">Account</Button
-					>
-				{:else if $auth === null}
-					<Button
-						variant="filled"
-						color="orange"
-						target=""
-						href="/login"
-						class="mr-4 font-bold">Login</Button
-					>
-					<Button
-						variant="light"
-						color="indigo"
-						target=""
-						href="/register"
-						class="mr-4 font-bold">Register</Button
-					>
-				{/if}
+				<Button
+					target=""
+					variant="light"
+					color="indigo"
+					href="/dashboard">Account</Button
+				>
+
+				<Button
+					variant="filled"
+					color="orange"
+					target=""
+					href="/login"
+					class="mr-4 font-bold">Login</Button
+				>
+				<Button
+					variant="light"
+					color="indigo"
+					target=""
+					href="/register"
+					class="mr-4 font-bold">Register</Button
+				>
 			</div>
 		</div>
 	</div>
