@@ -1,8 +1,4 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
-	import { auth } from '$lib/auth';
-	import type { AuthError } from 'firebase/auth';
-	import { afterUpdate } from 'svelte';
 	import { Alert, Button, TextInput, Grid } from '@svelteuidev/core';
 	import { CrossCircled } from 'radix-icons-svelte';
 	import { APP_NAME } from '$lib/meta';
@@ -14,61 +10,18 @@
 	let processing = false;
 
 	let returnURL = new URLSearchParams($page.url.search)?.get('returnURL') ?? null;
-
-	function beforeStart() {
-		authError = '';
-		processing = true;
-	}
-
-	function handleAuthError(error: AuthError) {
-		authError = error.code;
-		processing = false;
-	}
-
-	async function handleLogin() {
-		try {
-			beforeStart();
-			await auth.emailLogin(emailInput, passwordInput);
-			if (returnURL) {
-				goto(returnURL);
-			} else {
-				goto('/dashboard');
-			}
-		} catch (error) {
-			handleAuthError(error as AuthError);
-		}
-	}
-
-	async function handleGoogleSignIn() {
-		try {
-			beforeStart();
-			await auth.signInWithGoogle();
-			goto('/dashboard');
-		} catch (error) {
-			handleAuthError(error as AuthError);
-		}
-	}
-
-	afterUpdate(() => {
-		if ($auth) {
-			goto('/dashboard');
-		}
-	});
 </script>
 
 <svelte:head>
 	<title>{APP_NAME} | Login</title>
 </svelte:head>
-<form
-	class="block mx-auto my-24 max-w-md p-8 shadow-sm rounded-md bg-white"
-	on:submit|preventDefault={handleLogin}
->
+<form class="block mx-auto my-24 max-w-md p-8 shadow-sm rounded-md bg-white">
 	<h1 class="text-2xl">Login</h1>
 	{#if authError}
 		<div class="my-5">
 			<Alert
 				title="Authentication Error"
-				variant="outline"
+				variant="filled"
 				radius="sm"
 				color="pink"
 				icon={CrossCircled}
@@ -125,13 +78,4 @@
 			>
 		</Grid.Col>
 	</Grid>
-	<!-- <div class="mt-6">
-		<Button
-			color="blue"
-			variant="filled"
-			size="md"
-			loading={processing}
-			on:click={handleGoogleSignIn}>Sign In With Google</Button
-		>
-	</div> -->
 </form>

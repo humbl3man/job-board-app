@@ -1,7 +1,5 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { auth } from '$lib/auth';
-	import { user } from '$lib/user';
 	import { Alert, Badge, Button, Skeleton } from '@svelteuidev/core';
 	import { InfoCircled } from 'radix-icons-svelte';
 	import type { PageData } from './$types';
@@ -42,40 +40,4 @@
 			<p>{numberFormatter.format(data.detail.salary)} (DOE)</p>
 		</div>
 	{/if}
-
-	<div class="my-6">
-		{#if typeof $auth !== 'undefined'}
-			{#if $auth}
-				{#if !$user?.isEmployer}
-					<Button
-						color="red"
-						size="md"
-						variant="filled">Apply</Button
-					>
-				{/if}
-			{:else}
-				<Alert
-					icon={InfoCircled}
-					title="NOTE"
-				>
-					You must be logged in to apply. Please <a
-						href="/login?returnURL={returnURL}"
-						class="font-bold underline">Login</a
-					>
-					or
-					<a
-						href="/register?returnURL={returnURL}"
-						class="font-bold underline">Create Account</a
-					>
-				</Alert>
-			{/if}
-		{:else}
-			<div class="w-[100px]">
-				<Skeleton
-					height={50}
-					animate
-				/>
-			</div>
-		{/if}
-	</div>
 </div>
