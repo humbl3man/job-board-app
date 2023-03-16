@@ -1,6 +1,11 @@
 <script lang="ts">
+	import { applyAction, enhance } from '$app/forms';
+	import { invalidateAll } from '$app/navigation';
+	import { page } from '$app/stores';
 	import { APP_NAME } from '$lib/meta';
 	import { Button } from '@svelteuidev/core';
+
+	export let isAuthenticated: Boolean;
 
 	let defaultLinks = [
 		{
@@ -29,28 +34,42 @@
 				{/each}
 			</nav>
 			<div class="flex items-center">
-				<Button
-					target=""
-					variant="light"
-					color="indigo"
-					href="/dashboard">Account</Button
-				>
+				{#if isAuthenticated}
+					<a
+						class="button button--sm mr-4 font-bold"
+						href="/dashboard">Account</a
+					>
+					<form
+						method="POST"
+						action="/logout"
+						use:enhance={() => {
+							return async ({ result }) => {
+								await invalidateAll();
+								await applyAction(result);
+							};
+						}}
+					>
+						<button class="logoutBtn button button--sm font-bold">Logout</button>
+					</form>
+				{/if}
 
-				<Button
-					variant="filled"
-					color="orange"
-					target=""
-					href="/login"
-					class="mr-4 font-bold">Login</Button
-				>
-				<Button
-					variant="light"
-					color="indigo"
-					target=""
-					href="/register"
-					class="mr-4 font-bold">Register</Button
-				>
+				{#if !isAuthenticated}
+					<a
+						href="/login"
+						class="button button--sm mr-4 font-bold">Login</a
+					>
+					<a
+						href="/register"
+						class="button button--sm mr-4 font-bold">Register</a
+					>
+				{/if}
 			</div>
 		</div>
 	</div>
 </header>
+
+<style lang="postcss">
+	.logoutBtn {
+		@apply border border-indigo-800 text-indigo-700 bg-transparent hover:bg-transparent;
+	}
+</style>

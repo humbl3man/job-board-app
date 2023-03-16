@@ -29,8 +29,6 @@ export const handle: Handle = async ({ event, resolve }) => {
 		};
 	}
 
-	console.log(event.locals);
-
 	if (company) {
 		event.locals.user.company = company.name;
 	}

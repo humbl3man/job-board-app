@@ -1,4 +1,5 @@
 <script>
+	import { page } from '$app/stores';
 	import Footer from '$lib/layout/Footer.svelte';
 	import Header from '$lib/layout/Header.svelte';
 	import { APP_NAME } from '$lib/meta';
@@ -25,7 +26,7 @@
 
 <SvelteUIProvider>
 	<div class="grid h-screen root">
-		<Header />
+		<Header isAuthenticated={!!$page.data?.user} />
 		<main><slot /></main>
 		<Footer />
 	</div>
@@ -50,6 +51,9 @@
 
 	:global(.button) {
 		@apply text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg;
+	}
+	:global(.button--sm) {
+		@apply text-sm py-2 px-4;
 	}
 	:global(.input.error) {
 		@apply text-red-600 border-red-500 focus:border-red-700;

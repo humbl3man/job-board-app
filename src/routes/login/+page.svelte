@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { Switch } from '@svelteuidev/core';
 	import { APP_NAME } from '$lib/meta';
-	import { enhance } from '$app/forms';
+	import { applyAction, enhance } from '$app/forms';
 	import type { ActionData } from './$types';
+	import { invalidateAll } from '$app/navigation';
 
 	export let form: ActionData;
 </script>
@@ -15,7 +16,12 @@
 	method="POST"
 	action="?/login"
 	novalidate
-	use:enhance
+	use:enhance={() => {
+		return async ({ result }) => {
+			await invalidateAll();
+			await applyAction(result);
+		};
+	}}
 >
 	<h1>Login</h1>
 	{#if form?.invalid}

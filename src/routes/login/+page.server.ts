@@ -8,6 +8,7 @@ export const load: PageServerLoad = ({ locals }) => {
 	if (locals.user) {
 		throw redirect(301, '/dashboard');
 	}
+	return {};
 };
 
 const login: Action = async ({ request, cookies }) => {
