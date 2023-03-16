@@ -1,19 +1,13 @@
 <script lang="ts">
-	import { Button, TextInput, Grid, Anchor, Switch } from '@svelteuidev/core';
+	import { Switch } from '@svelteuidev/core';
 	import { APP_NAME } from '$lib/meta';
 	import { enhance } from '$app/forms';
 	import type { ActionData } from './$types';
 
-	let email: string;
-	let password: string;
-	let companyName: string;
-	let isEmployeer = false;
-
 	export let form: ActionData;
-	$: existsError = form?.error?.exists;
-</script>
 
-{@debug form}
+	let isEmployeer = false;
+</script>
 
 <svelte:head>
 	<title>{APP_NAME} | Register</title>
@@ -22,39 +16,45 @@
 	class="block mx-auto my-24 max-w-md p-8 shadow-sm rounded-md bg-white"
 	method="POST"
 	action="?/register"
+	novalidate
 	use:enhance
 >
-	<h1 class="text-2xl">Create Account</h1>
+	<h1>Create Account</h1>
 	{#if form?.exists}
 		<p class="text-red-700 font-bold my-2">User Exists</p>
 	{/if}
 	<div class="my-4">
 		<label
 			for="email"
-			class="sr-only">Email</label
+			class="label">Email</label
 		>
-		<TextInput
-			label="Email"
-			type="email"
+		<input
+			value={form?.data?.email ?? ''}
+			type="text"
+			id="email"
 			name="email"
-			size="lg"
-			radius="sm"
-			bind:value={email}
-			required
+			class="w-full input {form?.fieldErrors?.email ? 'error' : ''}"
 		/>
+		{#if form?.fieldErrors?.email}
+			<p class="text-red-600">{form?.fieldErrors?.email[0]}</p>
+		{/if}
 	</div>
 	<div class="my-4">
-		<TextInput
-			label="Password"
+		<label
+			for="password"
+			class="label">Password</label
+		>
+		<input
 			type="password"
+			id="password"
 			name="password"
-			size="lg"
-			radius="sm"
-			bind:value={password}
-			required
+			class="w-full input {form?.fieldErrors?.password ? 'error' : ''}"
 		/>
+		{#if form?.fieldErrors?.password}
+			<p class="text-red-600">{form?.fieldErrors?.password[0]}</p>
+		{/if}
 	</div>
-	<div class="mt-4 mb-8">
+	<div class="my-4">
 		<Switch
 			color="indigo"
 			radius="xl"
@@ -66,35 +66,26 @@
 	</div>
 	{#if isEmployeer}
 		<div class="my-4">
-			<TextInput
-				label="Company Name"
+			<label
+				for="company_name"
+				class="label">Company Name</label
+			>
+			<input
 				type="text"
+				id="company_name"
 				name="company"
-				size="lg"
-				radius="sm"
-				bind:value={companyName}
-				required
+				class="w-full input"
+				value={form?.data?.company ?? ''}
 			/>
 		</div>
 	{/if}
-	<Grid
-		spacing={10}
-		align="center"
-	>
-		<Grid.Col span={4}>
-			<Button
-				color="indigo"
-				size="md"
-				uppercase
-			>
-				Create
-			</Button>
-		</Grid.Col>
-		<Grid.Col span={8}>
+	<div class="grid gap-4">
+		<button class="button"> Create </button>
+		<span class="text-center">
 			Already have account? <a
 				href="/login"
 				class="text-blue-500 underline">Login</a
 			>
-		</Grid.Col>
-	</Grid>
+		</span>
+	</div>
 </form>

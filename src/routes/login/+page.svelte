@@ -1,81 +1,67 @@
 <script lang="ts">
-	import { Alert, Button, TextInput, Grid } from '@svelteuidev/core';
-	import { CrossCircled } from 'radix-icons-svelte';
+	import { Switch } from '@svelteuidev/core';
 	import { APP_NAME } from '$lib/meta';
-	import { page } from '$app/stores';
+	import { enhance } from '$app/forms';
+	import type { ActionData } from './$types';
 
-	let emailInput: string;
-	let passwordInput: string;
-	let authError: string;
-	let processing = false;
-
-	let returnURL = new URLSearchParams($page.url.search)?.get('returnURL') ?? null;
+	export let form: ActionData;
 </script>
 
 <svelte:head>
 	<title>{APP_NAME} | Login</title>
 </svelte:head>
-<form class="block mx-auto my-24 max-w-md p-8 shadow-sm rounded-md bg-white">
-	<h1 class="text-2xl">Login</h1>
-	{#if authError}
-		<div class="my-5">
-			<Alert
-				title="Authentication Error"
-				variant="filled"
-				radius="sm"
-				color="pink"
-				icon={CrossCircled}
-			>
-				{authError}
-			</Alert>
-		</div>
+<form
+	class="block mx-auto my-24 max-w-md p-8 shadow-sm rounded-md bg-white"
+	method="POST"
+	action="?/login"
+	novalidate
+	use:enhance
+>
+	<h1>Login</h1>
+	{#if form?.invalid}
+		<p class="text-red-700 font-bold my-2">User Doesn't exist</p>
+	{/if}
+	{#if form?.credentials}
+		<p class="text-red-700 font-bold my-2">Invalid credentials</p>
 	{/if}
 	<div class="my-4">
 		<label
 			for="email"
-			class="sr-only">Email</label
+			class="label">Email</label
 		>
-		<TextInput
-			label="Email"
-			type="email"
+		<input
+			value={form?.data?.email ?? ''}
+			type="text"
+			id="email"
 			name="email"
-			size="lg"
-			radius="sm"
-			bind:value={emailInput}
-			required
+			class="w-full input {form?.fieldErrors?.email ? 'error' : ''}"
 		/>
+		{#if form?.fieldErrors?.email}
+			<p class="text-red-600">{form?.fieldErrors?.email[0]}</p>
+		{/if}
 	</div>
 	<div class="my-4">
-		<TextInput
-			label="Password"
+		<label
+			for="password"
+			class="label">Password</label
+		>
+		<input
 			type="password"
+			id="password"
 			name="password"
-			size="lg"
-			radius="sm"
-			bind:value={passwordInput}
-			required
+			class="w-full input {form?.fieldErrors?.password ? 'error' : ''}"
 		/>
+		{#if form?.fieldErrors?.password}
+			<p class="text-red-600">{form?.fieldErrors?.password[0]}</p>
+		{/if}
 	</div>
-
-	<Grid
-		spacing={10}
-		align="center"
-	>
-		<Grid.Col span={4}>
-			<Button
-				color="indigo"
-				size="md"
-				loading={processing}
-				uppercase
-			>
-				Login
-			</Button>
-		</Grid.Col>
-		<Grid.Col span={8}>
+	<div class="grid gap-4">
+		<button class="button"> Login </button>
+		<span class="text-center">
 			Don't have an account? <a
 				href="/register"
 				class="text-blue-500 underline">Register</a
 			>
-		</Grid.Col>
-	</Grid>
+		</span>
+	</div>
 </form>
