@@ -1,93 +1,72 @@
 <script lang="ts">
-	import { page } from '$app/stores';
-	import { Alert, Button, TextInput } from '@svelteuidev/core';
+	import type { PageData } from './$types';
+
+	export let data: PageData;
 </script>
 
-<div class="mx-auto max-w-xl px-4 my-16">
+<pre>
+	{JSON.stringify(data.user, null, 2)}
+</pre>
+
+<div class="mx-auto max-w-xl bg-white p-8 my-16">
 	<form
 		method="POST"
 		action="?/createjob"
 	>
-		<input
-			type="hidden"
-			name="createdBy"
-		/>
-		<input
-			type="hidden"
-			name="company"
-		/>
+		<h1>Create Job</h1>
 		<div class="my-4">
-			<TextInput
+			<label
+				for="title"
+				class="label">Title</label
+			>
+			<input
 				type="text"
+				class="input w-full"
 				name="title"
 				id="title"
-				label="Title"
-				size="lg"
-				radius="sm"
-				required
+				placeholder="ex: Software Engineer"
 			/>
 		</div>
 		<div class="my-4">
-			<TextInput
-				size="lg"
-				radius="sm"
-				label="Category"
-				type="text"
+			<label
+				for="category"
+				class="label"
+			/>
+			<select
+				class="input w-full"
 				name="category"
-				id="category"
-				required
-			/>
+			>
+				<option value="">Select Category...</option>
+				{#each data.categories as { id, name }}
+					<option value={id}>{name}</option>
+				{/each}
+			</select>
 		</div>
 		<div class="my-4">
-			<TextInput
-				size="lg"
-				radius="sm"
-				label="Description"
+			<label
+				for="description"
+				class="label">Description</label
+			>
+			<textarea
+				class="input w-full"
 				name="description"
 				id="description"
-				rows={5}
-				required
+				rows={6}
+				placeholder="Job Description"
 			/>
 		</div>
 		<div class="my-4">
-			<TextInput
-				size="lg"
-				radius="sm"
-				label="Expectations"
-				name="expectations"
-				id="expectations"
-				rows={5}
-				required
-			/>
-		</div>
-		<div class="my-4">
-			<TextInput
+			<label for="salary">Salary</label>
+			<input
+				class="input w-full"
 				type="number"
 				name="salary"
 				id="salary"
-				size="lg"
-				radius="sm"
-				label="Salary"
-				required
+				placeholder="ex: 100000"
 			/>
 		</div>
 		<div class="my-4">
-			<TextInput
-				type="text"
-				name="skills"
-				id="skills"
-				label="Skills"
-				size="lg"
-				radius="sm"
-				placeholder="Comma separated"
-				required
-			/>
-		</div>
-		<div class="my-4">
-			<Button
-				color="grape"
-				size="lg">Submit</Button
-			>
+			<button class="button w-full">Create</button>
 		</div>
 	</form>
 </div>

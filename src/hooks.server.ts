@@ -20,6 +20,10 @@ export const handle: Handle = async ({ event, resolve }) => {
 	const company = await db.company.findUnique({
 		where: {
 			userId: user?.id
+		},
+		select: {
+			id: true,
+			name: true
 		}
 	});
 
@@ -33,6 +37,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	if (company) {
 		event.locals.user.company = company.name;
+		event.locals.user.companyId = company.id;
 	}
 
 	return await resolve(event);

@@ -6,10 +6,6 @@
 	export let data: PageData;
 </script>
 
-<pre>
-	{JSON.stringify(data, null, 2)}
-</pre>
-
 <svelte:head>
 	<title>{APP_NAME} | Job Search</title>
 </svelte:head>
@@ -20,7 +16,7 @@
 		{#if data.user?.company}
 			<a
 				href="/jobs/create"
-				class="button inline-block mb-4">Create</a
+				class="button button--sm inline-block mb-4">Create</a
 			>
 		{/if}
 		<table class="w-full text-sm text-left text-gray-500">
@@ -42,20 +38,23 @@
 						scope="col"
 						class="px-6 py-3">Category</th
 					>
+					<th scope="col" />
 				</tr>
 			</thead>
 
 			<tbody>
 				{#each data?.jobs as job (job.id)}
-					<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-						<th
-							scope="row"
-							class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
-						/>
+					<tr class="bg-white border-b">
 						<td class="px-6 py-4">{job.title}</td>
-						<td class="px-6 py-4">{job.companyId}</td>
+						<td class="px-6 py-4">{job.company.name}</td>
 						<td class="px-6 py-4">{job.salary}</td>
-						<td class="px-6 py-4">{job.categoryId}</td>
+						<td class="px-6 py-4">{job.category.name}</td>
+						<td class="px-6 py-4"
+							><a
+								class="text-indigo-600 font-bold hover:underline"
+								href="/jobs/{job.id}">Details</a
+							></td
+						>
 					</tr>
 				{/each}
 			</tbody>

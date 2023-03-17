@@ -1,0 +1,52 @@
+[
+	{
+		"id": "j001",
+		"title": "Software Engineer",
+		"salary": 120000,
+		"description": "We are seeking a skilled software engineer to join our team and help develop cutting-edge software applications.",
+		"company_name": "ABC Software Solutions",
+		"company_id": "c001",
+		"category": "Technology",
+		"category_id": "cat001"
+	},
+	{
+		"id": "j002",
+		"title": "Marketing Manager",
+		"salary": null,
+		"description": "We are seeking an experienced marketing manager to develop and execute marketing strategies that will increase brand awareness and drive sales.",
+		"company_name": "XYZ Marketing Agency",
+		"company_id": "c002",
+		"category": "Marketing",
+		"category_id": "cat002"
+	},
+	{
+		"id": "j003",
+		"title": "Accountant",
+		"salary": 70000,
+		"description": "We are seeking a detail-oriented accountant to manage financial transactions and ensure compliance with accounting regulations.",
+		"company_name": "Smith & Associates",
+		"company_id": "c003",
+		"category": "Finance",
+		"category_id": "cat003"
+	},
+	{
+		"id": "j004",
+		"title": "Human Resources Manager",
+		"salary": 100000,
+		"description": "We are seeking an experienced HR manager to oversee recruitment, employee relations, and HR compliance.",
+		"company_name": "Jones Corporation",
+		"company_id": "c004",
+		"category": "Human Resources",
+		"category_id": "cat004"
+	},
+	{
+		"id": "j005",
+		"title": "Graphic Designer",
+		"salary": 55000,
+		"description": "We are seeking a creative graphic designer to develop visual concepts and designs for print and digital media.",
+		"company_name": "ABC Creative Agency",
+		"company_id": "c001",
+		"category": "Design",
+		"category_id": "cat005"
+	}
+]

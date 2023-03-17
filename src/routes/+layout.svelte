@@ -40,13 +40,13 @@
 		@apply text-blue-500 inline-block underline focus:text-blue-700 hover:text-blue-700;
 	}
 	:global(h1, h2, h3, h4) {
-		@apply font-bold text-gray-900 text-2xl sm:text-3xl;
+		@apply font-bold text-slate-900 text-2xl sm:text-3xl;
 	}
 	:global(.label) {
-		@apply leading-7 text-sm text-gray-600;
+		@apply leading-7 text-slate-800;
 	}
 	:global(.input) {
-		@apply bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out;
+		@apply bg-slate-100 bg-opacity-50 rounded border border-slate-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-slate-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out;
 	}
 
 	:global(.button) {
