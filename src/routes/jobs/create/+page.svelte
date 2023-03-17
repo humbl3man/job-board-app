@@ -4,7 +4,10 @@
 </script>
 
 <div class="mx-auto max-w-xl px-4 my-16">
-	<form method="POST">
+	<form
+		method="POST"
+		action="?/createjob"
+	>
 		<input
 			type="hidden"
 			name="createdBy"

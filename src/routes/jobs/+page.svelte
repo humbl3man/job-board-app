@@ -4,8 +4,11 @@
 	import type { PageData } from './$types';
 
 	export let data: PageData;
-	console.log(data);
 </script>
+
+<pre>
+	{JSON.stringify(data, null, 2)}
+</pre>
 
 <svelte:head>
 	<title>{APP_NAME} | Job Search</title>
@@ -14,28 +17,48 @@
 <div class="mx-auto max-w-5xl px-4 my-16">
 	<h1 class="font-bold text-3xl mb-8">Job Listings</h1>
 	<section>
-		{#each data.jobs as { id, title, company, category, salary, description, skills, expectations }}
-			<a href="/jobs/{id}">
-				<article
-					class="grid p-6 border-b-2 border-slate-200 bg-white gap-4 hover:bg-slate-50 transition duration-100"
-				>
-					<div>
-						<div class="text-indigo-700 font-bold">{title}</div>
-						<div class="text-slate-700 text-sm">{company} | {category}</div>
-					</div>
-					<div class="flex">
-						{#each skills as skill}
-							<Badge
-								radius="lg"
-								size="md"
-								variant="light"
-								color="blue"
-								class="capitalize mr-2">{skill}</Badge
-							>
-						{/each}
-					</div>
-				</article>
-			</a>
-		{/each}
+		{#if data.user?.company}
+			<a
+				href="/jobs/create"
+				class="button inline-block mb-4">Create</a
+			>
+		{/if}
+		<table class="w-full text-sm text-left text-gray-500">
+			<thead class="text-xs text-gray-700 uppercase bg-gray-50">
+				<tr>
+					<th
+						scope="col"
+						class="px-6 py-3">Title</th
+					>
+					<th
+						scope="col"
+						class="px-6 py-3">Company</th
+					>
+					<th
+						scope="col"
+						class="px-6 py-3">Salary</th
+					>
+					<th
+						scope="col"
+						class="px-6 py-3">Category</th
+					>
+				</tr>
+			</thead>
+
+			<tbody>
+				{#each data?.jobs as job (job.id)}
+					<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+						<th
+							scope="row"
+							class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
+						/>
+						<td class="px-6 py-4">{job.title}</td>
+						<td class="px-6 py-4">{job.companyId}</td>
+						<td class="px-6 py-4">{job.salary}</td>
+						<td class="px-6 py-4">{job.categoryId}</td>
+					</tr>
+				{/each}
+			</tbody>
+		</table>
 	</section>
 </div>

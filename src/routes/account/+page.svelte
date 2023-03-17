@@ -11,11 +11,12 @@
 	let name = $page.data.user.name ?? '';
 </script>
 
-<section class="dashboard mx-auto max-w-3xl bg-white">
+<section class="dashboard mx-auto max-w-3xl bg-white mt-16">
 	<div class="p-6 border-b border-slate-300">
 		<h1 class="text-2xl mb-2">Account Information</h1>
 		<div class="text-slate-600 flex items-center">
-			<span>Hello, {name || email}</span> <span class="mx-2">|</span>
+			<span>Hello, {$page.data?.user?.name || $page.data?.user?.email}</span>
+			<span class="mx-2">|</span>
 			<form
 				action="/logout"
 				method="POST"
@@ -46,7 +47,7 @@
 					action="?/changename"
 					use:enhance={() => {
 						return async ({ result }) => {
-							await invalidate('/account');
+							await invalidateAll();
 							await applyAction(result);
 						};
 					}}
