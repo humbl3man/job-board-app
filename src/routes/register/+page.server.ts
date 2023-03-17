@@ -6,7 +6,7 @@ import type { Action, Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	if (locals.user) {
-		throw redirect(301, '/dashboard');
+		throw redirect(301, '/account');
 	}
 };
 

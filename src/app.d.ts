@@ -8,6 +8,7 @@ declare global {
 				email: string;
 				id: number;
 				company?: string;
+				name?: string;
 			};
 		}
 		// interface PageData {}

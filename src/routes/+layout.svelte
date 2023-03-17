@@ -50,7 +50,7 @@
 	}
 
 	:global(.button) {
-		@apply text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg;
+		@apply text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg disabled:opacity-50 disabled:pointer-events-none;
 	}
 	:global(.button--sm) {
 		@apply text-sm py-2 px-4;

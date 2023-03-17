@@ -6,7 +6,7 @@ import type { PageServerLoad, Action, Actions } from './$types';
 
 export const load: PageServerLoad = ({ locals }) => {
 	if (locals.user) {
-		throw redirect(301, '/dashboard');
+		throw redirect(301, '/account');
 	}
 	return {};
 };
@@ -72,7 +72,7 @@ const login: Action = async ({ request, cookies }) => {
 		maxAge: 60 * 60 * 24 * 30
 	});
 
-	throw redirect(302, '/dashboard');
+	throw redirect(302, '/account');
 };
 
 export const actions: Actions = {

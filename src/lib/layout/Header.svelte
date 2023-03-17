@@ -37,7 +37,7 @@
 				{#if isAuthenticated}
 					<a
 						class="button button--sm mr-4 font-bold"
-						href="/dashboard">Account</a
+						href="/account">Account</a
 					>
 					<form
 						method="POST"
