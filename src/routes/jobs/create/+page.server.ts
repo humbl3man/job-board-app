@@ -34,6 +34,8 @@ type JobData = {
 const createjob: Action = async ({ request, cookies, locals }) => {
 	const formData = await request.formData();
 
+	// TODO: validation
+
 	await db.job.create({
 		data: {
 			title: formData.get('title').toString(),
@@ -43,7 +45,8 @@ const createjob: Action = async ({ request, cookies, locals }) => {
 			categoryId: Number(formData.get('category'))
 		}
 	});
-	return {};
+
+	throw redirect(302, '/jobs');
 };
 
 export const actions: Actions = {

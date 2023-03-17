@@ -26,7 +26,10 @@
 
 <SvelteUIProvider>
 	<div class="grid h-screen root">
-		<Header isAuthenticated={!!$page.data?.user} />
+		<Header
+			isEmployer={!!$page.data?.user?.company}
+			isAuthenticated={!!$page.data?.user}
+		/>
 		<main><slot /></main>
 		<Footer />
 	</div>

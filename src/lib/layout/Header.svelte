@@ -1,11 +1,10 @@
 <script lang="ts">
 	import { applyAction, enhance } from '$app/forms';
 	import { invalidateAll } from '$app/navigation';
-	import { page } from '$app/stores';
 	import { APP_NAME } from '$lib/meta';
-	import { Button } from '@svelteuidev/core';
 
 	export let isAuthenticated: Boolean;
+	export let isEmployer: Boolean;
 
 	let defaultLinks = [
 		{
@@ -22,21 +21,24 @@
 				href="/"
 				class="uppercase font-bold text-2xl">{APP_NAME}</a
 			>
-			<nav class="flex">
+			<nav class="grid grid-flow-col gap-2">
 				{#each defaultLinks as { href, label }}
-					<Button
+					<a
 						{href}
-						target=""
-						variant="subtle"
-						color="indigo"
-						class="text-gray-700 mx-2 text-base font-bold">{label}</Button
+						class="nav-link">{label}</a
 					>
 				{/each}
+				{#if isEmployer}
+					<a
+						href="/jobs/create"
+						class="nav-link">+ Create Job</a
+					>
+				{/if}
 			</nav>
-			<div class="flex items-center">
+			<div class="grid grid-flow-col gap-4 items-center">
 				{#if isAuthenticated}
 					<a
-						class="button button--sm mr-4 font-bold"
+						class="nav-link"
 						href="/account">Account</a
 					>
 					<form
@@ -49,18 +51,18 @@
 							};
 						}}
 					>
-						<button class="logoutBtn button button--sm font-bold">Logout</button>
+						<button class="nav-link">Logout</button>
 					</form>
 				{/if}
 
 				{#if !isAuthenticated}
 					<a
 						href="/login"
-						class="button button--sm mr-4 font-bold">Login</a
+						class="nav-link">Login</a
 					>
 					<a
 						href="/register"
-						class="button button--sm mr-4 font-bold">Register</a
+						class="nav-link">Register</a
 					>
 				{/if}
 			</div>
@@ -69,7 +71,10 @@
 </header>
 
 <style lang="postcss">
-	.logoutBtn {
-		@apply border border-indigo-800 text-indigo-700 bg-transparent hover:bg-transparent;
+	.nav-link {
+		@apply px-4 py-2 rounded-md hover:bg-indigo-50 text-indigo-900;
 	}
+	/* .nav-link-filled {
+		@apply px-4 py-2 rounded-md bg-indigo-600 text-white;
+	} */
 </style>

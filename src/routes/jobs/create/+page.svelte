@@ -4,10 +4,6 @@
 	export let data: PageData;
 </script>
 
-<pre>
-	{JSON.stringify(data.user, null, 2)}
-</pre>
-
 <div class="mx-auto max-w-xl bg-white p-8 my-16">
 	<form
 		method="POST"
