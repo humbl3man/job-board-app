@@ -1,43 +1,39 @@
 <script lang="ts">
-	import { page } from '$app/stores';
-	import { Alert, Badge, Button, Skeleton } from '@svelteuidev/core';
-	import { InfoCircled } from 'radix-icons-svelte';
+	import { formatCurrency } from '$lib/utils/formatCurrency';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
-
-	const returnURL = `/jobs/${$page.params.id}`;
-	const numberFormatter = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
 </script>
 
-<div class="mx-auto max-w-4xl p-8 my-16 bg-white">
-	<h1 class="text-3xl">{data.detail?.title}</h1>
-	<p>{data.detail?.company}</p>
-	{#if data.detail?.skills}
-		<div class="my-6">
-			{#each data.detail.skills as skill}
-				<Badge
-					radius="lg"
-					size="lg"
-					variant="light"
-					color="blue"
-					class="capitalize mr-2">{skill}</Badge
-				>
-			{/each}
-		</div>
-	{/if}
-	<div class="my-6">
-		<h2 class="text-2xl mb-4">Description</h2>
-		<p>{data.detail?.description}</p>
+<div class="jobdetails mx-auto max-w-3xl bg-white mt-16 mb-16">
+	<div class="p-6 border-b border-slate-300">
+		<h1 class="text-2xl mb-2">{data.jobDetails.title}</h1>
+		<p class="text-slate-600">{data.jobDetails.company.name}</p>
 	</div>
-	<div class="my-6">
-		<h2 class="text-2xl mb-4">Expectations</h2>
-		<p>{data.detail?.expectations}</p>
-	</div>
-	{#if data?.detail?.salary}
-		<div class="my-6">
-			<h2 class="text-2xl mb-4">Salary</h2>
-			<p>{numberFormatter.format(data.detail.salary)} (DOE)</p>
+	<div class="row">
+		<div class="col-left">Description</div>
+		<div class="col-right">
+			{data.jobDetails.description}
 		</div>
-	{/if}
+	</div>
+	<div class="row">
+		<div class="col-left">Salary</div>
+		<div class="col-right">{formatCurrency(data.jobDetails.salary)}</div>
+	</div>
+	<div class="row">
+		<div class="col-left">Category</div>
+		<div class="col-right">{data.jobDetails.category.name}</div>
+	</div>
 </div>
+
+<style lang="postcss">
+	.jobdetails .row {
+		@apply p-6 border-b border-slate-300 grid gap-4 sm:gap-8 items-center sm:grid-cols-[200px_1fr];
+	}
+	.jobdetails .col-left {
+		@apply text-slate-700;
+	}
+	.jobdetails .col-right {
+		@apply text-slate-900;
+	}
+</style>

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { APP_NAME } from '$lib/meta';
+	import { formatCurrency } from '$lib/utils/formatCurrency';
 	import { Badge } from '@svelteuidev/core';
 	import type { PageData } from './$types';
 
@@ -45,9 +46,9 @@
 			<tbody>
 				{#each data?.jobs as job (job.id)}
 					<tr class="bg-white border-b">
-						<td class="px-6 py-4">{job.title}</td>
+						<td class="px-6 py-4 font-semibold text-slate-800">{job.title}</td>
 						<td class="px-6 py-4">{job.company.name}</td>
-						<td class="px-6 py-4">{job.salary}</td>
+						<td class="px-6 py-4">{formatCurrency(job.salary)}</td>
 						<td class="px-6 py-4">{job.category.name}</td>
 						<td class="px-6 py-4"
 							><a
