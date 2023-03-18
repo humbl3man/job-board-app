@@ -40,6 +40,15 @@ model Job {
   companyId   Int
   category    Category @relation(fields: [categoryId], references: [id])
   categoryId  Int
+  location    String
+  type        JobType  @relation(fields: [typeId], references: [id])
+  typeId      Int
+}
+
+model JobType {
+  id   Int    @id @default(autoincrement())
+  name String
+  jobs Job[]
 }
 
 model Category {

@@ -48,11 +48,24 @@
 		<p class="text-slate-600">{data.jobDetails.company.name}</p>
 	</div>
 	<div class="row">
+		<div class="col-left">Location</div>
+		<div class="col-right">
+			{data.jobDetails.location}
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-left">Type</div>
+		<div class="col-right">
+			{data.jobDetails.type.name}
+		</div>
+	</div>
+	<div class="row">
 		<div class="col-left">Description</div>
 		<div class="col-right">
 			{data.jobDetails.description}
 		</div>
 	</div>
+
 	<div class="row">
 		<div class="col-left">Salary</div>
 		<div class="col-right">{formatCurrency(data.jobDetails.salary)}</div>

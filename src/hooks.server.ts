@@ -17,27 +17,25 @@ export const handle: Handle = async ({ event, resolve }) => {
 		}
 	});
 
-	const company = await db.company.findUnique({
-		where: {
-			userId: user?.id
-		},
-		select: {
-			id: true,
-			name: true
-		}
-	});
-
 	if (user) {
+		const company = await db.company.findUnique({
+			where: {
+				userId: user.id
+			},
+			select: {
+				id: true,
+				name: true
+			}
+		});
 		event.locals.user = {
 			email: user.email,
 			id: user.id,
 			name: user.name
 		};
-	}
-
-	if (company) {
-		event.locals.user.company = company.name;
-		event.locals.user.companyId = company.id;
+		if (company) {
+			event.locals.user.company = company.name;
+			event.locals.user.companyId = company.id;
+		}
 	}
 
 	return await resolve(event);

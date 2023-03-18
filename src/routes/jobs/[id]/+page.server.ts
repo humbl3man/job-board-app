@@ -12,7 +12,9 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 			description: true,
 			salary: true,
 			company: true,
-			category: true
+			category: true,
+			location: true,
+			type: true
 		}
 	});
 

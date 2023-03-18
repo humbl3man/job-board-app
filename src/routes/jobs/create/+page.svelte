@@ -20,20 +20,50 @@
 				class="input w-full"
 				name="title"
 				id="title"
-				placeholder="ex: Software Engineer"
+				placeholder="e.g. Software Engineer"
+			/>
+		</div>
+		<div class="my-4">
+			<label
+				for="location"
+				class="label">Location</label
+			>
+			<input
+				type="text"
+				class="input w-full"
+				name="location"
+				id="location"
+				placeholder="e.g. San Francisco, CA"
 			/>
 		</div>
 		<div class="my-4">
 			<label
 				for="category"
-				class="label"
-			/>
+				class="label">Category</label
+			>
 			<select
 				class="input w-full"
 				name="category"
+				id="category"
 			>
 				<option value="">Select Category...</option>
 				{#each data.categories as { id, name }}
+					<option value={id}>{name}</option>
+				{/each}
+			</select>
+		</div>
+		<div class="my-4">
+			<label
+				for="type"
+				class="label">Job Type</label
+			>
+			<select
+				class="input w-full"
+				name="type"
+				id="type"
+			>
+				<option value="">Select Type...</option>
+				{#each data.jobTypes as { id, name }}
 					<option value={id}>{name}</option>
 				{/each}
 			</select>
@@ -58,7 +88,7 @@
 				type="number"
 				name="salary"
 				id="salary"
-				placeholder="ex: 100000"
+				placeholder="e.g. 100000"
 			/>
 		</div>
 		<div class="my-4">

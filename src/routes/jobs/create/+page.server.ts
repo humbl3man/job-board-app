@@ -17,18 +17,17 @@ export const load: PageServerLoad = async ({ locals }) => {
 		}
 	});
 
-	return {
-		categories
-	};
-};
+	const jobTypes = await db.jobType.findMany({
+		select: {
+			id: true,
+			name: true
+		}
+	});
 
-type JobData = {
-	title: string;
-	id: number;
-	companyId: number;
-	categoryId: number;
-	description: string;
-	salary: number;
+	return {
+		categories,
+		jobTypes
+	};
 };
 
 const createjob: Action = async ({ request, cookies, locals }) => {
@@ -42,7 +41,9 @@ const createjob: Action = async ({ request, cookies, locals }) => {
 			description: formData.get('description').toString(),
 			salary: Number(formData.get('salary')),
 			companyId: locals.user.companyId,
-			categoryId: Number(formData.get('category'))
+			categoryId: Number(formData.get('category')),
+			location: formData.get('location').toString(),
+			typeId: Number(formData.get('type'))
 		}
 	});
 
