@@ -22,9 +22,13 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 		throw error(404, 'job not found');
 	}
 
+	const allowModifications = locals.user.companyId === jobDetails.company.id;
+
 	return {
 		jobDetails,
-		showDeleteButton: locals.user.companyId === jobDetails.company.id
+		jobId: params.id,
+		showDeleteButton: allowModifications,
+		showEditButton: allowModifications
 	};
 };
 

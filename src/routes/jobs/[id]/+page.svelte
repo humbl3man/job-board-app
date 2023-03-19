@@ -9,6 +9,7 @@
 	} from '@rgossiaux/svelte-headlessui';
 	import { formatCurrency } from '$lib/utils/formatCurrency';
 	import type { PageData } from './$types';
+	import { stringify } from 'postcss';
 
 	export let data: PageData;
 	let showDeleteConfirmation = false;
@@ -17,6 +18,10 @@
 		deleteform = el;
 	}
 </script>
+
+<pre>
+	{JSON.stringify(data, null, 2)}
+</pre>
 
 <Dialog
 	class="fixed inset-0 w-full h-full z-10 flex items-center justify-center"
@@ -44,7 +49,9 @@
 
 <div class="jobdetails mx-auto max-w-3xl bg-white mt-16 mb-16">
 	<div class="p-6 border-b border-slate-300">
-		<h1 class="text-2xl mb-2">{data.jobDetails.title}</h1>
+		<h1 class="text-2xl mb-2">
+			{data.jobDetails.title}
+		</h1>
 		<p class="text-slate-600">{data.jobDetails.company.name}</p>
 	</div>
 	<div class="row">
@@ -76,7 +83,13 @@
 	</div>
 	<div class="row">
 		<div class="col-left" />
-		<div class="col-right">
+		<div class="col-right flex">
+			{#if data.showEditButton}
+				<a
+					class="px-4 py-2 mr-4 rounded-md bg-indigo-50 text-indigo-900"
+					href="/jobs/update/{data.jobId}">Update</a
+				>
+			{/if}
 			{#if data.showDeleteButton}
 				<form
 					method="POST"
@@ -92,7 +105,7 @@
 				>
 					<button
 						type="button"
-						class="button button--sm"
+						class="px-4 py-2 rounded-md bg-red-50 text-red-900"
 						on:click={() => (showDeleteConfirmation = true)}>Delete Job</button
 					>
 				</form>
