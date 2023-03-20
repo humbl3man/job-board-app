@@ -1,74 +1,201 @@
 <script lang="ts">
 	import { applyAction, enhance } from '$app/forms';
 	import { invalidateAll } from '$app/navigation';
-	import { formatCurrency } from '$lib/utils/formatCurrency';
-	import type { PageData } from './$types';
+	import Shell from '$lib/components/Shell.svelte';
+	import type { ActionData, PageData } from './$types';
 
 	export let data: PageData;
+	export let form: ActionData;
 </script>
 
-<div class="jobdetails mx-auto max-w-3xl bg-white mt-16 mb-16">
-	<div class="p-6 border-b border-slate-300">
-		<h1 class="text-2xl mb-2">{data.jobDetails.title}</h1>
-		<p class="text-slate-600">{data.jobDetails.company.name}</p>
-	</div>
-	<div class="row">
-		<div class="col-left">Location</div>
-		<div class="col-right">
-			{data.jobDetails.location}
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-left">Type</div>
-		<div class="col-right">
-			{data.jobDetails.type.name}
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-left">Description</div>
-		<div class="col-right">
-			{data.jobDetails.description}
-		</div>
-	</div>
+<Shell>
+	<div class="update mx-auto max-w-3xl bg-white mt-16 mb-16">
+		<form
+			method="POST"
+			action="?/updatejob"
+			use:enhance={({ form, data }) => {
+				return async ({ result }) => {
+					await invalidateAll();
+					await applyAction(result);
+				};
+			}}
+		>
+			<div class="p-6 border-b border-slate-300">
+				<h1 class="text-2xl mb-2">{data.jobDetails.title}</h1>
+				<p class="text-slate-600">{data.jobDetails.company.name}</p>
+			</div>
 
-	<div class="row">
-		<div class="col-left">Salary</div>
-		<div class="col-right">{formatCurrency(data.jobDetails.salary)}</div>
+			<div class="row">
+				<div class="col-left">Title</div>
+				<div class="col-right pb-4 relative">
+					<label
+						for="title"
+						class="sr-only"
+					/>
+					<input
+						type="text"
+						class="input w-full {form?.fieldErrors?.title ? 'error' : ''}"
+						name="title"
+						id="title"
+						placeholder="e.g. Software Engineer"
+						value={data.jobDetails.title}
+					/>
+					{#if form?.fieldErrors?.title}
+						<div
+							class="bg-red-50 text-red-900 py-1 px-3 text-sm absolute left-0 leading-none -bottom-[8px]"
+						>
+							{form.fieldErrors.title[0]}
+						</div>
+					{/if}
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-left">Location</div>
+				<div class="col-right pb-4 relative">
+					<label
+						for="location"
+						class="sr-only"
+					/>
+					<input
+						type="text"
+						class="input w-full {form?.fieldErrors?.location ? 'error' : ''}"
+						name="location"
+						id="location"
+						placeholder="e.g. San Francisco, CA"
+						value={data.jobDetails.location}
+					/>
+					{#if form?.fieldErrors?.location}
+						<div
+							class="bg-red-50 text-red-900 py-1 px-3 text-sm absolute left-0 leading-none -bottom-[8px]"
+						>
+							{form.fieldErrors.location[0]}
+						</div>
+					{/if}
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-left">Type</div>
+				<div class="col-right pb-4 relative">
+					<label
+						for="type"
+						class="sr-only"
+					/>
+					<select
+						class="input w-full  {form?.fieldErrors?.typeId ? 'error' : ''}"
+						name="type"
+						id="type"
+						value={data.jobDetails.type.id}
+					>
+						{#each data.jobTypes as { id, name }}
+							<option value={id}>{name}</option>
+						{/each}
+					</select>
+					{#if form?.fieldErrors?.typeId}
+						<div
+							class="bg-red-50 text-red-900 py-1 px-3 text-sm absolute left-0 leading-none -bottom-[8px]"
+						>
+							{form.fieldErrors.typeId[0]}
+						</div>
+					{/if}
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-left">Description</div>
+				<div class="col-right pb-4 relative">
+					<label
+						for="description"
+						class="sr-only"
+					/>
+					<textarea
+						class="input w-full description  {form?.fieldErrors?.description ? 'error' : ''}"
+						name="description"
+						id="description"
+						rows={6}
+						placeholder="Job Description"
+						value={data.jobDetails.description}
+					/>
+					{#if form?.fieldErrors?.description}
+						<div
+							class="bg-red-50 text-red-900 py-1 px-3 text-sm absolute left-0 leading-none -bottom-[2px]"
+						>
+							{form.fieldErrors.description[0]}
+						</div>
+					{/if}
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-left">Salary</div>
+				<div class="col-right pb-4 relative">
+					<label
+						for="salary"
+						class="sr-only"
+					/>
+					<input
+						class="input w-full  {form?.fieldErrors?.salary ? 'error' : ''}"
+						type="number"
+						name="salary"
+						id="salary"
+						placeholder="e.g. 100000"
+						value={data.jobDetails.salary}
+					/>
+					{#if form?.fieldErrors?.salary}
+						<div
+							class="bg-red-50 text-red-900 py-1 px-3 text-sm absolute left-0 leading-none -bottom-[8px]"
+						>
+							{form.fieldErrors.salary[0]}
+						</div>
+					{/if}
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-left">Category</div>
+				<div class="col-right pb-4 relative">
+					<label
+						for="category"
+						class="sr-only"
+					/>
+					<select
+						class="input w-full {form?.fieldErrors?.categoryId ? 'error' : ''}"
+						name="category"
+						id="category"
+						value={data.jobDetails.category.id}
+					>
+						{#each data.categories as { id, name }}
+							<option value={id}>{name}</option>
+						{/each}
+					</select>
+					{#if form?.fieldErrors?.categoryId}
+						<div
+							class="bg-red-50 text-red-900 py-1 px-3 text-sm absolute left-0 leading-none -bottom-[8px]"
+						>
+							{form.fieldErrors.categoryId[0]}
+						</div>
+					{/if}
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-left" />
+				<div class="col-right pb-4 relative">
+					<button class="button">Update</button>
+					<a
+						class="button-ghost"
+						href="/jobs/{data.jobId}">Cancel</a
+					>
+				</div>
+			</div>
+		</form>
 	</div>
-	<div class="row">
-		<div class="col-left">Category</div>
-		<div class="col-right">{data.jobDetails.category.name}</div>
-	</div>
-	<div class="row">
-		<div class="col-left" />
-		<div class="col-right">
-			<form
-				method="POST"
-				action="?/deletejob"
-				use:enhance={({ form, data }) => {
-					return async ({ result }) => {
-						await invalidateAll();
-						await applyAction(result);
-					};
-				}}
-			>
-				<button
-					type="button"
-					class="button button--sm">Update</button
-				>
-			</form>
-		</div>
-	</div>
-</div>
+</Shell>
 
 <style lang="postcss">
-	.jobdetails .row {
+	.update .row {
 		@apply p-6 border-b border-slate-300 grid gap-4 sm:gap-8 items-center sm:grid-cols-[200px_1fr];
 	}
-	.jobdetails .col-left {
+	.update .col-left {
 		@apply text-slate-700;
 	}
-	.jobdetails .col-right {
+	.update .col-right {
 		@apply text-slate-900;
 	}
 </style>

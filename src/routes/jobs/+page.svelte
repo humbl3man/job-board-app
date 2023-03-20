@@ -1,64 +1,133 @@
 <script lang="ts">
+	import Shell from '$lib/components/Shell.svelte';
 	import { APP_NAME } from '$lib/meta';
 	import { formatCurrency } from '$lib/utils/formatCurrency';
-	import { Badge } from '@svelteuidev/core';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
+
+	const initialJobs = data.jobs;
+	let jobs = [...initialJobs];
+	let filter = 'all';
+	let showFilter = !!data.user;
+
+	function applyOnlyMyJobsFilter() {
+		jobs = jobs.filter((j) => j.company.id === data.user.id);
+		filter = 'own';
+	}
+	function applyAllFilter() {
+		jobs = [...initialJobs];
+		filter = 'all';
+	}
+
+	$: {
+		if (data.user?.companyId) {
+			jobs = jobs.sort((j) => {
+				if (j.company.id === data.user.companyId) return -1;
+				return 1;
+			});
+		}
+	}
 </script>
 
 <svelte:head>
 	<title>{APP_NAME} | Job Search</title>
 </svelte:head>
+<!-- 
+<pre>
+	{JSON.stringify(data, null, 2)}
+</pre> -->
 
-<div class="mx-auto max-w-5xl px-4 my-16">
-	<h1 class="font-bold text-3xl mb-8">Job Listings</h1>
-	<section>
-		{#if data.user?.company}
-			<a
-				href="/jobs/create"
-				class="button button--sm inline-block mb-4">Create</a
-			>
-		{/if}
-		<table class="w-full text-sm text-left text-gray-500">
-			<thead class="text-xs text-gray-700 uppercase bg-gray-50">
-				<tr>
-					<th
-						scope="col"
-						class="px-6 py-3">Title</th
-					>
-					<th
-						scope="col"
-						class="px-6 py-3">Company</th
-					>
-					<th
-						scope="col"
-						class="px-6 py-3">Salary</th
-					>
-					<th
-						scope="col"
-						class="px-6 py-3">Category</th
-					>
-					<th scope="col" />
-				</tr>
-			</thead>
+<Shell>
+	<div class="mx-auto max-w-5xl my-16 bg-white px-6 py-16 rounded-md">
+		<h1 class="font-bold text-3xl mb-8">Job Listings</h1>
 
-			<tbody>
-				{#each data?.jobs as job (job.id)}
-					<tr class="bg-white border-b">
-						<td class="px-6 py-4 font-semibold text-slate-800">{job.title}</td>
-						<td class="px-6 py-4">{job.company.name}</td>
-						<td class="px-6 py-4">{formatCurrency(job.salary)}</td>
-						<td class="px-6 py-4">{job.category.name}</td>
-						<td class="px-6 py-4"
-							><a
-								class="text-indigo-600 font-bold hover:underline"
-								href="/jobs/{job.id}">Details</a
-							></td
+		<section>
+			<header class="flex justify-between items-center">
+				{#if showFilter}
+					<div class="filters">
+						<button
+							class={filter === 'all' ? 'selected' : ''}
+							type="button"
+							on:click={applyAllFilter}>Show all</button
 						>
+						<button
+							class={filter === 'own' ? 'selected' : ''}
+							type="button"
+							on:click={applyOnlyMyJobsFilter}>Show my jobs</button
+						>
+					</div>
+				{/if}
+				{#if data.user?.company}
+					<div class="mb-6 flex sm:justify-center">
+						<a
+							href="/jobs/create"
+							class="button text-center">Add Job</a
+						>
+					</div>
+				{/if}
+			</header>
+			<table class="w-full text-sm text-left text-gray-500">
+				<thead class="text-xs text-gray-700 uppercase bg-gray-50">
+					<tr>
+						<th
+							scope="col"
+							class="px-6 py-3">Title</th
+						>
+						<th
+							scope="col"
+							class="px-6 py-3">Company</th
+						>
+						<th
+							scope="col"
+							class="px-6 py-3">Salary</th
+						>
+						<th
+							scope="col"
+							class="px-6 py-3">Category</th
+						>
+						<th scope="col" />
 					</tr>
-				{/each}
-			</tbody>
-		</table>
-	</section>
-</div>
+				</thead>
+
+				<tbody>
+					{#each jobs as job (job.id)}
+						<tr class="bg-white border-b">
+							<td class="px-6 py-4">
+								<div class="font-semibold text-slate-800">{job.title}</div>
+								{#if job.company.name === data.user?.company}
+									<div
+										class="mt-1 inline-block text-xs rounded-lg py-[4px] px-[12px] leading-none bg-blue-100 text-blue-900"
+									>
+										Posted by you
+									</div>
+								{/if}
+							</td>
+							<td class="px-6 py-4">{job.company.name}</td>
+							<td class="px-6 py-4">{formatCurrency(job.salary)}</td>
+							<td class="px-6 py-4">{job.category.name}</td>
+							<td class="px-6 py-4"
+								><a
+									class="button-ghost block text-center w-full"
+									href="/jobs/{job.id}">Details</a
+								></td
+							>
+						</tr>
+					{/each}
+				</tbody>
+			</table>
+		</section>
+	</div>
+</Shell>
+
+<style lang="postcss">
+	.filters {
+		@apply mb-6;
+	}
+	.filters button {
+		@apply px-3 py-1 text-sm text-indigo-900 rounded-lg;
+	}
+	.filters button.selected {
+		@apply bg-indigo-50;
+	}
+</style>

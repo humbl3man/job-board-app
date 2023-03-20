@@ -25,20 +25,20 @@
 				{#each defaultLinks as { href, label }}
 					<a
 						{href}
-						class="nav-link">{label}</a
+						class="button-ghost">{label}</a
 					>
 				{/each}
 				{#if isEmployer}
 					<a
 						href="/jobs/create"
-						class="nav-link">+ Create Job</a
+						class="button-ghost">+ Create Job</a
 					>
 				{/if}
 			</nav>
 			<div class="grid grid-flow-col gap-4 items-center">
 				{#if isAuthenticated}
 					<a
-						class="nav-link"
+						class="button-ghost"
 						href="/account">Account</a
 					>
 					<form
@@ -51,30 +51,21 @@
 							};
 						}}
 					>
-						<button class="nav-link">Logout</button>
+						<button class="button-ghost">Logout</button>
 					</form>
 				{/if}
 
 				{#if !isAuthenticated}
 					<a
 						href="/login"
-						class="nav-link">Login</a
+						class="button-ghost">Login</a
 					>
 					<a
 						href="/register"
-						class="nav-link">Register</a
+						class="button-ghost">Register</a
 					>
 				{/if}
 			</div>
 		</div>
 	</div>
 </header>
-
-<style lang="postcss">
-	.nav-link {
-		@apply px-4 py-2 rounded-md hover:bg-indigo-50 text-indigo-900;
-	}
-	/* .nav-link-filled {
-		@apply px-4 py-2 rounded-md bg-indigo-600 text-white;
-	} */
-</style>

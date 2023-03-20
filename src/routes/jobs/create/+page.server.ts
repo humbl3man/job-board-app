@@ -34,9 +34,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 const createjob: Action = async ({ request, cookies, locals }) => {
 	const formData = await request.formData();
 
-	// TODO: validation
-
-	const jobData = {
+	const createPayload = {
 		title: String(formData.get('title')),
 		location: String(formData.get('location')),
 		categoryId: Number(formData.get('category')),
@@ -45,7 +43,7 @@ const createjob: Action = async ({ request, cookies, locals }) => {
 		salary: Number(formData.get('salary'))
 	};
 
-	const createJobSchema = z.object({
+	const schema = z.object({
 		title: z
 			.string({ required_error: 'Title is required' })
 			.min(1, 'Title is required')
@@ -59,20 +57,20 @@ const createjob: Action = async ({ request, cookies, locals }) => {
 		salary: z.number({ required_error: 'Salary is required' }).min(1, 'Salary is required')
 	});
 
-	const result = await createJobSchema.safeParse(jobData);
+	const result = await schema.safeParse(createPayload);
 
 	if (!result.success) {
 		return {
 			...result.error.flatten(),
 			data: {
-				title: jobData.title.toString()
+				title: createPayload.title.toString()
 			}
 		};
 	}
 
 	await db.job.create({
 		data: {
-			...jobData,
+			...createPayload,
 			companyId: locals.user.companyId as number
 		}
 	});

@@ -22,7 +22,7 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 		throw error(404, 'job not found');
 	}
 
-	const allowModifications = locals.user.companyId === jobDetails.company.id;
+	const allowModifications = locals.user?.companyId === jobDetails.company.id;
 
 	return {
 		jobDetails,

@@ -4,6 +4,7 @@
 	import Header from '$lib/layout/Header.svelte';
 	import { APP_NAME } from '$lib/meta';
 	import { SvelteUIProvider } from '@svelteuidev/core';
+	import { fly } from 'svelte/transition';
 	import '../app.css';
 </script>
 
@@ -25,7 +26,7 @@
 </svelte:head>
 
 <SvelteUIProvider>
-	<div class="grid h-screen root">
+	<div class="grid h-screen page">
 		<Header
 			isEmployer={!!$page.data?.user?.company}
 			isAuthenticated={!!$page.data?.user}
@@ -53,16 +54,16 @@
 	}
 
 	:global(.button) {
-		@apply text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg disabled:opacity-50 disabled:pointer-events-none;
+		@apply leading-tight px-4 py-2 text-base rounded-md border-0 text-indigo-50 bg-indigo-700 hover:bg-indigo-800 hover:text-white font-bold transition duration-100;
 	}
-	:global(.button--sm) {
-		@apply text-sm py-2 px-4;
+	:global(.button-ghost) {
+		@apply leading-tight px-4 py-2 text-base rounded-md border-0 hover:bg-indigo-50 text-indigo-900 font-bold transition duration-100;
 	}
 	:global(.input.error) {
 		@apply text-red-600 border-red-500 focus:border-red-700;
 	}
 
-	.root {
+	.page {
 		grid-template-rows: max-content 1fr max-content;
 	}
 </style>

@@ -9,7 +9,7 @@
 	} from '@rgossiaux/svelte-headlessui';
 	import { formatCurrency } from '$lib/utils/formatCurrency';
 	import type { PageData } from './$types';
-	import { stringify } from 'postcss';
+	import Shell from '$lib/components/Shell.svelte';
 
 	export let data: PageData;
 	let showDeleteConfirmation = false;
@@ -19,9 +19,9 @@
 	}
 </script>
 
-<pre>
+<!-- <pre>
 	{JSON.stringify(data, null, 2)}
-</pre>
+</pre> -->
 
 <Dialog
 	class="fixed inset-0 w-full h-full z-10 flex items-center justify-center"
@@ -47,72 +47,74 @@
 	</div>
 </Dialog>
 
-<div class="jobdetails mx-auto max-w-3xl bg-white mt-16 mb-16">
-	<div class="p-6 border-b border-slate-300">
-		<h1 class="text-2xl mb-2">
-			{data.jobDetails.title}
-		</h1>
-		<p class="text-slate-600">{data.jobDetails.company.name}</p>
-	</div>
-	<div class="row">
-		<div class="col-left">Location</div>
-		<div class="col-right">
-			{data.jobDetails.location}
+<Shell>
+	<div class="jobdetails mx-auto max-w-3xl bg-white mt-16 mb-16">
+		<div class="p-6 border-b border-slate-300">
+			<h1 class="text-2xl mb-2">
+				{data.jobDetails.title}
+			</h1>
+			<p class="text-slate-600">{data.jobDetails.company.name}</p>
 		</div>
-	</div>
-	<div class="row">
-		<div class="col-left">Type</div>
-		<div class="col-right">
-			{data.jobDetails.type.name}
+		<div class="row">
+			<div class="col-left">Location</div>
+			<div class="col-right">
+				{data.jobDetails.location}
+			</div>
 		</div>
-	</div>
-	<div class="row">
-		<div class="col-left">Description</div>
-		<div class="col-right">
-			{data.jobDetails.description}
+		<div class="row">
+			<div class="col-left">Type</div>
+			<div class="col-right">
+				{data.jobDetails.type.name}
+			</div>
 		</div>
-	</div>
+		<div class="row">
+			<div class="col-left">Description</div>
+			<div class="col-right">
+				{data.jobDetails.description}
+			</div>
+		</div>
 
-	<div class="row">
-		<div class="col-left">Salary</div>
-		<div class="col-right">{formatCurrency(data.jobDetails.salary)}</div>
-	</div>
-	<div class="row">
-		<div class="col-left">Category</div>
-		<div class="col-right">{data.jobDetails.category.name}</div>
-	</div>
-	<div class="row">
-		<div class="col-left" />
-		<div class="col-right flex">
-			{#if data.showEditButton}
-				<a
-					class="px-4 py-2 mr-4 rounded-md bg-indigo-50 text-indigo-900"
-					href="/jobs/update/{data.jobId}">Update</a
-				>
-			{/if}
-			{#if data.showDeleteButton}
-				<form
-					method="POST"
-					action="?/deletejob"
-					use:getdeleteform
-					use:enhance={({ form, data }) => {
-						console.log(data);
-						return async ({ result }) => {
-							await invalidateAll();
-							await applyAction(result);
-						};
-					}}
-				>
-					<button
-						type="button"
-						class="px-4 py-2 rounded-md bg-red-50 text-red-900"
-						on:click={() => (showDeleteConfirmation = true)}>Delete Job</button
+		<div class="row">
+			<div class="col-left">Salary</div>
+			<div class="col-right">{formatCurrency(data.jobDetails.salary)}</div>
+		</div>
+		<div class="row">
+			<div class="col-left">Category</div>
+			<div class="col-right">{data.jobDetails.category.name}</div>
+		</div>
+		<div class="row">
+			<div class="col-left" />
+			<div class="col-right flex">
+				{#if data.showEditButton}
+					<a
+						class="button-ghost mr-2"
+						href="/jobs/update/{data.jobId}">Edit</a
 					>
-				</form>
-			{/if}
+				{/if}
+				{#if data.showDeleteButton}
+					<form
+						method="POST"
+						action="?/deletejob"
+						use:getdeleteform
+						use:enhance={({ form, data }) => {
+							console.log(data);
+							return async ({ result }) => {
+								await invalidateAll();
+								await applyAction(result);
+							};
+						}}
+					>
+						<button
+							type="button"
+							class="button-ghost"
+							on:click={() => (showDeleteConfirmation = true)}>Delete Job</button
+						>
+					</form>
+				{/if}
+			</div>
 		</div>
 	</div>
-</div>
+</Shell>
 
 <style lang="postcss">
 	.jobdetails .row {
