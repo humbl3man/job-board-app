@@ -19,7 +19,8 @@
 	}
 </script>
 
-<!-- <pre>
+<!-- 
+<pre>
 	{JSON.stringify(data, null, 2)}
 </pre> -->
 
@@ -97,7 +98,6 @@
 						action="?/deletejob"
 						use:getdeleteform
 						use:enhance={({ form, data }) => {
-							console.log(data);
 							return async ({ result }) => {
 								await invalidateAll();
 								await applyAction(result);
@@ -110,6 +110,12 @@
 							on:click={() => (showDeleteConfirmation = true)}>Delete Job</button
 						>
 					</form>
+				{/if}
+				{#if data.showApplyButton}
+					<a
+						href="/jobs/{data.jobId}/apply"
+						class="button">Apply for this job</a
+					>
 				{/if}
 			</div>
 		</div>
