@@ -23,12 +23,14 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 	}
 
 	const allowModifications = locals.user?.companyId === jobDetails.company.id;
+	const showApplyButton = !locals.user?.companyId;
 
 	return {
 		jobDetails,
 		jobId: params.id,
 		showDeleteButton: allowModifications,
-		showEditButton: allowModifications
+		showEditButton: allowModifications,
+		showApplyButton
 	};
 };
 

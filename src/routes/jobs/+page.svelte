@@ -39,7 +39,7 @@
 </pre> -->
 
 <Shell>
-	<div class="mx-auto max-w-5xl my-16 bg-white px-6 py-16 rounded-md">
+	<div class="mx-auto max-w-screen-2xl my-16 bg-white px-6 py-16 rounded-md">
 		<h1 class="font-bold text-3xl mb-8">Job Listings</h1>
 
 		<section>
@@ -51,11 +51,13 @@
 							type="button"
 							on:click={applyAllFilter}>Show all</button
 						>
-						<button
-							class={filter === 'own' ? 'selected' : ''}
-							type="button"
-							on:click={applyOnlyMyJobsFilter}>Show my jobs</button
-						>
+						{#if data?.user?.companyId}
+							<button
+								class={filter === 'own' ? 'selected' : ''}
+								type="button"
+								on:click={applyOnlyMyJobsFilter}>Show my jobs</button
+							>
+						{/if}
 					</div>
 				{/if}
 				{#if data.user?.company}
@@ -94,7 +96,7 @@
 					{#each jobs as job (job.id)}
 						<tr class="bg-white border-b">
 							<td class="px-6 py-4">
-								<div class="font-semibold text-slate-800">{job.title}</div>
+								<div>{job.title}</div>
 								{#if job.company.name === data.user?.company}
 									<div
 										class="mt-1 inline-block text-xs rounded-lg py-[4px] px-[12px] leading-none bg-blue-100 text-blue-900"
