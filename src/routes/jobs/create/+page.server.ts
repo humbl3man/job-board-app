@@ -1,5 +1,5 @@
 import { db } from '$lib/db';
-import { redirect } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
 import { z } from 'zod';
 import type { Actions, Action, PageServerLoad } from './$types';
 
@@ -60,12 +60,10 @@ const createjob: Action = async ({ request, cookies, locals }) => {
 	const result = await schema.safeParse(createPayload);
 
 	if (!result.success) {
-		return {
-			...result.error.flatten(),
-			data: {
-				title: createPayload.title.toString()
-			}
-		};
+		return fail(400, {
+			errors: result.error.flatten().fieldErrors,
+			data: Object.fromEntries(formData)
+		});
 	}
 
 	await db.job.create({

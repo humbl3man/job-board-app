@@ -34,17 +34,17 @@
 					/>
 					<input
 						type="text"
-						class="input w-full {form?.fieldErrors?.title ? 'error' : ''}"
+						class="input w-full {form?.errors?.title ? 'error' : ''}"
 						name="title"
 						id="title"
 						placeholder="e.g. Software Engineer"
 						value={data.jobDetails.title}
 					/>
-					{#if form?.fieldErrors?.title}
+					{#if form?.errors?.title}
 						<div
 							class="bg-red-50 text-red-900 py-1 px-3 text-sm absolute left-0 leading-none -bottom-[8px]"
 						>
-							{form.fieldErrors.title[0]}
+							{form.errors.title[0]}
 						</div>
 					{/if}
 				</div>
@@ -58,17 +58,17 @@
 					/>
 					<input
 						type="text"
-						class="input w-full {form?.fieldErrors?.location ? 'error' : ''}"
+						class="input w-full {form?.errors?.location ? 'error' : ''}"
 						name="location"
 						id="location"
 						placeholder="e.g. San Francisco, CA"
 						value={data.jobDetails.location}
 					/>
-					{#if form?.fieldErrors?.location}
+					{#if form?.errors?.location}
 						<div
 							class="bg-red-50 text-red-900 py-1 px-3 text-sm absolute left-0 leading-none -bottom-[8px]"
 						>
-							{form.fieldErrors.location[0]}
+							{form.errors.location[0]}
 						</div>
 					{/if}
 				</div>
@@ -81,7 +81,7 @@
 						class="sr-only"
 					/>
 					<select
-						class="input w-full  {form?.fieldErrors?.typeId ? 'error' : ''}"
+						class="input w-full  {form?.errors?.typeId ? 'error' : ''}"
 						name="type"
 						id="type"
 						value={data.jobDetails.type.id}
@@ -90,11 +90,11 @@
 							<option value={id}>{name}</option>
 						{/each}
 					</select>
-					{#if form?.fieldErrors?.typeId}
+					{#if form?.errors?.typeId}
 						<div
 							class="bg-red-50 text-red-900 py-1 px-3 text-sm absolute left-0 leading-none -bottom-[8px]"
 						>
-							{form.fieldErrors.typeId[0]}
+							{form.errors.typeId[0]}
 						</div>
 					{/if}
 				</div>
@@ -107,18 +107,18 @@
 						class="sr-only"
 					/>
 					<textarea
-						class="input w-full description  {form?.fieldErrors?.description ? 'error' : ''}"
+						class="input w-full description  {form?.errors?.description ? 'error' : ''}"
 						name="description"
 						id="description"
 						rows={6}
 						placeholder="Job Description"
 						value={data.jobDetails.description}
 					/>
-					{#if form?.fieldErrors?.description}
+					{#if form?.errors?.description}
 						<div
 							class="bg-red-50 text-red-900 py-1 px-3 text-sm absolute left-0 leading-none -bottom-[2px]"
 						>
-							{form.fieldErrors.description[0]}
+							{form.errors.description[0]}
 						</div>
 					{/if}
 				</div>
@@ -132,18 +132,18 @@
 						class="sr-only"
 					/>
 					<input
-						class="input w-full  {form?.fieldErrors?.salary ? 'error' : ''}"
+						class="input w-full  {form?.errors?.salary ? 'error' : ''}"
 						type="number"
 						name="salary"
 						id="salary"
 						placeholder="e.g. 100000"
 						value={data.jobDetails.salary}
 					/>
-					{#if form?.fieldErrors?.salary}
+					{#if form?.errors?.salary}
 						<div
 							class="bg-red-50 text-red-900 py-1 px-3 text-sm absolute left-0 leading-none -bottom-[8px]"
 						>
-							{form.fieldErrors.salary[0]}
+							{form.errors.salary[0]}
 						</div>
 					{/if}
 				</div>
@@ -156,7 +156,7 @@
 						class="sr-only"
 					/>
 					<select
-						class="input w-full {form?.fieldErrors?.categoryId ? 'error' : ''}"
+						class="input w-full {form?.errors?.categoryId ? 'error' : ''}"
 						name="category"
 						id="category"
 						value={data.jobDetails.category.id}
@@ -165,11 +165,11 @@
 							<option value={id}>{name}</option>
 						{/each}
 					</select>
-					{#if form?.fieldErrors?.categoryId}
+					{#if form?.errors?.categoryId}
 						<div
 							class="bg-red-50 text-red-900 py-1 px-3 text-sm absolute left-0 leading-none -bottom-[8px]"
 						>
-							{form.fieldErrors.categoryId[0]}
+							{form.errors.categoryId[0]}
 						</div>
 					{/if}
 				</div>

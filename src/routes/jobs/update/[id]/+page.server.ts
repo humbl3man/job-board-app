@@ -1,5 +1,5 @@
 import { db } from '$lib/db';
-import { error, redirect } from '@sveltejs/kit';
+import { error, fail, redirect } from '@sveltejs/kit';
 import { z } from 'zod';
 import type { Action, Actions, PageServerLoad } from './$types';
 
@@ -87,12 +87,10 @@ const updatejob: Action = async ({ request, params }) => {
 	const result = await schema.safeParse(updatePayload);
 
 	if (!result.success) {
-		return {
-			...result.error.flatten(),
-			data: {
-				title: updatePayload.title.toString()
-			}
-		};
+		return fail(400, {
+			errors: result.error.flatten().fieldErrors,
+			data: Object.fromEntries(formData)
+		});
 	}
 
 	await db.job.update({
