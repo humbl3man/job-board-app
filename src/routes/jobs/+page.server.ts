@@ -8,7 +8,8 @@ export const load: PageServerLoad = async () => {
 			company: true,
 			title: true,
 			category: true,
-			salary: true
+			salary: true,
+			createdAt: true
 		}
 	});
 	return {

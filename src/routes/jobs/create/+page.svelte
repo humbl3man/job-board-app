@@ -7,9 +7,9 @@
 	export let form: ActionData;
 </script>
 
-<pre>
+<!-- <pre>
 	{JSON.stringify(form, null, 2)}
-</pre>
+</pre> -->
 
 <Shell>
 	<div class="mx-auto max-w-2xl bg-white p-8 my-16">
