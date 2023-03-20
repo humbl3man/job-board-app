@@ -11,8 +11,9 @@ export const load: PageServerLoad = async ({ locals }) => {
 };
 
 enum Role {
-	EMPLOYER = 1,
-	APPLICANT = 2
+	ADMIN = 1,
+	EMPLOYER = 2,
+	USER = 3
 }
 
 const register: Action = async ({ request }) => {
@@ -102,7 +103,7 @@ const register: Action = async ({ request }) => {
 				userAuthToken: crypto.randomUUID(),
 				role: {
 					connect: {
-						id: Role.APPLICANT
+						id: Role.USER
 					}
 				}
 			}
