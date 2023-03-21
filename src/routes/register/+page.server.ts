@@ -1,3 +1,4 @@
+import { Role } from '$lib/constants/Role';
 import { db } from '$lib/db';
 import { fail, redirect } from '@sveltejs/kit';
 import bcrypt from 'bcrypt';
@@ -9,12 +10,6 @@ export const load: PageServerLoad = async ({ locals }) => {
 		throw redirect(301, '/account');
 	}
 };
-
-enum Role {
-	ADMIN = 1,
-	EMPLOYER = 2,
-	USER = 3
-}
 
 const register: Action = async ({ request }) => {
 	const formData = await request.formData();

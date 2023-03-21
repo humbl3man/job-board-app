@@ -12,9 +12,9 @@
 	let name = data.user.name ?? '';
 </script>
 
-<pre>
+<!-- <pre>
 	{JSON.stringify(data, null, 2)}
-</pre>
+</pre> -->
 
 <Shell>
 	<section class="dashboard mx-auto max-w-3xl bg-white mt-16">

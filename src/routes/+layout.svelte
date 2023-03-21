@@ -1,10 +1,10 @@
-<script>
+<script lang="ts">
 	import { page } from '$app/stores';
+	import { Role } from '$lib/constants/Role';
 	import Footer from '$lib/layout/Footer.svelte';
 	import Header from '$lib/layout/Header.svelte';
 	import { APP_NAME } from '$lib/meta';
 	import { SvelteUIProvider } from '@svelteuidev/core';
-	import { fly } from 'svelte/transition';
 	import '../app.css';
 </script>
 
@@ -28,7 +28,8 @@
 <SvelteUIProvider>
 	<div class="grid h-screen page">
 		<Header
-			isEmployer={!!$page.data?.user?.company}
+			isAdmin={$page.data?.user?.role === Role.ADMIN}
+			isEmployer={$page.data?.user?.role === Role.EMPLOYER}
 			isAuthenticated={!!$page.data?.user}
 		/>
 		<main><slot /></main>

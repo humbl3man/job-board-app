@@ -3,6 +3,7 @@ import { fail, redirect } from '@sveltejs/kit';
 import { z } from 'zod';
 import bcrypt from 'bcrypt';
 import type { PageServerLoad, Action, Actions } from './$types';
+import { Role } from '$lib/constants/Role';
 
 export const load: PageServerLoad = ({ locals }) => {
 	if (locals.user) {
@@ -71,6 +72,10 @@ const login: Action = async ({ request, cookies }) => {
 		secure: process.env.NODE_ENV === 'production' ? true : false,
 		maxAge: 60 * 60 * 24 * 30
 	});
+
+	if (authenticatedUser.roleId === Role.ADMIN) {
+		throw redirect(302, '/admin');
+	}
 
 	throw redirect(302, '/account');
 };

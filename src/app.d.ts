@@ -10,6 +10,7 @@ declare global {
 				company?: string;
 				companyId?: number;
 				name?: string | null;
+				role: number;
 			};
 		}
 		// interface PageData {}

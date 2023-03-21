@@ -5,6 +5,7 @@
 
 	export let isAuthenticated: Boolean;
 	export let isEmployer: Boolean;
+	export let isAdmin: Boolean;
 
 	let defaultLinks = [
 		{
@@ -22,6 +23,12 @@
 				class="uppercase font-bold text-2xl">{APP_NAME}</a
 			>
 			<nav class="grid grid-flow-col gap-2">
+				{#if isAdmin}
+					<a
+						href="/admin"
+						class="button-ghost">Admin</a
+					>
+				{/if}
 				{#each defaultLinks as { href, label }}
 					<a
 						{href}

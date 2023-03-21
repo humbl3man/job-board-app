@@ -13,7 +13,8 @@ export const handle: Handle = async ({ event, resolve }) => {
 		select: {
 			email: true,
 			id: true,
-			name: true
+			name: true,
+			role: true
 		}
 	});
 
@@ -30,7 +31,8 @@ export const handle: Handle = async ({ event, resolve }) => {
 		event.locals.user = {
 			email: user.email,
 			id: user.id,
-			name: user.name
+			name: user.name,
+			role: user.role.id
 		};
 		if (company) {
 			event.locals.user.company = company.name;
