@@ -10,9 +10,9 @@
 	let name = data.user.name || '';
 </script>
 
-<pre>
+<!-- <pre>
 	{JSON.stringify(form, null, 2)}
-</pre>
+</pre> -->
 
 <section class="dashboard mx-auto max-w-3xl bg-white mt-16">
 	<div class="p-6 border-b border-slate-300">
