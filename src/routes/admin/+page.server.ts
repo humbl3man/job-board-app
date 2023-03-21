@@ -2,7 +2,6 @@ import { redirect } from '@sveltejs/kit';
 import { Role } from '$lib/constants/Role';
 import type { Action, Actions, PageServerLoad } from './$types';
 import { db } from '$lib/db';
-import { disconnect } from 'process';
 
 export const load = (async ({ locals }) => {
 	if (locals.user?.role !== Role.ADMIN) {
@@ -27,8 +26,6 @@ export const load = (async ({ locals }) => {
 const deleteuser: Action = async ({ request }) => {
 	const userid = (await request.formData()).get('userid');
 
-	//TODO: if user is Employer we will also need to delete all jobs posted by that user
-	//TODO: in the future, if user is User, we also need to delete all applications for that user
 	const user = await db.user.findUnique({
 		where: {
 			id: Number(userid)
@@ -62,10 +59,27 @@ const deleteuser: Action = async ({ request }) => {
 				id: user.id
 			}
 		});
+		return {
+			deleted: true
+		};
+	}
+
+	// Check if user has role=USER
+	if (user && user.roleId === Role.USER) {
+		//TODO: if user has role=User, we also need to delete all applications for that user
+
+		await db.user.delete({
+			where: {
+				id: user.id
+			}
+		});
+		return {
+			deleted: true
+		};
 	}
 
 	return {
-		deleted: true
+		deleted: false
 	};
 };
 
