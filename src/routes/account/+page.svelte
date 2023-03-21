@@ -2,14 +2,9 @@
 	import { applyAction, enhance } from '$app/forms';
 	import { invalidateAll } from '$app/navigation';
 	import Shell from '$lib/components/Shell.svelte';
-	import type { ActionData, PageData } from './$types';
+	import type { PageData } from './$types';
 
-	export let form: ActionData;
 	export let data: PageData;
-
-	let email = data.user.email;
-	let company = data.user.company;
-	let name = data.user.name ?? '';
 </script>
 
 <!-- <pre>
@@ -43,58 +38,34 @@
 		<div class="row">
 			<div class="col-left">Email Address</div>
 			<div class="col-right">
-				{email}
+				{data.user.email}
 			</div>
 		</div>
-		{#if !data.user.companyId}
+		{#if !data.user.companyId && data.user.name}
 			<div class="row">
 				<div class="col-left">Name</div>
 				<div class="col-right">
-					<div class="input-group">
-						<form
-							method="POST"
-							action="?/changename"
-							use:enhance={() => {
-								return async ({ result }) => {
-									await invalidateAll();
-									await applyAction(result);
-								};
-							}}
-						>
-							<label
-								for="name"
-								class="sr-only">Name</label
-							>
-							<input
-								type="text"
-								class="input w-full"
-								id="name"
-								name="name"
-								bind:value={name}
-							/>
-							<button
-								class="button button--sm"
-								disabled={!name}>Update</button
-							>
-						</form>
-						{#if form?.updated}
-							<div class="inline-msg text-xs text-green-600">Updated!</div>
-						{/if}
-						{#if form?.required}
-							<div class="inline-msg text-xs text-red-600">Missing</div>
-						{/if}
-					</div>
+					{data.user.name}
 				</div>
 			</div>
 		{/if}
-		{#if company}
+		{#if data.user.company}
 			<div class="row">
 				<div class="col-left">Company Name</div>
 				<div class="col-right">
-					{company}
+					{data.user.company}
 				</div>
 			</div>
 		{/if}
+		<div class="row">
+			<div class="col-left" />
+			<div class="col-right flex justify-end">
+				<a
+					href="/account/update"
+					class="button">Update</a
+				>
+			</div>
+		</div>
 	</section>
 </Shell>
 
@@ -107,23 +78,5 @@
 	}
 	.dashboard .col-right {
 		@apply text-slate-900;
-	}
-	.dashboard .input-group {
-		@apply relative;
-	}
-	.dashboard .input-group .input {
-		@apply focus:pr-12;
-	}
-	.dashboard .input-group .button {
-		@apply absolute py-1;
-		top: 50%;
-		right: 5px;
-		transform: translateY(-50%);
-	}
-
-	.dashboard .input-group .inline-msg {
-		position: absolute;
-		bottom: -50%;
-		left: 0;
 	}
 </style>
