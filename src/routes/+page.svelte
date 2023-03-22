@@ -2,10 +2,9 @@
 	import Typeahead from 'svelte-typeahead';
 	import JobHuntIllustration from '$lib/assets/JobHuntIllustration.svelte';
 	import { APP_NAME } from '$lib/meta';
-	import { Button } from '@svelteuidev/core';
-	import { ChevronRight } from 'radix-icons-svelte';
 	import type { PageData } from './$types';
 	import { goto } from '$app/navigation';
+	import { MagnifyingGlass } from 'radix-icons-svelte';
 
 	export let data: PageData;
 </script>
@@ -31,33 +30,25 @@
 					Take the next step in your career. Browse job openings, create a profile, and apply with
 					ease!
 				</p>
-				<div class="mt-8">
+				<div class="mt-8 relative">
 					<Typeahead
 						label="Search"
 						placeholder="Search for jobs..."
 						hideLabel
 						data={data.jobs}
-						class="input input-full"
+						class="input"
 						extract={(job) => job.title}
 						let:result
 						on:select={({ detail }) => {
 							goto(`/jobs/${detail.original.id}`);
 						}}
 					>
-						<strong>{result.original.title}</strong>
+						<strong class="mr-1">{result.original.title}</strong>
 						<span class="text-sm text-slate-700">{result.original.company.name}</span>
 					</Typeahead>
-					<!-- <Button
-						href="/jobs"
-						size="lg"
-						class="md:max-w-xs font-bold"
-						variant="gradient"
-						gradient={{ from: 'grape', to: 'indigo', deg: 35 }}
-						target=""
-					>
-						Explore Jobs
-						<ChevronRight slot="rightIcon" />
-					</Button> -->
+					<div class="absolute top-1/2 -translate-y-[50%] right-2">
+						<MagnifyingGlass size={24} />
+					</div>
 				</div>
 			</div>
 			<div class="flex justify-center">
@@ -66,3 +57,17 @@
 		</div>
 	</div>
 </div>
+
+<style lang="postcss">
+	:global([data-svelte-search] input) {
+		@apply pr-8 py-3 pl-4 w-full border-0 shadow-md text-lg rounded-md focus:ring-2 focus:ring-indigo-300;
+	}
+	:global([data-svelte-typeahead] li) {
+		@apply bg-white text-slate-800;
+	}
+	:global([data-svelte-typeahead] li.selected),
+	:global([data-svelte-typeahead] li.selected:hover),
+	:global([data-svelte-typeahead] li.selected:focus) {
+		@apply bg-indigo-50 text-indigo-800 !important;
+	}
+</style>
