@@ -2,6 +2,7 @@
 	import Shell from '$lib/components/Shell.svelte';
 	import { APP_NAME } from '$lib/meta';
 	import { formatCurrency } from '$lib/utils/formatCurrency';
+	import { MagnifyingGlass, PlusCircled } from 'radix-icons-svelte';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
@@ -18,10 +19,12 @@
 	let searchTerm = '';
 
 	function applyOnlyMyJobsFilter() {
+		searchTerm = '';
 		jobs = jobs.filter((j) => j.company.id === data.user.companyId);
 		filter = 'own';
 	}
 	function applyAllFilter() {
+		searchTerm = '';
 		jobs = [...initialJobs];
 		filter = 'all';
 	}
@@ -74,13 +77,18 @@
 					for="search"
 					class="sr-only"
 				/>
-				<input
-					id="search"
-					class="py-2 rounded-md px-4 w-full"
-					bind:value={searchTerm}
-					type="text"
-					placeholder="Search..."
-				/>
+				<div class="relative w-full md:w-6/12">
+					<input
+						id="search"
+						class="py-2 rounded-md pl-4 pr-10 w-full"
+						bind:value={searchTerm}
+						type="text"
+						placeholder="Search Jobs..."
+					/>
+					<div class="absolute top-2/4 right-2 -z-1 -translate-y-[50%]">
+						<MagnifyingGlass size={24} />
+					</div>
+				</div>
 			</div>
 			<section>
 				<header class="flex justify-between items-center">
@@ -104,8 +112,11 @@
 						<div class="mb-6 flex sm:justify-center">
 							<a
 								href="/jobs/create"
-								class="button text-center">Add Job</a
+								class="button text-center grid grid-flow-col gap-2 items-center"
 							>
+								Add Job
+								<PlusCircled size={20} />
+							</a>
 						</div>
 					{/if}
 				</header>
