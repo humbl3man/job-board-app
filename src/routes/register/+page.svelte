@@ -1,9 +1,10 @@
 <script lang="ts">
-	import { Switch } from '@svelteuidev/core';
 	import { APP_NAME } from '$lib/meta';
 	import { enhance } from '$app/forms';
 	import type { ActionData } from './$types';
 	import Shell from '$lib/components/Shell.svelte';
+	import ErrorMessage from '$lib/components/ErrorMessage.svelte';
+	import ValidationError from '$lib/components/ValidationError.svelte';
 
 	export let form: ActionData;
 
@@ -16,7 +17,7 @@
 
 <Shell>
 	<form
-		class="block mx-auto my-24 max-w-md p-8 shadow-sm rounded-md bg-white"
+		class="block mx-auto my-24 max-w-md bg-base-100 p-8 rounded-md shadow-sm"
 		method="POST"
 		action="?/register"
 		novalidate
@@ -24,9 +25,9 @@
 	>
 		<h1>Create Account</h1>
 		{#if form?.exists}
-			<p class="text-red-700 font-bold my-2">User Exists</p>
+			<ErrorMessage>User Already Exists</ErrorMessage>
 		{/if}
-		<div class="my-4">
+		<div class="form-group w-full my-4">
 			<label
 				for="email"
 				class="label">Email</label
@@ -36,13 +37,17 @@
 				type="text"
 				id="email"
 				name="email"
-				class="w-full input {form?.fieldErrors?.email ? 'error' : ''}"
+				class="input w-full input-bordered input-primary {form?.fieldErrors?.email
+					? 'input-error'
+					: ''}"
 			/>
 			{#if form?.fieldErrors?.email}
-				<p class="text-red-600">{form?.fieldErrors?.email[0]}</p>
+				<ValidationError label="email">
+					{form.fieldErrors?.email[0]}
+				</ValidationError>
 			{/if}
 		</div>
-		<div class="my-4">
+		<div class="form-group w-full my-4">
 			<label
 				for="password"
 				class="label">Password</label
@@ -51,13 +56,16 @@
 				type="password"
 				id="password"
 				name="password"
-				class="w-full input {form?.fieldErrors?.password ? 'error' : ''}"
+				class="input w-full input-bordered input-primary {form?.fieldErrors?.password
+					? 'input-error'
+					: ''}"
 			/>
 			{#if form?.fieldErrors?.password}
-				<p class="text-red-600">{form?.fieldErrors?.password[0]}</p>
+				<ValidationError label="password">{form?.fieldErrors?.password[0]}</ValidationError>
 			{/if}
 		</div>
-		<div class="my-4">
+		<!-- TODO: replace with checkbox -->
+		<!-- <div class="my-4">
 			<Switch
 				color="indigo"
 				radius="xl"
@@ -66,7 +74,7 @@
 				checked={isEmployeer}
 				on:change={() => (isEmployeer = !isEmployeer)}
 			/>
-		</div>
+		</div> -->
 		{#if isEmployeer}
 			<div class="my-4">
 				<label
@@ -82,12 +90,12 @@
 				/>
 			</div>
 		{/if}
-		<div class="grid gap-4">
-			<button class="button"> Create </button>
+		<div class="grid gap-4 mt-8">
+			<button class="btn btn-primary w-full"> Register </button>
 			<span class="text-center">
 				Already have account? <a
 					href="/login"
-					class="text-blue-500 underline">Login</a
+					class="text-neutral underline">Login</a
 				>
 			</span>
 		</div>

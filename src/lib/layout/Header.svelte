@@ -15,62 +15,49 @@
 	];
 </script>
 
-<header class="bg-white border-b border-slate-300">
+<header class="bg-primary-content">
 	<div class="mx-auto max-w-screen-2xl py-4 px-2">
 		<div class="flex items-center justify-between">
 			<a
 				href="/"
-				class="font-serif font-bold text-lg text-indigo-900 py-1 border-b-[3px] border-t-[3px] border-indigo-900"
-				>Job Finder</a
+				class="font-bold text-xl uppercase text-base-content">Job Finder</a
 			>
 			<nav class="grid grid-flow-col gap-2">
 				{#if isAdmin}
 					<a
 						href="/admin"
-						class="button-ghost">Admin</a
+						class="btn btn-ghost btn-sm">Admin</a
 					>
 				{/if}
 				{#each defaultLinks as { href, label }}
 					<a
 						{href}
-						class="button-ghost">{label}</a
+						class="btn btn-sm btn-ghost btn-info">{label}</a
 					>
 				{/each}
 				{#if isEmployer}
 					<a
 						href="/jobs/create"
-						class="button-ghost">+ Create Job</a
+						class="btn btn-sm btn-primary btn-outline">+ Create Job</a
 					>
 				{/if}
 			</nav>
-			<div class="grid grid-flow-col gap-4 items-center">
+			<div class="grid grid-flow-col gap-2 items-center">
 				{#if isAuthenticated}
 					<a
-						class="button-ghost"
+						class="btn btn-sm btn-ghost text-primary"
 						href="/account">Account</a
 					>
-					<form
-						method="POST"
-						action="/logout"
-						use:enhance={() => {
-							return async ({ result }) => {
-								await invalidateAll();
-								await applyAction(result);
-							};
-						}}
-					>
-						<button class="button-ghost">Logout</button>
-					</form>
 				{/if}
 
 				{#if !isAuthenticated}
 					<a
 						href="/login"
-						class="button-ghost">Login</a
+						class="btn btn-sm btn-primary">Login</a
 					>
 					<a
 						href="/register"
-						class="button-ghost">Register</a
+						class="btn btn-sm btn-ghost">Register</a
 					>
 				{/if}
 			</div>

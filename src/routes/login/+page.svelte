@@ -1,10 +1,11 @@
 <script lang="ts">
-	import { Switch } from '@svelteuidev/core';
 	import { APP_NAME } from '$lib/meta';
 	import { applyAction, enhance } from '$app/forms';
 	import type { ActionData } from './$types';
 	import { invalidateAll } from '$app/navigation';
 	import Shell from '$lib/components/Shell.svelte';
+	import ValidationError from '$lib/components/ValidationError.svelte';
+	import ErrorMessage from '$lib/components/ErrorMessage.svelte';
 
 	export let form: ActionData;
 </script>
@@ -15,7 +16,7 @@
 
 <Shell>
 	<form
-		class="block mx-auto my-24 max-w-md p-8 shadow-sm rounded-md bg-white"
+		class="block mx-auto my-24 max-w-md bg-base-100 p-8 rounded-md shadow-sm"
 		method="POST"
 		action="?/login"
 		novalidate
@@ -28,28 +29,34 @@
 	>
 		<h1>Login</h1>
 		{#if form?.invalid}
-			<p class="text-red-700 font-bold my-2">User Doesn't exist</p>
+			<ErrorMessage>User Doesn't exist</ErrorMessage>
 		{/if}
 		{#if form?.credentials}
-			<p class="text-red-700 font-bold my-2">Invalid credentials</p>
+			<ErrorMessage>Invalid credentials</ErrorMessage>
 		{/if}
-		<div class="my-4">
+		<div class="form-control my-4 w-full">
 			<label
 				for="email"
-				class="label">Email</label
+				class="label"
 			>
+				<span class="label-text text-base">Email</span>
+			</label>
 			<input
 				value={form?.data?.email ?? ''}
 				type="text"
 				id="email"
 				name="email"
-				class="w-full input {form?.fieldErrors?.email ? 'error' : ''}"
+				class="input w-full input-bordered input-primary {form?.fieldErrors?.email
+					? 'input-error'
+					: ''}"
 			/>
 			{#if form?.fieldErrors?.email}
-				<p class="text-red-600">{form?.fieldErrors?.email[0]}</p>
+				<ValidationError label="email">
+					{form?.fieldErrors?.email[0]}
+				</ValidationError>
 			{/if}
 		</div>
-		<div class="my-4">
+		<div class="form-group w-full my-4">
 			<label
 				for="password"
 				class="label">Password</label
@@ -58,18 +65,22 @@
 				type="password"
 				id="password"
 				name="password"
-				class="w-full input {form?.fieldErrors?.password ? 'error' : ''}"
+				class="input w-full input-bordered input-primary {form?.fieldErrors?.password
+					? 'input-error'
+					: ''}"
 			/>
 			{#if form?.fieldErrors?.password}
-				<p class="text-red-600">{form?.fieldErrors?.password[0]}</p>
+				<ValidationError label="password">
+					{form?.fieldErrors?.password[0]}
+				</ValidationError>
 			{/if}
 		</div>
 		<div class="grid gap-4">
-			<button class="button"> Login </button>
+			<button class="btn btn-primary w-full"> Login </button>
 			<span class="text-center">
 				Don't have an account? <a
 					href="/register"
-					class="text-blue-500 underline">Register</a
+					class="text-neutral underline">Register</a
 				>
 			</span>
 		</div>

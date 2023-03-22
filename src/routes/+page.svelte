@@ -17,26 +17,27 @@
 	<title>{APP_NAME}</title>
 </svelte:head>
 
-<div class="py-10 lg:py-14">
+<div class="py-10 lg:py-24 bg-primary">
 	<div class="mx-auto max-w-screen-xl px-4">
 		<div class="grid gap-8 sm:gap-12 sm:grid-cols-2">
 			<div>
 				<h1
-					class="text-[36px] md:text-[52px] xl:text-[72px] leading-none text-indigo-900 mb-8 font-serif font-extrabold"
+					class="text-[36px] md:text-[52px] xl:text-[72px] leading-none text-indigo-900 mb-8 font-serif font-extrabold dark:text-indigo-50"
 				>
 					Discover your next career move with us.
 				</h1>
-				<p class="md:text-[20px] text-slate-600">
+				<p class="md:text-[20px] text-slate-600 dark:text-indigo-100">
 					Take the next step in your career. Browse job openings, create a profile, and apply with
 					ease!
 				</p>
 				<div class="mt-8 relative">
+					<!-- TODO: override typeahead input to match dark theme -->
 					<Typeahead
 						label="Search"
 						placeholder="Search for jobs..."
 						hideLabel
 						data={data.jobs}
-						class="input"
+						class="input input-bordered input-accent w-full"
 						extract={(job) => job.title}
 						let:result
 						on:select={({ detail }) => {
@@ -59,9 +60,9 @@
 </div>
 
 <style lang="postcss">
-	:global([data-svelte-search] input) {
+	/* :global([data-svelte-search] input) {
 		@apply pr-8 py-3 pl-4 w-full border-0 shadow-md text-lg rounded-md focus:ring-2 focus:ring-indigo-300;
-	}
+	} */
 	:global([data-svelte-typeahead] li) {
 		@apply bg-white text-slate-800;
 	}
