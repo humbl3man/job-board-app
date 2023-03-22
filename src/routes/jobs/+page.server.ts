@@ -10,7 +10,15 @@ export const load: PageServerLoad = async () => {
 			category: true,
 			salary: true,
 			createdAt: true
-		}
+		},
+		orderBy: [
+			{
+				createdAt: 'asc'
+			},
+			{
+				salary: 'desc'
+			}
+		]
 	});
 	return {
 		jobs
