@@ -1,9 +1,18 @@
-<script>
+<script lang="ts">
+	import Typeahead from 'svelte-typeahead';
 	import JobHuntIllustration from '$lib/assets/JobHuntIllustration.svelte';
 	import { APP_NAME } from '$lib/meta';
 	import { Button } from '@svelteuidev/core';
 	import { ChevronRight } from 'radix-icons-svelte';
+	import type { PageData } from './$types';
+	import { goto } from '$app/navigation';
+
+	export let data: PageData;
 </script>
+
+<!-- <pre>
+	{JSON.stringify(data.jobs, null, 2)}
+</pre> -->
 
 <svelte:head>
 	<title>{APP_NAME}</title>
@@ -23,7 +32,22 @@
 					ease!
 				</p>
 				<div class="mt-8">
-					<Button
+					<Typeahead
+						label="Search"
+						placeholder="Search for jobs..."
+						hideLabel
+						data={data.jobs}
+						class="input input-full"
+						extract={(job) => job.title}
+						let:result
+						on:select={({ detail }) => {
+							goto(`/jobs/${detail.original.id}`);
+						}}
+					>
+						<strong>{result.original.title}</strong>
+						<span class="text-sm text-slate-700">{result.original.company.name}</span>
+					</Typeahead>
+					<!-- <Button
 						href="/jobs"
 						size="lg"
 						class="md:max-w-xs font-bold"
@@ -33,7 +57,7 @@
 					>
 						Explore Jobs
 						<ChevronRight slot="rightIcon" />
-					</Button>
+					</Button> -->
 				</div>
 			</div>
 			<div class="flex justify-center">
