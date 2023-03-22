@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import Shell from '$lib/components/Shell.svelte';
+	import ValidationError from '$lib/components/ValidationError.svelte';
 	import type { ActionData, PageData } from './$types';
 
 	export let data: PageData;
@@ -34,11 +35,9 @@
 					value={form?.data?.title ?? ''}
 				/>
 				{#if form?.errors?.title}
-					<div
-						class="bg-red-50 text-red-900 py-1 px-3 text-sm absolute left-0 leading-none -bottom-[8px]"
-					>
+					<ValidationError>
 						{form.errors.title[0]}
-					</div>
+					</ValidationError>
 				{/if}
 			</div>
 			<div class="my-4 pb-4 relative">
@@ -54,11 +53,9 @@
 					placeholder="e.g. San Francisco, CA"
 				/>
 				{#if form?.errors?.location}
-					<div
-						class="bg-red-50 text-red-900 py-1 px-3 text-sm absolute left-0 leading-none -bottom-[8px]"
-					>
+					<ValidationError>
 						{form.errors.location[0]}
-					</div>
+					</ValidationError>
 				{/if}
 			</div>
 			<div class="my-4 pb-4 relative">
@@ -77,11 +74,9 @@
 					{/each}
 				</select>
 				{#if form?.errors?.categoryId}
-					<div
-						class="bg-red-50 text-red-900 py-1 px-3 text-sm absolute left-0 leading-none -bottom-[8px]"
-					>
+					<ValidationError>
 						{form.errors.categoryId[0]}
-					</div>
+					</ValidationError>
 				{/if}
 			</div>
 			<div class="my-4 pb-4 relative">
@@ -100,11 +95,9 @@
 					{/each}
 				</select>
 				{#if form?.errors?.typeId}
-					<div
-						class="bg-red-50 text-red-900 py-1 px-3 text-sm absolute left-0 leading-none -bottom-[8px]"
-					>
+					<ValidationError>
 						{form.errors.typeId[0]}
-					</div>
+					</ValidationError>
 				{/if}
 			</div>
 			<div class="my-4 pb-4 relative">
@@ -120,11 +113,9 @@
 					placeholder="Job Description"
 				/>
 				{#if form?.errors?.description}
-					<div
-						class="bg-red-50 text-red-900 py-1 px-3 text-sm absolute left-0 leading-none -bottom-[2px]"
-					>
+					<ValidationError>
 						{form.errors.description[0]}
-					</div>
+					</ValidationError>
 				{/if}
 			</div>
 			<div class="my-4 pb-4 relative">
@@ -137,11 +128,9 @@
 					placeholder="e.g. 100000"
 				/>
 				{#if form?.errors?.salary}
-					<div
-						class="bg-red-50 text-red-900 py-1 px-3 text-sm absolute left-0 leading-none -bottom-[8px]"
-					>
+					<ValidationError>
 						{form.errors.salary[0]}
-					</div>
+					</ValidationError>
 				{/if}
 			</div>
 			<div class="mt-8">
@@ -150,9 +139,3 @@
 		</form>
 	</div>
 </Shell>
-
-<style>
-	.description {
-		padding-bottom: 0;
-	}
-</style>

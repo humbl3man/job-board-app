@@ -2,6 +2,7 @@
 	import { applyAction, enhance } from '$app/forms';
 	import { invalidateAll } from '$app/navigation';
 	import Shell from '$lib/components/Shell.svelte';
+	import ValidationError from '$lib/components/ValidationError.svelte';
 	import type { ActionData, PageData } from './$types';
 
 	export let data: PageData;
@@ -41,11 +42,9 @@
 						value={data.jobDetails.title}
 					/>
 					{#if form?.errors?.title}
-						<div
-							class="bg-red-50 text-red-900 py-1 px-3 text-sm absolute left-0 leading-none -bottom-[8px]"
-						>
+						<ValidationError>
 							{form.errors.title[0]}
-						</div>
+						</ValidationError>
 					{/if}
 				</div>
 			</div>
@@ -65,11 +64,9 @@
 						value={data.jobDetails.location}
 					/>
 					{#if form?.errors?.location}
-						<div
-							class="bg-red-50 text-red-900 py-1 px-3 text-sm absolute left-0 leading-none -bottom-[8px]"
-						>
+						<ValidationError>
 							{form.errors.location[0]}
-						</div>
+						</ValidationError>
 					{/if}
 				</div>
 			</div>
@@ -91,11 +88,9 @@
 						{/each}
 					</select>
 					{#if form?.errors?.typeId}
-						<div
-							class="bg-red-50 text-red-900 py-1 px-3 text-sm absolute left-0 leading-none -bottom-[8px]"
-						>
+						<ValidationError>
 							{form.errors.typeId[0]}
-						</div>
+						</ValidationError>
 					{/if}
 				</div>
 			</div>
@@ -115,11 +110,9 @@
 						value={data.jobDetails.description}
 					/>
 					{#if form?.errors?.description}
-						<div
-							class="bg-red-50 text-red-900 py-1 px-3 text-sm absolute left-0 leading-none -bottom-[2px]"
-						>
+						<ValidationError>
 							{form.errors.description[0]}
-						</div>
+						</ValidationError>
 					{/if}
 				</div>
 			</div>
@@ -140,11 +133,9 @@
 						value={data.jobDetails.salary}
 					/>
 					{#if form?.errors?.salary}
-						<div
-							class="bg-red-50 text-red-900 py-1 px-3 text-sm absolute left-0 leading-none -bottom-[8px]"
-						>
+						<ValidationError>
 							{form.errors.salary[0]}
-						</div>
+						</ValidationError>
 					{/if}
 				</div>
 			</div>
@@ -166,11 +157,9 @@
 						{/each}
 					</select>
 					{#if form?.errors?.categoryId}
-						<div
-							class="bg-red-50 text-red-900 py-1 px-3 text-sm absolute left-0 leading-none -bottom-[8px]"
-						>
+						<ValidationError>
 							{form.errors.categoryId[0]}
-						</div>
+						</ValidationError>
 					{/if}
 				</div>
 			</div>

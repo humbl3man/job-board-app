@@ -1,6 +1,9 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import ErrorMessage from '$lib/components/ErrorMessage.svelte';
+	import ValidationError from '$lib/components/ValidationError.svelte';
 	import { Role } from '$lib/constants/Role';
+	import { ExclamationTriangle } from 'radix-icons-svelte';
 	import type { ActionData, PageData } from './$types';
 
 	export let data: PageData;
@@ -17,6 +20,9 @@
 <section class="dashboard mx-auto max-w-3xl bg-white mt-16">
 	<div class="p-6 border-b border-slate-300">
 		<h1 class="text-2xl mb-2">Account Information - Update</h1>
+		{#if form?.company_exists}
+			<ErrorMessage>Failed to update company name. Name is already taken.</ErrorMessage>
+		{/if}
 	</div>
 	<form
 		method="POST"
@@ -46,11 +52,9 @@
 							bind:value={name}
 						/>
 						{#if form?.fieldErrors?.name}
-							<div
-								class="bg-red-50 text-red-900 py-1 px-3 text-sm absolute left-0 leading-none -bottom-[2px]"
-							>
+							<ValidationError>
 								{form.fieldErrors?.name[0]}
-							</div>
+							</ValidationError>
 						{/if}
 					</div>
 				</div>
@@ -73,11 +77,9 @@
 							bind:value={company}
 						/>
 						{#if form?.fieldErrors?.companyName}
-							<div
-								class="bg-red-50 text-red-900 py-1 px-3 text-sm absolute left-0 leading-none -bottom-[2px]"
-							>
+							<ValidationError>
 								{form.fieldErrors?.companyName[0]}
-							</div>
+							</ValidationError>
 						{/if}
 					</div>
 				</div>

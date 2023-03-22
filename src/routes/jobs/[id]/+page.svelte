@@ -10,6 +10,7 @@
 	import { formatCurrency } from '$lib/utils/formatCurrency';
 	import type { PageData } from './$types';
 	import Shell from '$lib/components/Shell.svelte';
+	import { ChevronLeft } from 'radix-icons-svelte';
 
 	export let data: PageData;
 	let showDeleteConfirmation = false;
@@ -19,8 +20,7 @@
 	}
 </script>
 
-<!-- 
-<pre>
+<!-- <pre>
 	{JSON.stringify(data, null, 2)}
 </pre> -->
 
@@ -51,8 +51,22 @@
 <Shell>
 	<div class="jobdetails mx-auto max-w-3xl bg-white mt-16 mb-16">
 		<div class="p-6 border-b border-slate-300">
-			<h1 class="text-2xl mb-2">
+			<div class="mb-8">
+				<a
+					href="/jobs"
+					class="px-4 py-1 border border-indigo-200 bg-indigo-50 text-indigo-800 rounded-lg inline-flex items-center
+					"
+				>
+					<ChevronLeft /> Back</a
+				>
+			</div>
+			<h1 class="text-2xl mb-2 flex items-start">
 				{data.jobDetails.title}
+				{#if data.user?.companyId === data.jobDetails.company.id}
+					<div class="ml-2 px-2 py-1 w-max text-xs bg-indigo-50 text-indigo-800 rounded-md">
+						Posted by you
+					</div>
+				{/if}
 			</h1>
 			<p class="text-slate-600">{data.jobDetails.company.name}</p>
 		</div>

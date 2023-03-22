@@ -105,7 +105,7 @@
 									<div>{job.title}</div>
 									{#if job.company.name === data.user?.company}
 										<div
-											class="mt-1 inline-block text-xs rounded-lg py-[4px] px-[12px] leading-none bg-blue-100 text-blue-900"
+											class="mt-1 inline-block text-xs rounded-lg py-[4px] px-[12px] leading-none bg-indigo-50 text-indigo-800"
 										>
 											Posted by you
 										</div>

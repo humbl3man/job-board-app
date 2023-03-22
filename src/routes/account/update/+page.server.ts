@@ -60,19 +60,41 @@ const updateaccount: Action = async ({ request, locals }) => {
 			return fail(400, {
 				...result.error.flatten(),
 				data: {
-					companyName: companyName?.toString()
+					companyName: companyName?.toString().trim()
 				}
 			});
 		}
 
-		await db.company.update({
-			where: {
-				id: locals.user.companyId
-			},
-			data: {
-				name: companyName?.toString()
+		try {
+			// check if company name is taken
+			const companyExists = await db.company.findFirst({
+				where: {
+					name: {
+						startsWith: companyName?.toString().trim().toLowerCase()
+					}
+				}
+			});
+
+			// throw error if company name is taken
+			if (companyExists?.id !== locals.user.companyId) {
+				return fail(400, {
+					company_exists: true
+				});
 			}
-		});
+
+			await db.company.update({
+				where: {
+					id: locals.user.companyId
+				},
+				data: {
+					name: companyName?.toString()
+				}
+			});
+		} catch {
+			return fail(400, {
+				error: true
+			});
+		}
 	}
 
 	throw redirect(301, '/account');
