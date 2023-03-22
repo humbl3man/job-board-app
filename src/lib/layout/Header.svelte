@@ -20,7 +20,8 @@
 		<div class="flex items-center justify-between">
 			<a
 				href="/"
-				class="uppercase font-bold text-2xl">{APP_NAME}</a
+				class="font-serif font-bold text-lg text-indigo-900 py-1 border-b-[3px] border-t-[3px] border-indigo-900"
+				>Job Finder</a
 			>
 			<nav class="grid grid-flow-col gap-2">
 				{#if isAdmin}
