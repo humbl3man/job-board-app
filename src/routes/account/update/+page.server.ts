@@ -67,20 +67,21 @@ const updateaccount: Action = async ({ request, locals }) => {
 
 		try {
 			// check if company name is taken
-			const companyExists = await db.company.findFirst({
-				where: {
-					name: {
-						startsWith: companyName?.toString().trim().toLowerCase()
-					}
-				}
-			});
+			// TODO:
+			// const companyExists = await db.company.findFirst({
+			// 	where: {
+			// 		name: {
+			// 			startsWith: companyName?.toString().trim().toLowerCase()
+			// 		}
+			// 	}
+			// });
 
-			// throw error if company name is taken
-			if (companyExists?.id !== locals.user.companyId) {
-				return fail(400, {
-					company_exists: true
-				});
-			}
+			// // throw error if company name is taken
+			// if (companyExists?.id !== locals.user.companyId) {
+			// 	return fail(400, {
+			// 		company_exists: true
+			// 	});
+			// }
 
 			await db.company.update({
 				where: {
