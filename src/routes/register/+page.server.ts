@@ -15,6 +15,7 @@ const register: Action = async ({ request }) => {
 	const formData = await request.formData();
 	const email = formData.get('email').toString();
 	const password = formData.get('password').toString();
+	const isEmployer = formData.get('is_employer');
 	const company = formData.get('company')?.toString();
 
 	const registerSchema = z.object({
@@ -27,12 +28,32 @@ const register: Action = async ({ request }) => {
 		password: z
 			.string({ required_error: 'Password is required' })
 			.min(1, 'Password is required')
-			.max(16, 'Password must not exceed 16 characters')
+			.max(16, 'Password must not exceed 16 characters'),
+		company: z
+			.string()
+			.optional()
+			.refine(
+				(value) => {
+					if (isEmployer) {
+						return value !== '';
+					} else {
+						return true;
+					}
+				},
+				{
+					message: 'Company name is required'
+				}
+			)
 	});
 
-	const result = registerSchema.safeParse({ email, password });
+	const result = registerSchema.safeParse({
+		email,
+		password,
+		isEmployer: Boolean(isEmployer),
+		company
+	});
 
-	// validate user and password
+	// validate user and password (and conditionally, company)
 	if (!result.success) {
 		return fail(400, {
 			...result.error.flatten(),

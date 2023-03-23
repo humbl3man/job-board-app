@@ -5,6 +5,7 @@
 	import Shell from '$lib/components/Shell.svelte';
 	import ErrorMessage from '$lib/components/ErrorMessage.svelte';
 	import ValidationError from '$lib/components/ValidationError.svelte';
+	import { fly } from 'svelte/transition';
 
 	export let form: ActionData;
 
@@ -14,6 +15,14 @@
 <svelte:head>
 	<title>{APP_NAME} | Register</title>
 </svelte:head>
+
+<div class="mockup-code">
+	<pre>
+		<code>
+			{JSON.stringify(form, null, 2)}
+		</code>
+	</pre>
+</div>
 
 <Shell>
 	<form
@@ -75,8 +84,24 @@
 				on:change={() => (isEmployeer = !isEmployeer)}
 			/>
 		</div> -->
+		<div class="form-control w-max">
+			<label class="label cursor-pointer">
+				<input
+					type="checkbox"
+					checked={isEmployeer}
+					class="checkbox checkbox-primary mr-4"
+					on:change={() => (isEmployeer = !isEmployeer)}
+					value={isEmployeer}
+					name="is_employer"
+				/>
+				<span class="label-text">I am an employer</span>
+			</label>
+		</div>
 		{#if isEmployeer}
-			<div class="my-4">
+			<div
+				in:fly={{ y: 20, duration: 100 }}
+				class="my-4"
+			>
 				<label
 					for="company_name"
 					class="label">Company Name</label
@@ -85,9 +110,12 @@
 					type="text"
 					id="company_name"
 					name="company"
-					class="w-full input"
+					class="input input-bordered input-primary w-full"
 					value={form?.data?.company ?? ''}
 				/>
+				{#if form?.fieldErrors?.company}
+					<ValidationError label="company_name">{form?.fieldErrors?.company[0]}</ValidationError>
+				{/if}
 			</div>
 		{/if}
 		<div class="grid gap-4 mt-8">
