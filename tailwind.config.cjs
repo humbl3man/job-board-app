@@ -12,5 +12,8 @@ module.exports = {
 		},
 		extend: {}
 	},
-	plugins: [tailwindForms, daisyui]
+	plugins: [tailwindForms, daisyui],
+	daisyui: {
+		themes: ['light']
+	}
 };
