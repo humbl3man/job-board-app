@@ -1,8 +1,4 @@
 <script lang="ts">
-	import { applyAction, enhance } from '$app/forms';
-	import { invalidateAll } from '$app/navigation';
-	import { APP_NAME } from '$lib/meta';
-
 	export let isAuthenticated: Boolean;
 	export let isEmployer: Boolean;
 	export let isAdmin: Boolean;
@@ -38,14 +34,14 @@
 				{#if isEmployer}
 					<a
 						href="/jobs/create"
-						class="btn btn-sm btn-primary btn-outline">+ Create Job</a
+						class="btn btn-sm btn-ghost">+ Create Job</a
 					>
 				{/if}
 			</nav>
 			<div class="grid grid-flow-col gap-2 items-center">
 				{#if isAuthenticated}
 					<a
-						class="btn btn-sm btn-ghost text-primary"
+						class="btn btn-sm btn-primary"
 						href="/account">Account</a
 					>
 				{/if}
