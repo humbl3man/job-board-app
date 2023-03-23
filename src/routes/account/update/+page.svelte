@@ -39,20 +39,20 @@
 			<div class="row">
 				<div class="col-left">Name</div>
 				<div class="col-right">
-					<div class="relative pb-5">
+					<div class="form-control">
 						<label
 							for="name"
 							class="sr-only">Name</label
 						>
 						<input
 							type="text"
-							class="input w-full"
+							class="input input-primary w-full {form?.fieldErrors?.name ? 'input-error' : ''}"
 							id="name"
 							name="name"
 							bind:value={name}
 						/>
 						{#if form?.fieldErrors?.name}
-							<ValidationError>
+							<ValidationError label="name">
 								{form.fieldErrors?.name[0]}
 							</ValidationError>
 						{/if}
@@ -71,13 +71,15 @@
 						>
 						<input
 							type="text"
-							class="input w-full"
+							class="input input-primary w-full {form?.fieldErrors?.companyName
+								? 'input-error'
+								: ''}"
 							id="name"
 							name="company"
 							bind:value={company}
 						/>
 						{#if form?.fieldErrors?.companyName}
-							<ValidationError>
+							<ValidationError label="company">
 								{form.fieldErrors?.companyName[0]}
 							</ValidationError>
 						{/if}
@@ -88,10 +90,10 @@
 		<div class="row">
 			<div class="col-left" />
 			<div class="col-right flex justify-end">
-				<button class="button mr-2">Save Changes</button>
+				<button class="btn btn-primary mr-2">Save Changes</button>
 				<a
 					href="/account"
-					class="button-ghost">Cancel</a
+					class="btn btn-ghost">Cancel</a
 				>
 			</div>
 		</div>

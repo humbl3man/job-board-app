@@ -21,21 +21,21 @@
 			use:enhance
 		>
 			<h1>Create Job</h1>
-			<div class="my-4 pb-4 relative">
+			<div class="my-4 form-control">
 				<label
 					for="title"
 					class="label">Title</label
 				>
 				<input
 					type="text"
-					class="input w-full {form?.errors?.title ? 'error' : ''}"
+					class="input input-primary w-full {form?.errors?.title ? 'input-error' : ''}"
 					name="title"
 					id="title"
 					placeholder="e.g. Software Engineer"
 					value={form?.data?.title ?? ''}
 				/>
 				{#if form?.errors?.title}
-					<ValidationError>
+					<ValidationError label="title">
 						{form.errors.title[0]}
 					</ValidationError>
 				{/if}
@@ -47,13 +47,13 @@
 				>
 				<input
 					type="text"
-					class="input w-full {form?.errors?.location ? 'error' : ''}"
+					class="input input-primary w-full {form?.errors?.location ? 'input-error' : ''}"
 					name="location"
 					id="location"
 					placeholder="e.g. San Francisco, CA"
 				/>
 				{#if form?.errors?.location}
-					<ValidationError>
+					<ValidationError label="location">
 						{form.errors.location[0]}
 					</ValidationError>
 				{/if}
@@ -64,17 +64,22 @@
 					class="label">Category</label
 				>
 				<select
-					class="input w-full {form?.errors?.categoryId ? 'error' : ''}"
+					class="select select-primary font-normal w-full {form?.errors?.categoryId
+						? 'select-error'
+						: ''}"
 					name="category"
 					id="category"
 				>
-					<option value="">Select Category...</option>
+					<option
+						disabled
+						selected>Select Category...</option
+					>
 					{#each data.categories as { id, name }}
 						<option value={id}>{name}</option>
 					{/each}
 				</select>
 				{#if form?.errors?.categoryId}
-					<ValidationError>
+					<ValidationError label="category">
 						{form.errors.categoryId[0]}
 					</ValidationError>
 				{/if}
@@ -85,11 +90,16 @@
 					class="label">Job Type</label
 				>
 				<select
-					class="input w-full  {form?.errors?.typeId ? 'error' : ''}"
+					class="select select-primary font-normal w-full {form?.errors?.typeId
+						? 'select-error'
+						: ''}"
 					name="type"
 					id="type"
 				>
-					<option value="">Select Type...</option>
+					<option
+						disabled
+						selected>Select Type...</option
+					>
 					{#each data.jobTypes as { id, name }}
 						<option value={id}>{name}</option>
 					{/each}
@@ -106,14 +116,16 @@
 					class="label">Description</label
 				>
 				<textarea
-					class="input w-full description  {form?.errors?.description ? 'error' : ''}"
+					class="textarea textarea-primary w-full {form?.errors?.description
+						? 'textarea-error'
+						: ''}"
 					name="description"
 					id="description"
 					rows={6}
-					placeholder="Job Description"
+					placeholder="Description..."
 				/>
 				{#if form?.errors?.description}
-					<ValidationError>
+					<ValidationError label="description">
 						{form.errors.description[0]}
 					</ValidationError>
 				{/if}
@@ -121,20 +133,20 @@
 			<div class="my-4 pb-4 relative">
 				<label for="salary">Salary</label>
 				<input
-					class="input w-full  {form?.errors?.salary ? 'error' : ''}"
+					class="input input-primary w-full {form?.errors?.salary ? 'input-error' : ''}"
 					type="number"
 					name="salary"
 					id="salary"
 					placeholder="e.g. 100000"
 				/>
 				{#if form?.errors?.salary}
-					<ValidationError>
+					<ValidationError label="salary">
 						{form.errors.salary[0]}
 					</ValidationError>
 				{/if}
 			</div>
 			<div class="mt-8">
-				<button class="button w-full">Create</button>
+				<button class="btn btn-primary w-full">Create</button>
 			</div>
 		</form>
 	</div>

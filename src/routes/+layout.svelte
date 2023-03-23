@@ -24,17 +24,21 @@
 	/>
 </svelte:head>
 
-<div class="grid h-screen page bg-slate-50">
+<div class="grid page bg-slate-50">
 	<Header
 		isAdmin={$page.data?.user?.role === Role.ADMIN}
 		isEmployer={$page.data?.user?.role === Role.EMPLOYER}
 		isAuthenticated={!!$page.data?.user}
+		user={$page.data?.user}
 	/>
 	<main><slot /></main>
 	<Footer />
 </div>
 
 <style lang="postcss">
+	:global(body) {
+		@apply bg-slate-300;
+	}
 	:global(h1, h2, h3, h4) {
 		@apply font-bold text-neutral text-2xl sm:text-3xl;
 	}

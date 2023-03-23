@@ -80,7 +80,7 @@
 				<div class="relative w-full md:w-6/12">
 					<input
 						id="search"
-						class="py-2 rounded-md pl-4 pr-10 w-full"
+						class="input input-primary w-full pr-16"
 						bind:value={searchTerm}
 						type="text"
 						placeholder="Search Jobs..."
@@ -112,7 +112,7 @@
 						<div class="mb-6 flex sm:justify-center">
 							<a
 								href="/jobs/create"
-								class="button text-center grid grid-flow-col gap-2 items-center"
+								class="btn btn-primary btn-sm gap-2"
 							>
 								Add Job
 								<PlusCircled size={20} />
@@ -169,7 +169,7 @@
 									<td class="px-6 py-4">{new Date(job.createdAt).toLocaleDateString('en-us')}</td>
 									<td class="px-6 py-4"
 										><a
-											class="button-ghost block text-center w-full"
+											class="btn btn-ghost capitalize"
 											href="/jobs/{job.id}">Details</a
 										></td
 									>

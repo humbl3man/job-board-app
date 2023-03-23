@@ -33,11 +33,11 @@
 				<div class="mt-8 relative">
 					<!-- TODO: override typeahead input to match dark theme -->
 					<Typeahead
+						type="text"
 						label="Search"
 						placeholder="Search for jobs..."
 						hideLabel
 						data={data.jobs}
-						class="input input-bordered input-accent w-full"
 						extract={(job) => job.title}
 						let:result
 						on:select={({ detail }) => {
@@ -60,9 +60,9 @@
 </div>
 
 <style lang="postcss">
-	/* :global([data-svelte-search] input) {
-		@apply pr-8 py-3 pl-4 w-full border-0 shadow-md text-lg rounded-md focus:ring-2 focus:ring-indigo-300;
-	} */
+	:global([data-svelte-search] input) {
+		@apply input input-primary w-full !important;
+	}
 	:global([data-svelte-typeahead] li) {
 		@apply bg-white text-slate-800;
 	}

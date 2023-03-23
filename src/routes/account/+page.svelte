@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { applyAction, enhance } from '$app/forms';
-	import { invalidateAll } from '$app/navigation';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
@@ -10,7 +8,7 @@
 	{JSON.stringify(data, null, 2)}
 </pre> -->
 
-<section class="dashboard mx-auto max-w-3xl bg-white mt-16">
+<section class="dashboard mx-auto max-w-3xl bg-white mt-16 rounded-md">
 	<div class="p-6 border-b border-slate-300">
 		<h1 class="text-2xl mb-2">Account Information</h1>
 		<div class="text-slate-600 flex items-center justify-between">
@@ -18,19 +16,6 @@
 				>Hello, <strong>{data?.user?.name || data?.user?.company || data?.user?.email}</strong
 				></span
 			>
-			<form
-				action="/logout"
-				method="POST"
-				class="inline-block"
-				use:enhance={() => {
-					return async ({ result }) => {
-						await invalidateAll();
-						await applyAction(result);
-					};
-				}}
-			>
-				<button class="button-ghost">Logout</button>
-			</form>
 		</div>
 	</div>
 	<div class="row">
@@ -60,7 +45,7 @@
 		<div class="col-right flex justify-end">
 			<a
 				href="/account/update"
-				class="button">Update</a
+				class="btn btn-primary btn-wide">Edit Profile</a
 			>
 		</div>
 	</div>

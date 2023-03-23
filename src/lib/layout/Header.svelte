@@ -1,7 +1,12 @@
 <script lang="ts">
+	import { applyAction, enhance } from '$app/forms';
+	import { invalidateAll } from '$app/navigation';
+	import type { User } from '@prisma/client';
+
 	export let isAuthenticated: Boolean;
 	export let isEmployer: Boolean;
 	export let isAdmin: Boolean;
+	export let user: User;
 
 	let defaultLinks = [
 		{
@@ -40,10 +45,37 @@
 			</nav>
 			<div class="grid grid-flow-col gap-2 items-center">
 				{#if isAuthenticated}
-					<a
-						class="btn btn-sm btn-primary"
-						href="/account">Account</a
-					>
+					<div class="dropdown dropdown-end">
+						<label
+							tabindex="0"
+							class="btn m-1 btn-sm btn-outline btn-primary">{user.name || user.email}</label
+						>
+						<ul
+							tabindex="0"
+							class="dropdown-content bg-white border border-slate-200 flex p-2 rounded-box flex-col w-52"
+						>
+							<li>
+								<a
+									href="/account"
+									class="btn btn-ghost btn-sm w-full">Account</a
+								>
+							</li>
+							<form
+								method="POST"
+								action="/logout"
+								use:enhance={() => {
+									return async ({ result }) => {
+										await invalidateAll();
+										await applyAction(result);
+									};
+								}}
+							>
+								<li>
+									<button class="btn btn-ghost btn-sm w-full">Logout</button>
+								</li>
+							</form>
+						</ul>
+					</div>
 				{/if}
 
 				{#if !isAuthenticated}
