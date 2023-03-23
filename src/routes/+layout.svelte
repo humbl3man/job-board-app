@@ -38,9 +38,8 @@
 	:global(h1, h2, h3, h4) {
 		@apply font-bold text-neutral text-2xl sm:text-3xl;
 	}
-
 	:global(.btn-ghost) {
-		@apply hover:bg-indigo-50 hover:text-indigo-900;
+		@apply hover:bg-indigo-50 hover:text-indigo-900 focus:bg-indigo-50 focus:text-indigo-900;
 	}
 	.page {
 		grid-template-rows: max-content 1fr max-content;
