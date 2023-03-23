@@ -17,16 +17,16 @@
 	<title>{APP_NAME}</title>
 </svelte:head>
 
-<div class="py-10 lg:py-24 bg-primary">
+<div class="py-10 lg:py-24 bg-white h-full items-center flex">
 	<div class="mx-auto max-w-screen-xl px-4">
 		<div class="grid gap-8 sm:gap-12 sm:grid-cols-2">
 			<div>
 				<h1
-					class="text-[36px] md:text-[52px] xl:text-[72px] leading-none text-indigo-900 mb-8 font-serif font-extrabold dark:text-indigo-50"
+					class="text-[36px] md:text-[52px] xl:text-[72px] leading-none text-indigo-900 mb-8 font-serif font-extrabold"
 				>
 					Discover your next career move with us.
 				</h1>
-				<p class="md:text-[20px] text-slate-600 dark:text-indigo-100">
+				<p class="md:text-[20px] text-slate-600">
 					Take the next step in your career. Browse job openings, create a profile, and apply with
 					ease!
 				</p>
