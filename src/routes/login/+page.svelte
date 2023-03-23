@@ -29,7 +29,6 @@
 		class="block mx-auto my-24 max-w-md bg-base-100 p-8 rounded-md shadow-sm"
 		method="POST"
 		action="?/login"
-		novalidate
 		use:enhance={() => {
 			return async ({ result }) => {
 				await invalidateAll();
@@ -53,9 +52,10 @@
 			</label>
 			<input
 				bind:value={$loginForm.email}
-				type="text"
+				type="email"
 				id="email"
 				name="email"
+				data-invalid={$errors?.email}
 				class="input w-full input-bordered input-primary"
 			/>
 			{#if $errors?.email}
@@ -75,6 +75,7 @@
 				name="password"
 				class="input w-full input-bordered input-primary"
 				bind:value={$loginForm.password}
+				data-invalid={$errors?.password}
 			/>
 			{#if $errors.password}
 				<ValidationError label="password">
