@@ -1,10 +1,11 @@
 <script>
 	import { APP_NAME } from '$lib/meta';
+	let copyRightYear = new Date().getFullYear();
 </script>
 
-<footer class="py-6 text-neutral-content">
+<footer class="py-6 text-neutral bg-base-200">
 	<div class="mx-auto max-w-screen-xl px-2">
-		<div class="text-center text-sm">{new Date().getFullYear()}&nbsp;{APP_NAME}</div>
+		<div class="text-center text-sm">{copyRightYear}&nbsp;{APP_NAME}</div>
 		<div class="text-center">
 			<a
 				href="https://storyset.com/job"
