@@ -3,7 +3,7 @@
 	let copyRightYear = new Date().getFullYear();
 </script>
 
-<footer class="py-6 text-neutral bg-base-200">
+<footer class="py-6 text-neutral bg-slate-100 border-t border-slate-200">
 	<div class="mx-auto max-w-screen-xl px-2">
 		<div class="text-center text-sm">{copyRightYear}&nbsp;{APP_NAME}</div>
 		<div class="text-center">

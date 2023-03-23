@@ -36,11 +36,11 @@
 			<p>Are you sure you want to delete this job? This can't be undone.</p>
 			<div class="grid grid-flow-col gap-4 justify-end mt-6">
 				<button
-					class="bg-red-50 text-red-900 px-4 py-1 rounded-md"
+					class="btn btn-sm btn-error"
 					on:click={() => deleteform.submit()}>Yes, Delete it</button
 				>
 				<button
-					class="bg-slate-100 text-slate-900 px-4 py-1 rounded-md"
+					class="btn btn-sm btn-ghost"
 					on:click={() => (showDeleteConfirmation = false)}>Cancel</button
 				>
 			</div>
@@ -54,10 +54,9 @@
 			<div class="mb-8">
 				<a
 					href="/jobs"
-					class="px-4 py-1 border border-indigo-200 bg-indigo-50 text-indigo-800 rounded-lg inline-flex items-center
-					"
+					class="btn btn-sm btn-ghost"
 				>
-					<ChevronLeft /> Back</a
+					<ChevronLeft /> All Jobs</a
 				>
 			</div>
 			<h1 class="text-2xl mb-2 flex items-start">
@@ -99,10 +98,10 @@
 		</div>
 		<div class="row">
 			<div class="col-left" />
-			<div class="col-right flex">
+			<div class="col-right flex justify-end">
 				{#if data.showEditButton}
 					<a
-						class="button-ghost mr-2"
+						class="btn btn-primary btn-outline mr-2"
 						href="/jobs/update/{data.jobId}">Edit</a
 					>
 				{/if}
@@ -120,8 +119,8 @@
 					>
 						<button
 							type="button"
-							class="button-ghost"
-							on:click={() => (showDeleteConfirmation = true)}>Delete Job</button
+							class="btn btn-error"
+							on:click={() => (showDeleteConfirmation = true)}>Delete</button
 						>
 					</form>
 				{/if}

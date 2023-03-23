@@ -35,14 +35,14 @@
 					/>
 					<input
 						type="text"
-						class="input w-full {form?.errors?.title ? 'error' : ''}"
+						class="input input-primary w-full {form?.errors?.title ? 'input-error' : ''}"
 						name="title"
 						id="title"
 						placeholder="e.g. Software Engineer"
 						value={data.jobDetails.title}
 					/>
 					{#if form?.errors?.title}
-						<ValidationError>
+						<ValidationError label="title">
 							{form.errors.title[0]}
 						</ValidationError>
 					{/if}
@@ -57,14 +57,14 @@
 					/>
 					<input
 						type="text"
-						class="input w-full {form?.errors?.location ? 'error' : ''}"
+						class="input input-primary w-full {form?.errors?.location ? 'input-error' : ''}"
 						name="location"
 						id="location"
 						placeholder="e.g. San Francisco, CA"
 						value={data.jobDetails.location}
 					/>
 					{#if form?.errors?.location}
-						<ValidationError>
+						<ValidationError label="location">
 							{form.errors.location[0]}
 						</ValidationError>
 					{/if}
@@ -78,7 +78,7 @@
 						class="sr-only"
 					/>
 					<select
-						class="input w-full  {form?.errors?.typeId ? 'error' : ''}"
+						class="select select-primary w-full  {form?.errors?.typeId ? 'select-error' : ''}"
 						name="type"
 						id="type"
 						value={data.jobDetails.type.id}
@@ -88,7 +88,7 @@
 						{/each}
 					</select>
 					{#if form?.errors?.typeId}
-						<ValidationError>
+						<ValidationError label="type">
 							{form.errors.typeId[0]}
 						</ValidationError>
 					{/if}
@@ -102,7 +102,9 @@
 						class="sr-only"
 					/>
 					<textarea
-						class="input w-full description  {form?.errors?.description ? 'error' : ''}"
+						class="textarea textarea-primary w-full {form?.errors?.description
+							? 'textarea-error'
+							: ''}"
 						name="description"
 						id="description"
 						rows={6}
@@ -110,7 +112,7 @@
 						value={data.jobDetails.description}
 					/>
 					{#if form?.errors?.description}
-						<ValidationError>
+						<ValidationError label="description">
 							{form.errors.description[0]}
 						</ValidationError>
 					{/if}
@@ -125,7 +127,7 @@
 						class="sr-only"
 					/>
 					<input
-						class="input w-full  {form?.errors?.salary ? 'error' : ''}"
+						class="input input-primary w-full {form?.errors?.salary ? 'input-error' : ''}"
 						type="number"
 						name="salary"
 						id="salary"
@@ -133,7 +135,7 @@
 						value={data.jobDetails.salary}
 					/>
 					{#if form?.errors?.salary}
-						<ValidationError>
+						<ValidationError label="salary">
 							{form.errors.salary[0]}
 						</ValidationError>
 					{/if}
@@ -147,7 +149,7 @@
 						class="sr-only"
 					/>
 					<select
-						class="input w-full {form?.errors?.categoryId ? 'error' : ''}"
+						class="select select-primary w-full {form?.errors?.categoryId ? 'select-error' : ''}"
 						name="category"
 						id="category"
 						value={data.jobDetails.category.id}
@@ -157,7 +159,7 @@
 						{/each}
 					</select>
 					{#if form?.errors?.categoryId}
-						<ValidationError>
+						<ValidationError label="category">
 							{form.errors.categoryId[0]}
 						</ValidationError>
 					{/if}
@@ -165,10 +167,10 @@
 			</div>
 			<div class="row">
 				<div class="col-left" />
-				<div class="col-right pb-4 relative">
-					<button class="button">Update</button>
+				<div class="col-right pb-4 relative flex justify-end">
+					<button class="btn btn-primary mr-2">Update</button>
 					<a
-						class="button-ghost"
+						class="btn btn-ghost"
 						href="/jobs/{data.jobId}">Cancel</a
 					>
 				</div>

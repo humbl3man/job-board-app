@@ -16,7 +16,7 @@
 	];
 </script>
 
-<header class="bg-primary-content">
+<header class="bg-primary-content border-b border-slate-200">
 	<div class="mx-auto max-w-screen-2xl py-4 px-2">
 		<div class="flex items-center justify-between">
 			<a

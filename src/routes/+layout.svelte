@@ -24,7 +24,7 @@
 	/>
 </svelte:head>
 
-<div class="grid page bg-slate-50">
+<div class="grid page h-full bg-slate-50">
 	<Header
 		isAdmin={$page.data?.user?.role === Role.ADMIN}
 		isEmployer={$page.data?.user?.role === Role.EMPLOYER}
@@ -36,7 +36,7 @@
 </div>
 
 <style lang="postcss">
-	:global(body) {
+	:global(html) {
 		@apply bg-slate-300;
 	}
 	:global(h1, h2, h3, h4) {
