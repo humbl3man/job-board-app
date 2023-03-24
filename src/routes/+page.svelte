@@ -31,7 +31,6 @@
 					ease!
 				</p>
 				<div class="mt-8 relative">
-					<!-- TODO: override typeahead input to match dark theme -->
 					<Typeahead
 						type="text"
 						label="Search"
@@ -62,6 +61,9 @@
 <style lang="postcss">
 	:global([data-svelte-search] input) {
 		@apply input input-primary w-full !important;
+	}
+	:global([data-svelte-search] .dropdown) {
+		@apply w-full !important;
 	}
 	:global([data-svelte-typeahead] li) {
 		@apply bg-white text-slate-800;
