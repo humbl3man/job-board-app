@@ -55,6 +55,12 @@
 	:global(.textarea[data-invalid]) {
 		@apply textarea-error;
 	}
+	:global(.select) {
+		@apply text-base font-normal;
+	}
+	:global(.textarea) {
+		@apply text-base leading-relaxed;
+	}
 	.page {
 		grid-template-rows: max-content 1fr max-content;
 	}
