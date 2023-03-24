@@ -13,10 +13,10 @@
 	const { form: updateForm, errors } = superForm(data.form);
 </script>
 
-<SuperDebug data={$errors} />
+<!-- <SuperDebug data={$errors} /> -->
 
 <Shell>
-	<div class="update mx-auto max-w-3xl bg-white mt-16 mb-16">
+	<div class="update custom-wrapper max-w-3xl">
 		<form
 			method="POST"
 			action="?/updatejob"
@@ -27,7 +27,7 @@
 				};
 			}}
 		>
-			<div class="p-6 border-b border-slate-300">
+			<div class="py-6 border-b border-slate-300">
 				<h1 class="text-2xl mb-2 flex items-center">
 					{data.title}
 					<span class="badge badge-lg ml-2">Update</span>
@@ -194,7 +194,7 @@
 
 <style lang="postcss">
 	.update .row {
-		@apply p-6 border-b border-slate-300 grid gap-4 sm:gap-8 items-center sm:grid-cols-[200px_1fr];
+		@apply py-6 border-b border-slate-300 grid gap-4 sm:gap-8 items-center sm:grid-cols-[200px_1fr] last-of-type:border-0;
 	}
 	.update .col-left {
 		@apply text-slate-700;

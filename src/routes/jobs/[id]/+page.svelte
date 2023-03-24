@@ -49,12 +49,12 @@
 </Dialog>
 
 <Shell>
-	<div class="jobdetails mx-auto max-w-3xl bg-white mt-16 mb-16">
-		<div class="p-6 border-b border-slate-300">
+	<div class="jobdetails max-w-3xl custom-wrapper">
+		<div class="py-6 border-b border-slate-300">
 			<div class="mb-8">
 				<a
 					href="/jobs"
-					class="btn btn-sm btn-ghost"
+					class="btn btn-sm btn-primary btn-outline"
 				>
 					<ChevronLeft /> All Jobs</a
 				>
@@ -137,7 +137,7 @@
 
 <style lang="postcss">
 	.jobdetails .row {
-		@apply p-6 border-b border-slate-300 grid gap-4 sm:gap-8 items-center sm:grid-cols-[200px_1fr];
+		@apply py-6 border-b border-slate-300 grid gap-4 sm:gap-8 items-center sm:grid-cols-[200px_1fr] last-of-type:border-0;
 	}
 	.jobdetails .col-left {
 		@apply text-slate-700;
