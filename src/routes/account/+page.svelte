@@ -8,8 +8,8 @@
 	{JSON.stringify(data, null, 2)}
 </pre> -->
 
-<section class="dashboard mx-auto max-w-3xl bg-white mt-16 rounded-md">
-	<div class="p-6 border-b border-slate-300">
+<section class="dashboard mx-auto max-w-3xl custom-wrapper">
+	<div class="py-6 border-b border-slate-300">
 		<h1 class="text-2xl mb-2">Account Information</h1>
 		<div class="text-slate-600 flex items-center justify-between">
 			<span
@@ -53,7 +53,7 @@
 
 <style lang="postcss">
 	.dashboard .row {
-		@apply p-6 border-b border-slate-300 grid gap-4 sm:gap-8 items-center sm:grid-cols-[200px_1fr];
+		@apply py-6 border-b border-slate-300 grid gap-4 sm:gap-8 items-center sm:grid-cols-[200px_1fr] last-of-type:border-0;
 	}
 	.dashboard .col-left {
 		@apply text-slate-500;

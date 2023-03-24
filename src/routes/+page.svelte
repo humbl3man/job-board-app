@@ -39,12 +39,16 @@
 						data={data.jobs}
 						extract={(job) => job.title}
 						let:result
+						let:value
 						on:select={({ detail }) => {
 							goto(`/jobs/${detail.original.id}`);
 						}}
 					>
 						<strong class="mr-1">{result.original.title}</strong>
 						<span class="text-sm text-slate-700">{result.original.company.name}</span>
+						<svelte:fragment slot="no-results">
+							No results found for <span class="italic">"{value}"</span>
+						</svelte:fragment>
 					</Typeahead>
 					<div class="absolute top-1/2 -translate-y-[50%] right-2">
 						<MagnifyingGlass size={24} />
@@ -60,7 +64,7 @@
 
 <style lang="postcss">
 	:global([data-svelte-search] input) {
-		@apply input input-primary w-full !important;
+		@apply input input-primary w-full border-2 !important;
 	}
 	:global([data-svelte-typeahead]) {
 		@apply w-full block !important;

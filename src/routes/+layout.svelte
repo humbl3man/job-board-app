@@ -61,6 +61,9 @@
 	:global(.textarea) {
 		@apply text-base leading-relaxed;
 	}
+	:global(.custom-wrapper) {
+		@apply my-8 mb-16 mx-auto px-7 py-12 bg-white rounded-sm border-b-[3px] border-slate-200;
+	}
 	.page {
 		grid-template-rows: max-content 1fr max-content;
 	}

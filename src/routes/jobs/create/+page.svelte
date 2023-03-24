@@ -1,10 +1,11 @@
 <script lang="ts">
 	// import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
-	import { enhance } from '$app/forms';
+	import { applyAction, enhance } from '$app/forms';
 	import Shell from '$lib/components/Shell.svelte';
 	import ValidationError from '$lib/components/ValidationError.svelte';
 	import type { PageData } from './$types';
 	import { superForm } from 'sveltekit-superforms/client';
+	import { invalidateAll } from '$app/navigation';
 
 	export let data: PageData;
 
@@ -14,12 +15,17 @@
 <!-- <SuperDebug data={$errors} /> -->
 
 <Shell>
-	<div class="mx-auto max-w-2xl bg-white p-8 my-16">
+	<div class="max-w-2xl custom-wrapper">
 		<form
 			method="POST"
 			action="?/createjob"
 			novalidate
-			use:enhance
+			use:enhance={() => {
+				return async ({ result }) => {
+					await invalidateAll();
+					await applyAction(result);
+				};
+			}}
 		>
 			<h1>Create Job</h1>
 			<div class="my-4 form-control">

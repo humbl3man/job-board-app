@@ -20,72 +20,73 @@
 <!-- <SuperDebug data={$errors} /> -->
 
 <Shell>
-	<form
-		class="block mx-auto my-24 max-w-md bg-base-100 p-8 rounded-md shadow-sm"
-		method="POST"
-		action="?/login"
-		use:enhance={() => {
-			return async ({ result }) => {
-				await invalidateAll();
-				await applyAction(result);
-			};
-		}}
-	>
-		<h1>Login</h1>
-		{#if form?.invalidUser}
-			<ErrorMessage>User Doesn't exist</ErrorMessage>
-		{/if}
-		{#if form?.invalidCredentials}
-			<ErrorMessage>Invalid credentials</ErrorMessage>
-		{/if}
-		<div class="form-control my-4 w-full">
-			<label
-				for="email"
-				class="label"
-			>
-				<span class="label-text text-base">Email</span>
-			</label>
-			<input
-				bind:value={$loginForm.email}
-				type="email"
-				id="email"
-				name="email"
-				data-invalid={$errors?.email}
-				class="input w-full input-bordered input-primary"
-			/>
-			{#if $errors?.email}
-				<ValidationError label="email">
-					{$errors.email[0]}
-				</ValidationError>
+	<div class="max-w-md custom-wrapper">
+		<form
+			method="POST"
+			action="?/login"
+			use:enhance={() => {
+				return async ({ result }) => {
+					await invalidateAll();
+					await applyAction(result);
+				};
+			}}
+		>
+			<h1>Login</h1>
+			{#if form?.invalidUser}
+				<ErrorMessage>User Doesn't exist</ErrorMessage>
 			{/if}
-		</div>
-		<div class="form-group w-full my-4">
-			<label
-				for="password"
-				class="label">Password</label
-			>
-			<input
-				type="password"
-				id="password"
-				name="password"
-				class="input w-full input-bordered input-primary"
-				bind:value={$loginForm.password}
-				data-invalid={$errors?.password}
-			/>
-			{#if $errors?.password}
-				<ValidationError label="password">
-					{$errors.password}
-				</ValidationError>
+			{#if form?.invalidCredentials}
+				<ErrorMessage>Invalid credentials</ErrorMessage>
 			{/if}
-		</div>
-		<div class="grid gap-4">
-			<button class="btn btn-primary w-full"> Login </button>
-			<span class="text-center">
-				Don't have an account? <a
-					href="/register"
-					class="text-neutral underline">Register</a
+			<div class="form-control my-4 w-full">
+				<label
+					for="email"
+					class="label"
 				>
-			</span>
-		</div>
-	</form>
+					<span class="label-text text-base">Email</span>
+				</label>
+				<input
+					bind:value={$loginForm.email}
+					type="email"
+					id="email"
+					name="email"
+					data-invalid={$errors?.email}
+					class="input w-full input-bordered input-primary"
+				/>
+				{#if $errors?.email}
+					<ValidationError label="email">
+						{$errors.email[0]}
+					</ValidationError>
+				{/if}
+			</div>
+			<div class="form-group w-full my-4">
+				<label
+					for="password"
+					class="label">Password</label
+				>
+				<input
+					type="password"
+					id="password"
+					name="password"
+					class="input w-full input-bordered input-primary"
+					bind:value={$loginForm.password}
+					data-invalid={$errors?.password}
+				/>
+				{#if $errors?.password}
+					<ValidationError label="password">
+						{$errors.password}
+					</ValidationError>
+				{/if}
+			</div>
+			<div class="grid gap-4">
+				<button class="btn btn-primary w-full"> Login </button>
+				<span class="text-center">
+					Don't have an account? <a
+						href="/register"
+						class="text-neutral underline">Register</a
+					>
+				</span>
+			</div>
+		</form>
+	</div>
 </Shell>

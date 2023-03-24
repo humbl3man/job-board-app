@@ -68,7 +68,7 @@
 </svelte:head>
 
 <Shell>
-	<div class="mx-auto max-w-screen-2xl my-16 bg-white px-6 py-16 rounded-md">
+	<div class="max-w-screen-2xl custom-wrapper">
 		<h1 class="font-bold text-3xl mb-8">Job Listings</h1>
 
 		{#if data.jobs.length}
@@ -178,13 +178,13 @@
 						</tbody>
 					</table>
 				{:else}
-					<div class="px-4 min-h-[100px] flex items-center justify-center border-2 border-dashed">
-						No jobs found. Try refining your search.
-					</div>
+					<div class="empty-message">No jobs found. Try refining your search.</div>
 				{/if}
 			</section>
 		{:else}
-			<p>There are no jobs to display.</p>
+			<div class="empty-message">
+				Currently, there are no jobs at this time. Please check back at a later time.
+			</div>
 		{/if}
 	</div>
 </Shell>
@@ -198,5 +198,8 @@
 	}
 	.filters button.selected {
 		@apply bg-indigo-50;
+	}
+	.empty-message {
+		@apply px-4 min-h-[200px] flex items-center justify-center border-2 border-dashed;
 	}
 </style>
