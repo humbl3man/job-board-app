@@ -62,8 +62,8 @@
 	:global([data-svelte-search] input) {
 		@apply input input-primary w-full !important;
 	}
-	:global([data-svelte-search] .dropdown) {
-		@apply w-full !important;
+	:global([data-svelte-typeahead]) {
+		@apply w-full block !important;
 	}
 	:global([data-svelte-typeahead] li) {
 		@apply bg-white text-slate-800;
