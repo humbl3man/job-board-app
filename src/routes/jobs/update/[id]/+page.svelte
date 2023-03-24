@@ -1,20 +1,26 @@
 <script lang="ts">
+	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
 	import { applyAction, enhance } from '$app/forms';
 	import { invalidateAll } from '$app/navigation';
 	import Shell from '$lib/components/Shell.svelte';
 	import ValidationError from '$lib/components/ValidationError.svelte';
 	import type { ActionData, PageData } from './$types';
+	import { superForm } from 'sveltekit-superforms/client';
 
 	export let data: PageData;
 	export let form: ActionData;
+
+	const { form: updateForm, errors } = superForm(data.form);
 </script>
+
+<SuperDebug data={$errors} />
 
 <Shell>
 	<div class="update mx-auto max-w-3xl bg-white mt-16 mb-16">
 		<form
 			method="POST"
 			action="?/updatejob"
-			use:enhance={({ form, data }) => {
+			use:enhance={() => {
 				return async ({ result }) => {
 					await invalidateAll();
 					await applyAction(result);
@@ -22,8 +28,11 @@
 			}}
 		>
 			<div class="p-6 border-b border-slate-300">
-				<h1 class="text-2xl mb-2">{data.jobDetails.title}</h1>
-				<p class="text-slate-600">{data.jobDetails.company.name}</p>
+				<h1 class="text-2xl mb-2 flex items-center">
+					{data.title}
+					<span class="badge badge-lg ml-2">Update</span>
+				</h1>
+				<p class="text-slate-600">{data.companyName}</p>
 			</div>
 
 			<div class="row">
@@ -35,15 +44,16 @@
 					/>
 					<input
 						type="text"
-						class="input input-primary w-full {form?.errors?.title ? 'input-error' : ''}"
+						class="input input-primary w-full"
 						name="title"
 						id="title"
 						placeholder="e.g. Software Engineer"
-						value={data.jobDetails.title}
+						bind:value={$updateForm.title}
+						data-invalid={$errors?.title}
 					/>
-					{#if form?.errors?.title}
+					{#if $errors?.title}
 						<ValidationError label="title">
-							{form.errors.title[0]}
+							{$errors.title[0]}
 						</ValidationError>
 					{/if}
 				</div>
@@ -57,15 +67,16 @@
 					/>
 					<input
 						type="text"
-						class="input input-primary w-full {form?.errors?.location ? 'input-error' : ''}"
+						class="input input-primary w-full"
 						name="location"
 						id="location"
 						placeholder="e.g. San Francisco, CA"
-						value={data.jobDetails.location}
+						bind:value={$updateForm.location}
+						data-invalid={$errors?.location}
 					/>
-					{#if form?.errors?.location}
+					{#if $errors?.location}
 						<ValidationError label="location">
-							{form.errors.location[0]}
+							{$errors.location[0]}
 						</ValidationError>
 					{/if}
 				</div>
@@ -78,18 +89,19 @@
 						class="sr-only"
 					/>
 					<select
-						class="select select-primary w-full  {form?.errors?.typeId ? 'select-error' : ''}"
-						name="type"
+						class="select select-primary w-full"
+						name="typeId"
 						id="type"
-						value={data.jobDetails.type.id}
+						bind:value={$updateForm.typeId}
+						data-invalid={$errors?.typeId}
 					>
 						{#each data.jobTypes as { id, name }}
 							<option value={id}>{name}</option>
 						{/each}
 					</select>
-					{#if form?.errors?.typeId}
+					{#if $errors?.typeId}
 						<ValidationError label="type">
-							{form.errors.typeId[0]}
+							{$errors.typeId[0]}
 						</ValidationError>
 					{/if}
 				</div>
@@ -102,18 +114,17 @@
 						class="sr-only"
 					/>
 					<textarea
-						class="textarea textarea-primary w-full {form?.errors?.description
-							? 'textarea-error'
-							: ''}"
+						class="textarea textarea-primary w-full"
 						name="description"
 						id="description"
-						rows={6}
+						rows={10}
 						placeholder="Job Description"
-						value={data.jobDetails.description}
+						bind:value={$updateForm.description}
+						data-invalid={$errors?.description}
 					/>
-					{#if form?.errors?.description}
+					{#if $errors?.description}
 						<ValidationError label="description">
-							{form.errors.description[0]}
+							{$errors.description[0]}
 						</ValidationError>
 					{/if}
 				</div>
@@ -127,12 +138,13 @@
 						class="sr-only"
 					/>
 					<input
-						class="input input-primary w-full {form?.errors?.salary ? 'input-error' : ''}"
+						class="input input-primary w-full"
 						type="number"
 						name="salary"
 						id="salary"
 						placeholder="e.g. 100000"
-						value={data.jobDetails.salary}
+						bind:value={$updateForm.salary}
+						data-invalid={$errors?.salary}
 					/>
 					{#if form?.errors?.salary}
 						<ValidationError label="salary">
@@ -149,18 +161,19 @@
 						class="sr-only"
 					/>
 					<select
-						class="select select-primary w-full {form?.errors?.categoryId ? 'select-error' : ''}"
-						name="category"
+						class="select select-primary w-full"
+						name="categoryId"
 						id="category"
-						value={data.jobDetails.category.id}
+						bind:value={$updateForm.categoryId}
+						data-invalid={$errors?.categoryId}
 					>
 						{#each data.categories as { id, name }}
 							<option value={id}>{name}</option>
 						{/each}
 					</select>
-					{#if form?.errors?.categoryId}
+					{#if $errors?.categoryId}
 						<ValidationError label="category">
-							{form.errors.categoryId[0]}
+							{$errors.categoryId[0]}
 						</ValidationError>
 					{/if}
 				</div>
@@ -171,7 +184,7 @@
 					<button class="btn btn-primary mr-2">Update</button>
 					<a
 						class="btn btn-ghost"
-						href="/jobs/{data.jobId}">Cancel</a
+						href="/jobs/{data.id}">Cancel</a
 					>
 				</div>
 			</div>

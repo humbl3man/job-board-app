@@ -68,7 +68,7 @@
 					class="label">Category</label
 				>
 				<select
-					class="select select-primary font-normal w-full"
+					class="select select-primary w-full"
 					name="categoryId"
 					id="category"
 					bind:value={$createForm.categoryId}
@@ -94,7 +94,7 @@
 					class="label">Job Type</label
 				>
 				<select
-					class="select select-primary font-normal w-full"
+					class="select select-primary w-full"
 					name="typeId"
 					id="type"
 					bind:value={$createForm.typeId}
@@ -123,7 +123,7 @@
 					class="textarea textarea-primary w-full"
 					name="description"
 					id="description"
-					rows={6}
+					rows={10}
 					placeholder="Description..."
 					bind:value={$createForm.description}
 					data-invalid={$errors?.description}

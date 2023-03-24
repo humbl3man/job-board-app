@@ -1,21 +1,23 @@
 import { db } from '$lib/db';
 import { error, fail, redirect } from '@sveltejs/kit';
-import { z } from 'zod';
 import type { Action, Actions, PageServerLoad } from './$types';
+import { superValidate } from 'sveltekit-superforms/server';
+import { jobSchema } from '$lib/schemas/job.schema';
 
-export const load = (async ({ params, locals }) => {
-	if (!locals.user) {
+export const load = (async (event) => {
+	if (!event.locals.user) {
 		throw redirect(302, '/login');
 	}
-	if (!locals?.user?.companyId) {
+	if (!event.locals?.user?.companyId) {
 		throw redirect(302, `/jobs`);
 	}
 
 	const jobDetails = await db.job.findUnique({
 		where: {
-			id: Number(params.id)
+			id: Number(event.params.id)
 		},
 		select: {
+			id: true,
 			title: true,
 			description: true,
 			salary: true,
@@ -32,7 +34,7 @@ export const load = (async ({ params, locals }) => {
 	}
 
 	// only allow updates if job belongs to same company
-	if (jobDetails.companyId !== locals.user.companyId) {
+	if (jobDetails.companyId !== event.locals.user.companyId) {
 		throw redirect(301, '/jobs');
 	}
 
@@ -50,59 +52,46 @@ export const load = (async ({ params, locals }) => {
 		}
 	});
 
+	const form = await superValidate(
+		{
+			title: jobDetails.title,
+			description: jobDetails.description,
+			location: jobDetails.location,
+			categoryId: jobDetails.category.id,
+			typeId: jobDetails.type.id,
+			salary: jobDetails.salary
+		},
+		jobSchema
+	);
+
 	return {
-		jobId: params.id,
-		jobDetails,
+		id: event.params.id,
+		title: jobDetails.title,
+		companyName: jobDetails.company.name,
 		jobTypes,
 		categories,
-		showDeleteButton: locals.user.companyId === jobDetails.company.id
+		showDeleteButton: event.locals.user.companyId === jobDetails.company.id,
+		form
 	};
 }) satisfies PageServerLoad;
 
-const updatejob: Action = async ({ request, params }) => {
-	const formData = await request.formData();
-	const updatePayload = {
-		title: String(formData.get('title')),
-		location: String(formData.get('location')),
-		categoryId: Number(formData.get('category')),
-		typeId: Number(formData.get('type')),
-		description: String(formData.get('description')),
-		salary: Number(formData.get('salary'))
-	};
+const updatejob: Action = async (event) => {
+	const form = await superValidate(event, jobSchema);
 
-	const schema = z.object({
-		title: z
-			.string({ required_error: 'Title is required' })
-			.min(1, 'Title is required')
-			.max(62, 'Title cannot exceed 62 characters'),
-		location: z.string({ required_error: 'Location is required' }).min(1, 'Location is required'),
-		categoryId: z.number({ required_error: 'Category is required' }).min(1, 'Category is required'),
-		typeId: z.number({ required_error: 'Job Type is required' }).min(1, 'Job Type is required'),
-		description: z
-			.string({ required_error: 'Description is required' })
-			.min(1, 'Description is required'),
-		salary: z.number({ required_error: 'Salary is required' }).min(1, 'Salary is required')
-	});
-
-	const result = await schema.safeParse(updatePayload);
-
-	if (!result.success) {
-		return fail(400, {
-			errors: result.error.flatten().fieldErrors,
-			data: Object.fromEntries(formData)
-		});
+	if (!form.valid) {
+		return fail(400, { form });
 	}
 
 	await db.job.update({
 		where: {
-			id: Number(params.id)
+			id: Number(event.params.id)
 		},
 		data: {
-			...updatePayload
+			...form.data
 		}
 	});
 
-	throw redirect(302, `/jobs/${params.id}`);
+	throw redirect(302, `/jobs/${event.params.id}`);
 };
 
 export const actions: Actions = {
