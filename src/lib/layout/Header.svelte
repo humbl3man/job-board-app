@@ -2,6 +2,7 @@
 	import { applyAction, enhance } from '$app/forms';
 	import { invalidateAll } from '$app/navigation';
 	import type { User } from '@prisma/client';
+	import { ChevronDown } from 'radix-icons-svelte';
 
 	export let isAuthenticated: Boolean;
 	export let isEmployer: Boolean;
@@ -46,18 +47,25 @@
 			<div class="grid grid-flow-col gap-2 items-center">
 				{#if isAuthenticated}
 					<div class="dropdown dropdown-end">
+						<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+						<!-- svelte-ignore a11y-label-has-associated-control -->
 						<label
 							tabindex="0"
-							class="btn m-1 btn-sm btn-outline btn-primary">{user.name || user.email}</label
+							class="btn m-1 btn-sm btn-ghost gap-2 no-animation"
 						>
+							<span>{user.name || user.email}</span>
+							<ChevronDown />
+						</label>
+						<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 						<ul
 							tabindex="0"
-							class="dropdown-content bg-white border border-slate-200 flex p-2 rounded-box flex-col w-52"
+							class="dropdown-content bg-white border border-slate-200 flex rounded-sm flex-col w-52 py-1 shadow-sm"
 						>
 							<li>
 								<a
 									href="/account"
-									class="btn btn-ghost btn-sm w-full">Account</a
+									class="btn btn-ghost btn-sm w-full normal-case inline-flex justify-start"
+									>Account</a
 								>
 							</li>
 							<form
@@ -71,7 +79,9 @@
 								}}
 							>
 								<li>
-									<button class="btn btn-ghost btn-sm w-full">Logout</button>
+									<button class="btn btn-ghost btn-sm w-full normal-case inline-flex justify-start"
+										>Logout</button
+									>
 								</li>
 							</form>
 						</ul>

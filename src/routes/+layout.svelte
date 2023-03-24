@@ -42,6 +42,14 @@
 	:global(h1, h2, h3, h4) {
 		@apply font-bold text-neutral text-2xl sm:text-3xl;
 	}
+	:global(.btn) {
+		@apply rounded-sm;
+	}
+	:global(.input),
+	:global(.select),
+	:global(.textarea) {
+		@apply rounded-sm;
+	}
 	:global(.btn-ghost) {
 		@apply hover:bg-indigo-50 hover:text-indigo-900 focus:bg-indigo-50 focus:text-indigo-900;
 	}
