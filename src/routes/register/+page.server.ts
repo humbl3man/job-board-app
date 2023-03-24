@@ -4,97 +4,85 @@ import { fail, redirect } from '@sveltejs/kit';
 import bcrypt from 'bcrypt';
 import { z } from 'zod';
 import type { Action, Actions, PageServerLoad } from './$types';
+import { superValidate } from 'sveltekit-superforms/server';
 
-export const load: PageServerLoad = async ({ locals }) => {
-	if (locals.user) {
+const registerSchema = z.object({
+	email: z
+		.string({
+			required_error: 'Email is required'
+		})
+		.min(1, 'Email is required')
+		.email('Please provide a valid email'),
+	password: z
+		.string({ required_error: 'Password is required' })
+		.min(1, 'Pasword is required')
+		.min(8, 'Password is too short, must be at least 8 characters')
+		.max(16, 'Password cannot exceed 16 characters'),
+	isEmployer: z.boolean(),
+	company: z.string().optional()
+});
+
+export const load: PageServerLoad = async (event) => {
+	if (event.locals.user) {
 		throw redirect(301, '/account');
 	}
+
+	const form = await superValidate(event, registerSchema);
+	return { form };
 };
 
-const register: Action = async ({ request }) => {
-	const formData = await request.formData();
-	const email = formData.get('email').toString();
-	const password = formData.get('password').toString();
-	const isEmployer = formData.get('is_employer');
-	const company = formData.get('company')?.toString();
+const register: Action = async (event) => {
+	const formData = await event.request.formData();
+	let form = await superValidate(formData, registerSchema);
 
-	const registerSchema = z.object({
-		email: z
-			.string({
-				required_error: 'Email is required'
+	// if user checks isEmployer, re-validate form company field
+	if (form.data.isEmployer) {
+		const schemaWithCompanyRequired = registerSchema.merge(
+			z.object({
+				company: z.string().min(1, 'Company name is required')
 			})
-			.min(1, 'Email is required')
-			.email('Please provide a valid email'),
-		password: z
-			.string({ required_error: 'Password is required' })
-			.min(1, 'Password is required')
-			.max(16, 'Password must not exceed 16 characters'),
-		company: z
-			.string()
-			.optional()
-			.refine(
-				(value) => {
-					if (isEmployer) {
-						return value !== '';
-					} else {
-						return true;
-					}
-				},
-				{
-					message: 'Company name is required'
-				}
-			)
-	});
+		);
+		form = await superValidate(formData, schemaWithCompanyRequired);
+	}
 
-	const result = registerSchema.safeParse({
-		email,
-		password,
-		isEmployer: Boolean(isEmployer),
-		company
-	});
-
-	// validate user and password (and conditionally, company)
-	if (!result.success) {
-		return fail(400, {
-			...result.error.flatten(),
-			data: {
-				email,
-				company
-			}
-		});
+	// check validity
+	if (!form.valid) {
+		return fail(400, { form });
 	}
 
 	// check if user already exists
 	const user = await db.user.findUnique({
 		where: {
-			email
+			email: form.data.email
 		}
 	});
 
-	// throw exists error
+	// if user already exists, throw error
 	if (user) {
 		return fail(400, {
-			exists: true
+			form,
+			userExists: true
 		});
 	}
 
-	// check if user provided company value, if so register a "Employer" type user
-	if (company) {
+	if (form.data?.company) {
+		// check if user is trying to register as employer
 		const companyRecordFound = await db.company.findUnique({
 			where: {
-				name: company
+				name: form.data.company
 			}
 		});
 		if (companyRecordFound) {
 			return fail(400, {
-				exists: true
+				form,
+				companyExists: true
 			});
 		}
 
 		const newUser = await db.user.create({
 			data: {
-				email,
-				passwordHash: await bcrypt.hash(password, 10),
+				email: form.data.email,
+				passwordHash: await bcrypt.hash(form.data.password, 10),
 				userAuthToken: crypto.randomUUID(),
 				role: {
 					connect: {
@@ -106,16 +94,16 @@ const register: Action = async ({ request }) => {
 
 		await db.company.create({
 			data: {
-				name: company,
+				name: form.data.company,
 				userId: newUser.id
 			}
 		});
 	} else {
-		// if no company provided, create new user with applicant role
+		// otherwise, create new user with USER role
 		await db.user.create({
 			data: {
-				email: email,
-				passwordHash: await bcrypt.hash(password, 10),
+				email: form.data.email,
+				passwordHash: await bcrypt.hash(form.data.password, 10),
 				userAuthToken: crypto.randomUUID(),
 				role: {
 					connect: {

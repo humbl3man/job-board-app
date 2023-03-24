@@ -1,13 +1,14 @@
 import { db } from '$lib/db';
+import { jobSchema } from '$lib/schemas/job.schema';
 import { fail, redirect } from '@sveltejs/kit';
-import { z } from 'zod';
+import { superValidate } from 'sveltekit-superforms/server';
 import type { Actions, Action, PageServerLoad } from './$types';
 
-export const load: PageServerLoad = async ({ locals }) => {
-	if (!locals.user) {
+export const load: PageServerLoad = async (event) => {
+	if (!event.locals.user) {
 		throw redirect(302, '/login');
 	}
-	if (!locals.user.company) {
+	if (!event.locals.user.company) {
 		throw redirect(302, '/jobs');
 	}
 
@@ -25,53 +26,36 @@ export const load: PageServerLoad = async ({ locals }) => {
 		}
 	});
 
+	const form = await superValidate(event, jobSchema);
+
 	return {
 		categories,
-		jobTypes
+		jobTypes,
+		form
 	};
 };
 
-const createjob: Action = async ({ request, cookies, locals }) => {
-	const formData = await request.formData();
+const createjob: Action = async (event) => {
+	const form = await superValidate(event, jobSchema);
+	const companyId = Number(event.locals.user.companyId);
 
-	const createPayload = {
-		title: String(formData.get('title')),
-		location: String(formData.get('location')),
-		categoryId: Number(formData.get('category')),
-		typeId: Number(formData.get('type')),
-		description: String(formData.get('description')),
-		salary: Number(formData.get('salary'))
-	};
-
-	const schema = z.object({
-		title: z
-			.string({ required_error: 'Title is required' })
-			.min(1, 'Title is required')
-			.max(62, 'Title cannot exceed 62 characters'),
-		location: z.string({ required_error: 'Location is required' }).min(1, 'Location is required'),
-		categoryId: z.number({ required_error: 'Category is required' }).min(1, 'Category is required'),
-		typeId: z.number({ required_error: 'Job Type is required' }).min(1, 'Job Type is required'),
-		description: z
-			.string({ required_error: 'Description is required' })
-			.min(1, 'Description is required'),
-		salary: z.number({ required_error: 'Salary is required' }).min(1, 'Salary is required')
-	});
-
-	const result = await schema.safeParse(createPayload);
-
-	if (!result.success) {
-		return fail(400, {
-			errors: result.error.flatten().fieldErrors,
-			data: Object.fromEntries(formData)
-		});
+	if (!form.valid) {
+		return fail(400, { form });
 	}
 
-	await db.job.create({
-		data: {
-			...createPayload,
-			companyId: locals.user.companyId as number
-		}
-	});
+	try {
+		await db.job.create({
+			data: {
+				...form.data,
+				companyId
+			}
+		});
+	} catch (err) {
+		return fail(400, {
+			form,
+			error: 'Something went wrong. Failed to create job'
+		});
+	}
 	throw redirect(302, '/jobs');
 };
 

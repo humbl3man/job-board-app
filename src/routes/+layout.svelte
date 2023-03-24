@@ -45,6 +45,22 @@
 	:global(.btn-ghost) {
 		@apply hover:bg-indigo-50 hover:text-indigo-900 focus:bg-indigo-50 focus:text-indigo-900;
 	}
+
+	:global(.input[data-invalid]) {
+		@apply input-error;
+	}
+	:global(.select[data-invalid]) {
+		@apply select-error;
+	}
+	:global(.textarea[data-invalid]) {
+		@apply textarea-error;
+	}
+	:global(.select) {
+		@apply text-base font-normal;
+	}
+	:global(.textarea) {
+		@apply text-base leading-relaxed;
+	}
 	.page {
 		grid-template-rows: max-content 1fr max-content;
 	}

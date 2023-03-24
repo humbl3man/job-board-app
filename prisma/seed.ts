@@ -3,7 +3,14 @@ import { PrismaClient } from '@prisma/client';
 const db = new PrismaClient();
 
 const jobTypes = ['Full-time', 'Part-time'];
-const categories = ['Business', 'Technology', 'Retail', 'Marketing'];
+const categories = [
+	'Business',
+	'Technology',
+	'Retail',
+	'Marketing',
+	'Healthcare',
+	'Home Improvement'
+];
 const roles = ['Admin', 'Employer', 'User'];
 
 async function main() {

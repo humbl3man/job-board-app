@@ -1,16 +1,17 @@
 <script lang="ts">
+	// import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
 	import { enhance } from '$app/forms';
 	import Shell from '$lib/components/Shell.svelte';
 	import ValidationError from '$lib/components/ValidationError.svelte';
-	import type { ActionData, PageData } from './$types';
+	import type { PageData } from './$types';
+	import { superForm } from 'sveltekit-superforms/client';
 
 	export let data: PageData;
-	export let form: ActionData;
+
+	const { form: createForm, errors } = superForm(data.form);
 </script>
 
-<!-- <pre>
-	{JSON.stringify(form, null, 2)}
-</pre> -->
+<!-- <SuperDebug data={$errors} /> -->
 
 <Shell>
 	<div class="mx-auto max-w-2xl bg-white p-8 my-16">
@@ -28,15 +29,16 @@
 				>
 				<input
 					type="text"
-					class="input input-primary w-full {form?.errors?.title ? 'input-error' : ''}"
+					class="input input-primary w-full"
 					name="title"
 					id="title"
 					placeholder="e.g. Software Engineer"
-					value={form?.data?.title ?? ''}
+					bind:value={$createForm.title}
+					data-invalid={$errors?.title}
 				/>
-				{#if form?.errors?.title}
+				{#if $errors?.title}
 					<ValidationError label="title">
-						{form.errors.title[0]}
+						{$errors.title[0]}
 					</ValidationError>
 				{/if}
 			</div>
@@ -47,14 +49,16 @@
 				>
 				<input
 					type="text"
-					class="input input-primary w-full {form?.errors?.location ? 'input-error' : ''}"
+					class="input input-primary w-full"
 					name="location"
 					id="location"
 					placeholder="e.g. San Francisco, CA"
+					bind:value={$createForm.location}
+					data-invalid={$errors?.location}
 				/>
-				{#if form?.errors?.location}
+				{#if $errors?.location}
 					<ValidationError label="location">
-						{form.errors.location[0]}
+						{$errors.location[0]}
 					</ValidationError>
 				{/if}
 			</div>
@@ -64,11 +68,11 @@
 					class="label">Category</label
 				>
 				<select
-					class="select select-primary font-normal w-full {form?.errors?.categoryId
-						? 'select-error'
-						: ''}"
-					name="category"
+					class="select select-primary w-full"
+					name="categoryId"
 					id="category"
+					bind:value={$createForm.categoryId}
+					data-invalid={$errors?.categoryId}
 				>
 					<option
 						disabled
@@ -78,9 +82,9 @@
 						<option value={id}>{name}</option>
 					{/each}
 				</select>
-				{#if form?.errors?.categoryId}
+				{#if $errors?.categoryId}
 					<ValidationError label="category">
-						{form.errors.categoryId[0]}
+						{$errors.categoryId[0]}
 					</ValidationError>
 				{/if}
 			</div>
@@ -90,11 +94,11 @@
 					class="label">Job Type</label
 				>
 				<select
-					class="select select-primary font-normal w-full {form?.errors?.typeId
-						? 'select-error'
-						: ''}"
-					name="type"
+					class="select select-primary w-full"
+					name="typeId"
 					id="type"
+					bind:value={$createForm.typeId}
+					data-invalid={$errors?.typeId}
 				>
 					<option
 						disabled
@@ -104,9 +108,9 @@
 						<option value={id}>{name}</option>
 					{/each}
 				</select>
-				{#if form?.errors?.typeId}
+				{#if $errors?.typeId}
 					<ValidationError>
-						{form.errors.typeId[0]}
+						{$errors.typeId[0]}
 					</ValidationError>
 				{/if}
 			</div>
@@ -116,32 +120,32 @@
 					class="label">Description</label
 				>
 				<textarea
-					class="textarea textarea-primary w-full {form?.errors?.description
-						? 'textarea-error'
-						: ''}"
+					class="textarea textarea-primary w-full"
 					name="description"
 					id="description"
-					rows={6}
+					rows={10}
 					placeholder="Description..."
+					bind:value={$createForm.description}
+					data-invalid={$errors?.description}
 				/>
-				{#if form?.errors?.description}
+				{#if $errors?.description}
 					<ValidationError label="description">
-						{form.errors.description[0]}
+						{$errors.description[0]}
 					</ValidationError>
 				{/if}
 			</div>
 			<div class="my-4 pb-4 relative">
 				<label for="salary">Salary</label>
 				<input
-					class="input input-primary w-full {form?.errors?.salary ? 'input-error' : ''}"
+					class="input input-primary w-full"
 					type="number"
 					name="salary"
 					id="salary"
 					placeholder="e.g. 100000"
 				/>
-				{#if form?.errors?.salary}
+				{#if $errors?.salary}
 					<ValidationError label="salary">
-						{form.errors.salary[0]}
+						{$errors.salary[0]}
 					</ValidationError>
 				{/if}
 			</div>
