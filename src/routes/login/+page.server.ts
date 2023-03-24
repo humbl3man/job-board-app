@@ -32,16 +32,19 @@ export const load: PageServerLoad = async (event) => {
 const login: Action = async (event) => {
 	const form = await superValidate(event, loginSchema);
 
+	// check validity
 	if (!form.valid) {
 		return fail(400, { form });
 	}
 
+	// check if user exists in database
 	const user = await db.user.findUnique({
 		where: {
 			email: String(form.data.email)
 		}
 	});
 
+	// if no user exists, show error to user
 	if (!user) {
 		form.data.password = '';
 
@@ -51,6 +54,7 @@ const login: Action = async (event) => {
 		});
 	}
 
+	// compare provided password to stored password hash
 	const passwordMatch = await bcrypt.compare(form.data.password, user.passwordHash);
 
 	if (!passwordMatch) {
@@ -61,6 +65,7 @@ const login: Action = async (event) => {
 		});
 	}
 
+	// refresh auth token on login
 	try {
 		const authenticatedUser = await db.user.update({
 			where: {
@@ -79,10 +84,12 @@ const login: Action = async (event) => {
 			maxAge: 60 * 60 * 24 * 30
 		});
 
+		// if admin is trying to login, navigate them to admin page
 		if (authenticatedUser.roleId === Role.ADMIN) {
 			throw redirect(302, '/admin');
 		}
 
+		// otherwise, go to account page
 		throw redirect(302, '/account');
 	} catch (error) {
 		return fail(400, {

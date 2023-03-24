@@ -1,5 +1,4 @@
 <script lang="ts">
-	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
 	import { APP_NAME } from '$lib/meta';
 	import { applyAction, enhance } from '$app/forms';
 	import type { PageData, ActionData } from './$types';

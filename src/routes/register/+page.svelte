@@ -1,14 +1,13 @@
 <script lang="ts">
-	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
+	// import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
 	import { APP_NAME } from '$lib/meta';
-	// import { enhance } from '$app/forms';
+	import { enhance } from '$app/forms';
 	import type { ActionData, PageData } from './$types';
 	import Shell from '$lib/components/Shell.svelte';
 	import ErrorMessage from '$lib/components/ErrorMessage.svelte';
 	import ValidationError from '$lib/components/ValidationError.svelte';
 	import { fly } from 'svelte/transition';
 	import { superForm } from 'sveltekit-superforms/client';
-	import { enhance } from '$app/forms';
 
 	export let data: PageData;
 	export let form: ActionData;
@@ -21,7 +20,7 @@
 	<title>{APP_NAME} | Register</title>
 </svelte:head>
 
-<SuperDebug data={form} />
+<!-- <SuperDebug data={form} /> -->
 
 <Shell>
 	<form
