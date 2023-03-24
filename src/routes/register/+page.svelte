@@ -1,13 +1,18 @@
 <script lang="ts">
+	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
 	import { APP_NAME } from '$lib/meta';
-	import { enhance } from '$app/forms';
-	import type { ActionData } from './$types';
+	// import { enhance } from '$app/forms';
+	import type { ActionData, PageData } from './$types';
 	import Shell from '$lib/components/Shell.svelte';
 	import ErrorMessage from '$lib/components/ErrorMessage.svelte';
 	import ValidationError from '$lib/components/ValidationError.svelte';
 	import { fly } from 'svelte/transition';
+	import { superForm } from 'sveltekit-superforms/client';
+	import { enhance } from '$app/forms';
 
+	export let data: PageData;
 	export let form: ActionData;
+	const { form: registerForm, errors } = superForm(data.form);
 
 	let isEmployeer = false;
 </script>
@@ -16,24 +21,17 @@
 	<title>{APP_NAME} | Register</title>
 </svelte:head>
 
-<div class="mockup-code">
-	<pre>
-		<code>
-			{JSON.stringify(form, null, 2)}
-		</code>
-	</pre>
-</div>
+<SuperDebug data={form} />
 
 <Shell>
 	<form
 		class="block mx-auto my-24 max-w-md bg-base-100 p-8 rounded-md shadow-sm"
 		method="POST"
 		action="?/register"
-		novalidate
 		use:enhance
 	>
 		<h1>Create Account</h1>
-		{#if form?.exists}
+		{#if form?.userExists}
 			<ErrorMessage>User Already Exists</ErrorMessage>
 		{/if}
 		<div class="form-group w-full my-4">
@@ -42,17 +40,16 @@
 				class="label">Email</label
 			>
 			<input
-				value={form?.data?.email ?? ''}
 				type="text"
 				id="email"
 				name="email"
-				class="input w-full input-bordered input-primary {form?.fieldErrors?.email
-					? 'input-error'
-					: ''}"
+				class="input input-primary w-full"
+				bind:value={$registerForm.email}
+				data-invalid={$errors?.email}
 			/>
-			{#if form?.fieldErrors?.email}
+			{#if $errors?.email}
 				<ValidationError label="email">
-					{form.fieldErrors?.email[0]}
+					{$errors?.email[0]}
 				</ValidationError>
 			{/if}
 		</div>
@@ -65,25 +62,14 @@
 				type="password"
 				id="password"
 				name="password"
-				class="input w-full input-bordered input-primary {form?.fieldErrors?.password
-					? 'input-error'
-					: ''}"
+				class="input input-primary w-full"
+				bind:value={$registerForm.password}
+				data-invalid={$errors?.password}
 			/>
-			{#if form?.fieldErrors?.password}
-				<ValidationError label="password">{form?.fieldErrors?.password[0]}</ValidationError>
+			{#if $errors?.password}
+				<ValidationError label="password">{$errors?.password[0]}</ValidationError>
 			{/if}
 		</div>
-		<!-- TODO: replace with checkbox -->
-		<!-- <div class="my-4">
-			<Switch
-				color="indigo"
-				radius="xl"
-				size="md"
-				label="Are you an employer?"
-				checked={isEmployeer}
-				on:change={() => (isEmployeer = !isEmployeer)}
-			/>
-		</div> -->
 		<div class="form-control w-max">
 			<label class="label cursor-pointer">
 				<input
@@ -92,7 +78,7 @@
 					class="checkbox checkbox-primary mr-4"
 					on:change={() => (isEmployeer = !isEmployeer)}
 					value={isEmployeer}
-					name="is_employer"
+					name="isEmployer"
 				/>
 				<span class="label-text">I am an employer</span>
 			</label>
@@ -110,11 +96,12 @@
 					type="text"
 					id="company_name"
 					name="company"
-					class="input input-bordered input-primary w-full"
-					value={form?.data?.company ?? ''}
+					class="input input-primary w-full"
+					data-invalid={$errors?.company}
+					bind:value={$registerForm.company}
 				/>
-				{#if form?.fieldErrors?.company}
-					<ValidationError label="company_name">{form?.fieldErrors?.company[0]}</ValidationError>
+				{#if $errors?.company}
+					<ValidationError label="company">{$errors?.company[0]}</ValidationError>
 				{/if}
 			</div>
 		{/if}

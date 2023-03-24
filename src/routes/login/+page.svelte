@@ -1,5 +1,5 @@
 <script lang="ts">
-	// import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
+	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
 	import { APP_NAME } from '$lib/meta';
 	import { applyAction, enhance } from '$app/forms';
 	import type { PageData, ActionData } from './$types';
@@ -18,11 +18,7 @@
 	<title>{APP_NAME} | Login</title>
 </svelte:head>
 
-<!-- <SuperDebug data={$errors} />
-
-<pre>
-	{JSON.stringify(form, null, 2)}
-</pre> -->
+<!-- <SuperDebug data={$errors} /> -->
 
 <Shell>
 	<form
@@ -77,7 +73,7 @@
 				bind:value={$loginForm.password}
 				data-invalid={$errors?.password}
 			/>
-			{#if $errors.password}
+			{#if $errors?.password}
 				<ValidationError label="password">
 					{$errors.password}
 				</ValidationError>
