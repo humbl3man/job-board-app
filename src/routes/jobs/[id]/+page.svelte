@@ -164,12 +164,12 @@
 					</form>
 				{/if}
 				{#if !data.user}
-					<button
-						on:click={() => {
+					<a
+						href="/login/?returnUrl=/jobs/{data.jobId}"
+						on:click|preventDefault={() => {
 							showLoginWarning = true;
 						}}
-						type="button"
-						class="btn btn-primary">Apply for this job <ChevronRight /></button
+						class="btn btn-primary">Apply for this job <ChevronRight /></a
 					>
 				{/if}
 				{#if data.user?.role === Role.USER}

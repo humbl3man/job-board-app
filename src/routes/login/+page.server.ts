@@ -24,7 +24,7 @@ export const load: PageServerLoad = async (event) => {
 	}
 
 	const form = await superValidate(event, loginSchema);
-	const returnURL = event.url.searchParams.get('returnUrl');
+	const returnURL = event.url.searchParams.get('returnURL');
 
 	return {
 		form,

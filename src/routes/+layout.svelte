@@ -70,7 +70,7 @@
 		@apply text-base leading-relaxed;
 	}
 	:global(.custom-wrapper) {
-		@apply my-8 mb-16 mx-auto px-7 py-12 bg-white rounded-sm border-b-[3px] border-slate-200;
+		@apply my-8 mb-16 mx-auto px-7 py-12 bg-white rounded-sm border-b-[3px] border-slate-500/25 ring-1 ring-slate-500/5;
 	}
 	.page {
 		grid-template-rows: max-content 1fr max-content;

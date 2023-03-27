@@ -10,6 +10,9 @@
 
 	export let data: PageData;
 	export let form: ActionData;
+
+	let isProcessing = false;
+
 	const { form: loginForm, errors } = superForm(data.form);
 </script>
 
@@ -25,9 +28,12 @@
 			method="POST"
 			action="?/login"
 			use:enhance={() => {
-				return async ({ result }) => {
+				isProcessing = true;
+				return async ({ result, update }) => {
+					await update();
 					await invalidateAll();
 					await applyAction(result);
+					isProcessing = false;
 				};
 			}}
 		>
@@ -84,7 +90,7 @@
 				{/if}
 			</div>
 			<div class="grid gap-4">
-				<button class="btn btn-primary w-full"> Login </button>
+				<button class="btn btn-primary w-full {isProcessing ? 'btn-disabled' : ''}"> Login </button>
 				<span class="text-center">
 					Don't have an account? <a
 						href="/register"

@@ -1,7 +1,7 @@
 <script lang="ts">
 	// import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
 	import { APP_NAME } from '$lib/meta';
-	import { enhance } from '$app/forms';
+	import { applyAction, enhance } from '$app/forms';
 	import type { ActionData, PageData } from './$types';
 	import Shell from '$lib/components/Shell.svelte';
 	import ErrorMessage from '$lib/components/ErrorMessage.svelte';
@@ -11,6 +11,8 @@
 
 	export let data: PageData;
 	export let form: ActionData;
+	let isProcessing = false;
+
 	const { form: registerForm, errors } = superForm(data.form);
 
 	let isEmployeer = false;
@@ -27,7 +29,14 @@
 		<form
 			method="POST"
 			action="?/register"
-			use:enhance
+			use:enhance={() => {
+				isProcessing = true;
+				return async ({ update, result }) => {
+					await update();
+					await applyAction(result);
+					isProcessing = false;
+				};
+			}}
 		>
 			<input
 				type="hidden"
@@ -110,7 +119,9 @@
 				</div>
 			{/if}
 			<div class="grid gap-4 mt-8">
-				<button class="btn btn-primary w-full"> Register </button>
+				<button class="btn btn-primary w-full {isProcessing ? 'btn-disabled' : ''}">
+					Register
+				</button>
 				<span class="text-center">
 					Already have account? <a
 						href="/login"

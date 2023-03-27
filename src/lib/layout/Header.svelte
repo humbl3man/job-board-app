@@ -59,7 +59,7 @@
 						<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 						<ul
 							tabindex="0"
-							class="dropdown-content bg-white border border-slate-200 flex rounded-sm flex-col w-52 py-1 shadow-sm"
+							class="dropdown-content bg-white ring-1 ring-slate-700/5 flex rounded-sm flex-col w-52 py-1 shadow-md"
 						>
 							<li>
 								<a
