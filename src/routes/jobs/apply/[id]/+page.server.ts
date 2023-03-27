@@ -1,6 +1,6 @@
 import { db } from '$lib/db';
 import { redirect } from '@sveltejs/kit';
-import type { PageServerLoad } from './$types';
+import type { PageServerLoad } from '../../[id]/apply/$types';
 
 export const load = (async ({ request, locals, params }) => {
 	if (!locals.user) {

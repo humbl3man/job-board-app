@@ -21,14 +21,6 @@
 	function getdeleteform(el: HTMLFormElement) {
 		deleteform = el;
 	}
-
-	function handleApplyClick() {
-		if (data.user) {
-			goto(`/jobs/${data.jobId}/apply`);
-		} else {
-			showLoginWarning = true;
-		}
-	}
 </script>
 
 <!-- Delete warning -->
@@ -171,12 +163,19 @@
 						>
 					</form>
 				{/if}
-				{#if !data.user || data.user.role === Role.USER}
-					<!-- url="/jobs/{data.jobId}/apply" -->
+				{#if !data.user}
 					<button
-						on:click={handleApplyClick}
+						on:click={() => {
+							showLoginWarning = true;
+						}}
 						type="button"
 						class="btn btn-primary">Apply for this job <ChevronRight /></button
+					>
+				{/if}
+				{#if data.user?.role === Role.USER}
+					<a
+						href="/jobs/apply/{data.jobId}"
+						class="btn btn-primary">Apply for this job <ChevronRight /></a
 					>
 				{/if}
 			</div>
