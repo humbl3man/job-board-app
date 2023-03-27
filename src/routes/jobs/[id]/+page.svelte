@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { applyAction, enhance } from '$app/forms';
-	import { invalidateAll } from '$app/navigation';
+	import { goto, invalidateAll } from '$app/navigation';
 	import {
 		Dialog,
 		DialogOverlay,
@@ -10,38 +10,85 @@
 	import { formatCurrency } from '$lib/utils/formatCurrency';
 	import type { PageData } from './$types';
 	import Shell from '$lib/components/Shell.svelte';
-	import { ChevronLeft } from 'radix-icons-svelte';
+	import { ChevronLeft, ChevronRight, Circle, InfoCircled } from 'radix-icons-svelte';
+	import { Role } from '$lib/constants/Role';
 
 	export let data: PageData;
 	let showDeleteConfirmation = false;
 	let deleteform: HTMLFormElement;
+	let showLoginWarning = false;
+	let returnURL = `/jobs/${data.jobId}`;
 	function getdeleteform(el: HTMLFormElement) {
 		deleteform = el;
 	}
+
+	function handleApplyClick() {
+		if (data.user) {
+			goto(`/jobs/${data.jobId}/apply`);
+		} else {
+			showLoginWarning = true;
+		}
+	}
 </script>
 
-<!-- <pre>
-	{JSON.stringify(data, null, 2)}
-</pre> -->
+<!-- Delete warning -->
+{#if data.user?.role === Role.EMPLOYER}
+	<Dialog
+		class="fixed inset-0 w-full h-full z-10 flex items-center justify-center"
+		open={showDeleteConfirmation}
+		on:close={() => (showDeleteConfirmation = false)}
+	>
+		<DialogOverlay class="absolute backdrop-blur-sm bg-white/40 inset-0 w-full h-full z-20" />
+		<div class="bg-white p-10 relative z-50 border-2 border-slate-600 rounded-md max-w-md">
+			<DialogTitle class="mb-2">Delete this job?</DialogTitle>
+			<DialogDescription>
+				<p>Are you sure you want to delete this job? This can't be undone.</p>
+				<div class="grid grid-flow-col gap-4 justify-end mt-6">
+					<button
+						class="btn btn-sm btn-error"
+						on:click={() => deleteform.submit()}>Yes, Delete it</button
+					>
+					<button
+						class="btn btn-sm btn-ghost"
+						on:click={() => (showDeleteConfirmation = false)}>Cancel</button
+					>
+				</div>
+			</DialogDescription>
+		</div>
+	</Dialog>
+{/if}
+
+<!-- Login warning -->
 
 <Dialog
 	class="fixed inset-0 w-full h-full z-10 flex items-center justify-center"
-	open={showDeleteConfirmation}
+	open={showLoginWarning}
 	on:close={() => (showDeleteConfirmation = false)}
 >
 	<DialogOverlay class="absolute backdrop-blur-sm bg-white/40 inset-0 w-full h-full z-20" />
-	<div class="bg-white p-10 relative z-50 border-2 border-slate-600 rounded-md">
-		<DialogTitle class="mb-2">Delete this job?</DialogTitle>
+	<div class="bg-white p-10 relative z-50 border-2 border-slate-600 rounded-md max-w-lg">
+		<DialogTitle class="mb-2 text-lg">Applying for {data.jobDetails.title}?</DialogTitle>
 		<DialogDescription>
-			<p>Are you sure you want to delete this job? This can't be undone.</p>
-			<div class="grid grid-flow-col gap-4 justify-end mt-6">
+			<p>
+				Hello and welcome to our job portal! We kindly ask that you log in to your account before
+				applying for this job. If you haven't registered yet, don't worry - it only takes a moment
+				to <button
+					type="button"
+					class="link link-primary"
+					on:click={() => goto(`/register?returnUrl=${returnURL}`)}>create an account</button
+				>. Please note that we won't be able to consider applications submitted without logging in.
+				Thank you for your interest in this job opportunity and we can't wait to see your
+				application!
+			</p>
+			<div class="mt-6 gap-4 flex justify-end">
 				<button
-					class="btn btn-sm btn-error"
-					on:click={() => deleteform.submit()}>Yes, Delete it</button
+					type="button"
+					class="btn btn-sm btn-primary"
+					on:click={() => goto(`/login/?returnURL=${returnURL}`)}>Login</button
 				>
 				<button
 					class="btn btn-sm btn-ghost"
-					on:click={() => (showDeleteConfirmation = false)}>Cancel</button
+					on:click={() => (showLoginWarning = false)}>Close</button
 				>
 			</div>
 		</DialogDescription>
@@ -124,10 +171,12 @@
 						>
 					</form>
 				{/if}
-				{#if data.showApplyButton}
-					<a
-						href="/jobs/{data.jobId}/apply"
-						class="button">Apply for this job</a
+				{#if !data.user || data.user.role === Role.USER}
+					<!-- url="/jobs/{data.jobId}/apply" -->
+					<button
+						on:click={handleApplyClick}
+						type="button"
+						class="btn btn-primary">Apply for this job <ChevronRight /></button
 					>
 				{/if}
 			</div>

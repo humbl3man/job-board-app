@@ -1,6 +1,7 @@
 import { error, fail, redirect } from '@sveltejs/kit';
 import { db } from '$lib/db';
 import type { PageServerLoad, Action, Actions } from './$types';
+import { Role } from '$lib/constants/Role';
 
 export const load: PageServerLoad = async ({ locals, params }) => {
 	const jobDetails = await db.job.findUnique({
@@ -23,7 +24,7 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 	}
 
 	const allowModifications = locals.user?.companyId === jobDetails.company.id;
-	const showApplyButton = !locals.user?.companyId;
+	const showApplyButton = locals.user?.role === Role.USER;
 
 	return {
 		jobDetails,

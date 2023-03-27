@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
+	import { applyAction, enhance } from '$app/forms';
+	import { invalidateAll } from '$app/navigation';
 	import ErrorMessage from '$lib/components/ErrorMessage.svelte';
 	import ValidationError from '$lib/components/ValidationError.svelte';
 	import { Role } from '$lib/constants/Role';
@@ -17,8 +18,8 @@
 	{JSON.stringify(form, null, 2)}
 </pre> -->
 
-<section class="dashboard mx-auto max-w-3xl bg-white mt-16">
-	<div class="p-6 border-b border-slate-300">
+<section class="dashboard max-w-3xl custom-wrapper">
+	<div class="py-6 border-b border-slate-300">
 		<h1 class="text-2xl mb-2">Account Information - Update</h1>
 		{#if form?.company_exists}
 			<ErrorMessage>Failed to update company name. Name is already taken.</ErrorMessage>
@@ -27,7 +28,12 @@
 	<form
 		method="POST"
 		action="?/updateaccount"
-		use:enhance
+		use:enhance={() => {
+			return async ({ result }) => {
+				await invalidateAll();
+				await applyAction(result);
+			};
+		}}
 	>
 		<div class="row">
 			<div class="col-left">Email Address</div>
@@ -102,7 +108,7 @@
 
 <style lang="postcss">
 	.dashboard .row {
-		@apply p-6 border-b border-slate-300 grid gap-4 sm:gap-8 items-center sm:grid-cols-[200px_1fr];
+		@apply py-6 border-b border-slate-300 grid gap-4 sm:gap-8 items-center sm:grid-cols-[200px_1fr] last-of-type:border-0;
 	}
 	.dashboard .col-left {
 		@apply text-slate-500;

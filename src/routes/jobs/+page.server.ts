@@ -9,7 +9,10 @@ export const load: PageServerLoad = async () => {
 			title: true,
 			category: true,
 			salary: true,
-			createdAt: true
+			createdAt: true,
+			updatedAt: true,
+			location: true,
+			type: true
 		},
 		orderBy: [
 			{
