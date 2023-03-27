@@ -25,7 +25,7 @@ const registerSchema = z.object({
 
 export const load: PageServerLoad = async (event) => {
 	if (event.locals.user) {
-		throw redirect(301, '/account');
+		throw redirect(302, '/account');
 	}
 
 	const form = await superValidate(event, registerSchema);
@@ -121,7 +121,7 @@ const register: Action = async (event) => {
 	}
 
 	// finally if all is successful, redirect to login
-	throw redirect(301, `/login${form.data?.returnUrl ? `?returnUrl=${form.data.returnUrl}` : ''}`);
+	throw redirect(303, `/login${form.data?.returnUrl ? `?returnUrl=${form.data.returnUrl}` : ''}`);
 };
 
 export const actions: Actions = {

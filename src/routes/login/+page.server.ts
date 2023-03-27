@@ -96,10 +96,10 @@ const login: Action = async (event) => {
 	}
 
 	if (authenticatedUser.roleId === Role.ADMIN) {
-		throw redirect(302, '/admin');
+		throw redirect(303, '/admin');
 	}
 
-	throw redirect(302, form.data?.returnUrl ?? '/account');
+	throw redirect(303, form.data?.returnUrl ?? '/account');
 };
 
 export const actions: Actions = {

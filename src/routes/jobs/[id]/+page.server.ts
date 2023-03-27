@@ -60,7 +60,7 @@ const deletejob: Action = async ({ request, params, locals }) => {
 		}
 	});
 
-	throw redirect(301, '/jobs');
+	throw redirect(303, '/jobs');
 };
 
 export const actions = {

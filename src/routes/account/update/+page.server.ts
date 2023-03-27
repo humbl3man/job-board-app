@@ -98,7 +98,7 @@ const updateaccount: Action = async ({ request, locals }) => {
 		}
 	}
 
-	throw redirect(301, '/account');
+	throw redirect(303, '/account');
 };
 export const actions: Actions = {
 	updateaccount
