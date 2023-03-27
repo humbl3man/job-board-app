@@ -19,7 +19,8 @@ const registerSchema = z.object({
 		.min(8, 'Password is too short, must be at least 8 characters')
 		.max(16, 'Password cannot exceed 16 characters'),
 	isEmployer: z.boolean(),
-	company: z.string().optional()
+	company: z.string().optional(),
+	returnUrl: z.string().nullable().optional()
 });
 
 export const load: PageServerLoad = async (event) => {
@@ -28,7 +29,12 @@ export const load: PageServerLoad = async (event) => {
 	}
 
 	const form = await superValidate(event, registerSchema);
-	return { form };
+	const returnURL = event.url.searchParams.get('returnUrl');
+
+	return {
+		form,
+		returnURL
+	};
 };
 
 const register: Action = async (event) => {
@@ -115,7 +121,7 @@ const register: Action = async (event) => {
 	}
 
 	// finally if all is successful, redirect to login
-	throw redirect(301, '/login');
+	throw redirect(301, `/login${form.data?.returnUrl ? `?returnUrl=${form.data.returnUrl}` : ''}`);
 };
 
 export const actions: Actions = {

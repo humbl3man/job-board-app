@@ -31,6 +31,11 @@
 				};
 			}}
 		>
+			<input
+				type="hidden"
+				name="returnUrl"
+				value={data.returnURL}
+			/>
 			<h1>Login</h1>
 			{#if form?.invalidUser}
 				<ErrorMessage>User Doesn't exist</ErrorMessage>

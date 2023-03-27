@@ -14,7 +14,8 @@ const loginSchema = z.object({
 		})
 		.min(1, 'Email is required')
 		.email('Please provide a valid email'),
-	password: z.string({ required_error: 'Password is required' }).min(1, 'Password is required')
+	password: z.string({ required_error: 'Password is required' }).min(1, 'Password is required'),
+	returnUrl: z.string().nullable().optional()
 });
 
 export const load: PageServerLoad = async (event) => {
@@ -23,9 +24,11 @@ export const load: PageServerLoad = async (event) => {
 	}
 
 	const form = await superValidate(event, loginSchema);
+	const returnURL = event.url.searchParams.get('returnUrl');
 
 	return {
-		form
+		form,
+		returnURL
 	};
 };
 
@@ -65,9 +68,10 @@ const login: Action = async (event) => {
 		});
 	}
 
+	let authenticatedUser;
 	// refresh auth token on login
 	try {
-		const authenticatedUser = await db.user.update({
+		authenticatedUser = await db.user.update({
 			where: {
 				email: form.data.email
 			},
@@ -85,17 +89,17 @@ const login: Action = async (event) => {
 		});
 
 		// if admin is trying to login, navigate them to admin page
-		if (authenticatedUser.roleId === Role.ADMIN) {
-			throw redirect(302, '/admin');
-		}
-
-		// otherwise, go to account page
-		throw redirect(302, '/account');
 	} catch (error) {
 		return fail(400, {
 			serverError: 'Something went wrong'
 		});
 	}
+
+	if (authenticatedUser.roleId === Role.ADMIN) {
+		throw redirect(302, '/admin');
+	}
+
+	throw redirect(302, form.data?.returnUrl ?? '/account');
 };
 
 export const actions: Actions = {
