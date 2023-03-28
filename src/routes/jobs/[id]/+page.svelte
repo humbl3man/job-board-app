@@ -1,17 +1,12 @@
 <script lang="ts">
 	import { applyAction, enhance } from '$app/forms';
 	import { goto, invalidateAll } from '$app/navigation';
-	import {
-		Dialog,
-		DialogOverlay,
-		DialogTitle,
-		DialogDescription
-	} from '@rgossiaux/svelte-headlessui';
 	import { formatCurrency } from '$lib/utils/formatCurrency';
 	import type { PageData } from './$types';
 	import Shell from '$lib/components/Shell.svelte';
 	import { ChevronLeft, ChevronRight, Circle, InfoCircled } from 'radix-icons-svelte';
 	import { Role } from '$lib/constants/Role';
+	import Modal from '$lib/components/Modal.svelte';
 
 	export let data: PageData;
 	let showDeleteConfirmation = false;
@@ -25,67 +20,51 @@
 
 <!-- Delete warning -->
 {#if data.user?.role === Role.EMPLOYER}
-	<Dialog
-		class="fixed inset-0 w-full h-full z-10 flex items-center justify-center"
-		open={showDeleteConfirmation}
+	<Modal
 		on:close={() => (showDeleteConfirmation = false)}
+		open={showDeleteConfirmation}
 	>
-		<DialogOverlay class="absolute backdrop-blur-sm bg-white/40 inset-0 w-full h-full z-20" />
-		<div class="bg-white p-10 relative z-50 border-2 border-slate-600 rounded-md max-w-md">
-			<DialogTitle class="mb-2">Delete this job?</DialogTitle>
-			<DialogDescription>
-				<p>Are you sure you want to delete this job? This can't be undone.</p>
-				<div class="grid grid-flow-col gap-4 justify-end mt-6">
-					<button
-						class="btn btn-sm btn-error"
-						on:click={() => deleteform.submit()}>Yes, Delete it</button
-					>
-					<button
-						class="btn btn-sm btn-ghost"
-						on:click={() => (showDeleteConfirmation = false)}>Cancel</button
-					>
-				</div>
-			</DialogDescription>
-		</div>
-	</Dialog>
+		<svelte:fragment slot="title">Delete &quot;{data.jobDetails.title}&quot;?</svelte:fragment>
+		<svelte:fragment slot="body"
+			><p>Are you sure you want to delete this job? This can't be undone.</p></svelte:fragment
+		>
+		<svelte:fragment slot="footer">
+			<button
+				class="btn btn-sm btn-error"
+				on:click={() => deleteform.submit()}>Yes, Delete it</button
+			>
+			<button
+				class="btn btn-sm btn-ghost"
+				on:click={() => (showDeleteConfirmation = false)}>Cancel</button
+			>
+		</svelte:fragment>
+	</Modal>
 {/if}
 
 <!-- Login warning -->
-
-<Dialog
-	class="fixed inset-0 w-full h-full z-10 flex items-center justify-center"
+<Modal
+	on:close={() => (showLoginWarning = false)}
 	open={showLoginWarning}
-	on:close={() => (showDeleteConfirmation = false)}
 >
-	<DialogOverlay class="absolute backdrop-blur-sm bg-white/40 inset-0 w-full h-full z-20" />
-	<div class="bg-white p-10 relative z-50 border-2 border-slate-600 rounded-md max-w-lg">
-		<DialogTitle class="mb-2 text-lg">Applying for {data.jobDetails.title}?</DialogTitle>
-		<DialogDescription>
-			<p>
-				Hello and welcome to our job portal! We kindly ask that you log in to your account before
-				applying for this job. If you haven't registered yet, don't worry - it only takes a moment
-				to <button
-					type="button"
-					class="link link-primary"
-					on:click={() => goto(`/register?returnUrl=${returnURL}`)}>create an account</button
-				>. Please note that we won't be able to consider applications submitted without logging in.
-				Thank you for your interest in this job opportunity and we can't wait to see your
-				application!
-			</p>
-			<div class="mt-6 gap-4 flex justify-end">
-				<button
-					type="button"
-					class="btn btn-sm btn-primary"
-					on:click={() => goto(`/login/?returnURL=${returnURL}`)}>Login</button
-				>
-				<button
-					class="btn btn-sm btn-ghost"
-					on:click={() => (showLoginWarning = false)}>Close</button
-				>
-			</div>
-		</DialogDescription>
-	</div>
-</Dialog>
+	<svelte:fragment slot="title">Applying for &quot;{data.jobDetails.title}&quot;?</svelte:fragment>
+	<svelte:fragment slot="body">
+		<p>
+			We kindly ask that you log in to your account before applying for this job. If you haven't
+			registered yet, don't worry - it only takes a moment to create an account.
+		</p>
+	</svelte:fragment>
+	<svelte:fragment slot="footer">
+		<button
+			type="button"
+			class="btn btn-sm btn-primary"
+			on:click={() => goto(`/login/?returnURL=${returnURL}`)}>Login</button
+		>
+		<button
+			class="btn btn-sm btn-ghost"
+			on:click={() => goto(`/register?returnUrl=${returnURL}`)}>Create Account</button
+		>
+	</svelte:fragment>
+</Modal>
 
 <Shell>
 	<div class="jobdetails max-w-3xl custom-wrapper">
