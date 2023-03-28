@@ -12,7 +12,7 @@
 	let showDeleteConfirmation = false;
 	let deleteform: HTMLFormElement;
 	let showLoginWarning = false;
-	let returnURL = `/jobs/${data.jobId}`;
+	let returnURL = `/jobs/apply/${data.jobId}`;
 	function getdeleteform(el: HTMLFormElement) {
 		deleteform = el;
 	}
@@ -144,7 +144,7 @@
 				{/if}
 				{#if !data.user}
 					<a
-						href="/login/?returnUrl=/jobs/{data.jobId}"
+						href="/login/?returnUrl={returnURL}"
 						on:click|preventDefault={() => {
 							showLoginWarning = true;
 						}}
