@@ -24,21 +24,18 @@
 	/>
 </svelte:head>
 
-<div class="grid page h-full bg-slate-50">
+<div class="page">
 	<Header
 		isAdmin={$page.data?.user?.role === Role.ADMIN}
 		isEmployer={$page.data?.user?.role === Role.EMPLOYER}
 		isAuthenticated={!!$page.data?.user}
 		user={$page.data?.user}
 	/>
-	<main><slot /></main>
+	<main class="bg-slate-50/60"><slot /></main>
 	<Footer />
 </div>
 
 <style lang="postcss">
-	:global(html) {
-		@apply bg-slate-300;
-	}
 	:global(h1, h2, h3, h4) {
 		@apply font-bold text-neutral text-2xl sm:text-3xl;
 	}
@@ -70,9 +67,10 @@
 		@apply text-base leading-relaxed;
 	}
 	:global(.custom-wrapper) {
-		@apply my-8 mb-16 mx-auto px-7 py-12 bg-white rounded-sm border-b-[3px] border-slate-500/25 ring-1 ring-slate-500/5;
+		@apply my-8 mb-16 mx-auto px-7 py-12 bg-white rounded-sm border-b-[3px] border-slate-500/25 ring-1 ring-slate-200/70;
 	}
 	.page {
+		@apply grid h-screen;
 		grid-template-rows: max-content 1fr max-content;
 	}
 </style>
