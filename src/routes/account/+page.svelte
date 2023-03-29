@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { Role } from '$lib/constants/Role';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
@@ -24,15 +25,15 @@
 			{data.user.email}
 		</div>
 	</div>
-	{#if !data.user.companyId && data.user.name}
+	{#if data.user.role === Role.USER}
 		<div class="row">
 			<div class="col-left">Name</div>
 			<div class="col-right">
-				{data.user.name}
+				{data.user.name ?? '[Not Set]'}
 			</div>
 		</div>
 	{/if}
-	{#if data.user.company}
+	{#if data.user.role === Role.EMPLOYER}
 		<div class="row">
 			<div class="col-left">Company Name</div>
 			<div class="col-right">
