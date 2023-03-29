@@ -14,8 +14,7 @@ const loginSchema = z.object({
 		})
 		.min(1, 'Email is required')
 		.email('Please provide a valid email'),
-	password: z.string({ required_error: 'Password is required' }).min(1, 'Password is required'),
-	returnUrl: z.string().nullable().optional()
+	password: z.string({ required_error: 'Password is required' }).min(1, 'Password is required')
 });
 
 export const load: PageServerLoad = async (event) => {
@@ -24,84 +23,86 @@ export const load: PageServerLoad = async (event) => {
 	}
 
 	const form = await superValidate(event, loginSchema);
-	const returnURL = event.url.searchParams.get('returnURL');
 
 	return {
-		form,
-		returnURL
+		form
 	};
 };
 
-const login: Action = async (event) => {
-	const form = await superValidate(event, loginSchema);
+export const actions: Actions = {
+	default: async (event) => {
+		const form = await superValidate(event, loginSchema);
 
-	// check validity
-	if (!form.valid) {
-		return fail(400, { form });
-	}
-
-	// check if user exists in database
-	const user = await db.user.findUnique({
-		where: {
-			email: String(form.data.email)
+		// check validity
+		if (!form.valid) {
+			return fail(400, { form });
 		}
-	});
 
-	// if no user exists, show error to user
-	if (!user) {
-		form.data.password = '';
-
-		return fail(400, {
-			form,
-			invalidUser: true
-		});
-	}
-
-	// compare provided password to stored password hash
-	const passwordMatch = await bcrypt.compare(form.data.password, user.passwordHash);
-
-	if (!passwordMatch) {
-		form.data.password = '';
-		return fail(400, {
-			form,
-			invalidCredentials: true
-		});
-	}
-
-	let authenticatedUser;
-	// refresh auth token on login
-	try {
-		authenticatedUser = await db.user.update({
+		// check if user exists in database
+		const user = await db.user.findUnique({
 			where: {
-				email: form.data.email
-			},
-			data: {
-				userAuthToken: crypto.randomUUID()
+				email: String(form.data.email)
 			}
 		});
 
-		event.cookies.set('app_session', authenticatedUser.userAuthToken, {
-			path: '/',
-			httpOnly: true,
-			sameSite: 'strict',
-			secure: process.env.NODE_ENV === 'production' ? true : false,
-			maxAge: 60 * 60 * 24 * 30
-		});
+		// if no user exists, show error to user
+		if (!user) {
+			form.data.password = '';
 
-		// if admin is trying to login, navigate them to admin page
-	} catch (error) {
-		return fail(400, {
-			serverError: 'Something went wrong'
-		});
+			return fail(400, {
+				form,
+				invalidUser: true
+			});
+		}
+
+		// compare provided password to stored password hash
+		const passwordMatch = await bcrypt.compare(form.data.password, user.passwordHash);
+
+		if (!passwordMatch) {
+			form.data.password = '';
+			return fail(400, {
+				form,
+				invalidCredentials: true
+			});
+		}
+
+		let authenticatedUser;
+		// refresh auth token on login
+		try {
+			authenticatedUser = await db.user.update({
+				where: {
+					email: form.data.email
+				},
+				data: {
+					userAuthToken: crypto.randomUUID()
+				}
+			});
+
+			event.cookies.set('app_session', authenticatedUser.userAuthToken, {
+				path: '/',
+				httpOnly: true,
+				sameSite: 'strict',
+				secure: process.env.NODE_ENV === 'production' ? true : false,
+				maxAge: 60 * 60 * 24 * 30
+			});
+
+			// if admin is trying to login, navigate them to admin page
+		} catch (error) {
+			return fail(400, {
+				serverError: 'Something went wrong'
+			});
+		}
+
+		const redirectTo = event.url.searchParams.get('redirectTo');
+
+		if (redirectTo) {
+			throw redirect(303, `/${redirectTo.slice(1)}`);
+		}
+
+		if (authenticatedUser.roleId === Role.ADMIN) {
+			throw redirect(303, '/admin');
+		}
+
+		throw redirect(303, '/account');
 	}
-
-	if (authenticatedUser.roleId === Role.ADMIN) {
-		throw redirect(303, '/admin');
-	}
-
-	throw redirect(303, form.data?.returnUrl ?? '/account');
-};
-
-export const actions: Actions = {
-	login
 };

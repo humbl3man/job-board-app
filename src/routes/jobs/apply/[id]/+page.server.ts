@@ -1,16 +1,17 @@
 import { db } from '$lib/db';
+import { handleLoginRedirectTo } from '$lib/utils/handleLoginRedirectTo';
 import { redirect } from '@sveltejs/kit';
-import type { PageServerLoad } from '../../[id]/apply/$types';
+import type { PageServerLoad } from './$types';
 
-export const load = (async ({ request, locals, params }) => {
-	if (!locals.user) {
-		throw redirect(302, '/login');
+export const load: PageServerLoad = async (event) => {
+	if (!event.locals.user) {
+		throw redirect(302, handleLoginRedirectTo(event));
 	}
 	// TODO: application
 
 	const job = await db.job.findUnique({
 		where: {
-			id: Number(params.id)
+			id: Number(event.params.id)
 		}
 	});
 
@@ -21,4 +22,4 @@ export const load = (async ({ request, locals, params }) => {
 	return {
 		job
 	};
-}) satisfies PageServerLoad;
+};

@@ -28,7 +28,6 @@
 	<div class="custom-wrapper max-w-md">
 		<form
 			method="POST"
-			action="?/register"
 			use:enhance={() => {
 				isProcessing = true;
 				return async ({ update, result }) => {
@@ -38,11 +37,6 @@
 				};
 			}}
 		>
-			<input
-				type="hidden"
-				name="returnUrl"
-				value={data.returnURL}
-			/>
 			<h1>Create Account</h1>
 			{#if form?.userExists}
 				<ErrorMessage>User Already Exists</ErrorMessage>

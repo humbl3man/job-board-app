@@ -3,10 +3,11 @@ import type { Action, Actions, PageServerLoad } from './$types';
 import { z } from 'zod';
 import { db } from '$lib/db';
 import { Role } from '$lib/constants/Role';
+import { handleLoginRedirectTo } from '$lib/utils/handleLoginRedirectTo';
 
-export const load = (async ({ locals }) => {
-	if (!locals.user) {
-		throw redirect(302, '/login');
+export const load = (async (event) => {
+	if (!event.locals.user) {
+		throw redirect(302, handleLoginRedirectTo(event));
 	}
 }) satisfies PageServerLoad;
 

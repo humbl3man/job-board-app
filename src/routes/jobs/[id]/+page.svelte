@@ -7,15 +7,18 @@
 	import { ChevronLeft, ChevronRight, Circle, InfoCircled } from 'radix-icons-svelte';
 	import { Role } from '$lib/constants/Role';
 	import Modal from '$lib/components/Modal.svelte';
+	import { page } from '$app/stores';
 
 	export let data: PageData;
 	let showDeleteConfirmation = false;
 	let deleteform: HTMLFormElement;
 	let showLoginWarning = false;
-	let returnURL = `/jobs/apply/${data.jobId}`;
 	function getdeleteform(el: HTMLFormElement) {
 		deleteform = el;
 	}
+
+	let redirectToUrl: string;
+	$: redirectToUrl = $page.url.pathname + $page.url.search;
 </script>
 
 <!-- Delete warning -->
@@ -57,11 +60,11 @@
 		<button
 			type="button"
 			class="btn btn-sm btn-primary"
-			on:click={() => goto(`/login/?returnURL=${returnURL}`)}>Login</button
+			on:click={() => goto(`/login/?redirectTo=${redirectToUrl}`)}>Login</button
 		>
 		<button
 			class="btn btn-sm btn-ghost"
-			on:click={() => goto(`/register?returnUrl=${returnURL}`)}>Create Account</button
+			on:click={() => goto(`/register?redirectTo=${redirectToUrl}`)}>Create Account</button
 		>
 	</svelte:fragment>
 </Modal>
@@ -144,7 +147,7 @@
 				{/if}
 				{#if !data.user}
 					<a
-						href="/login/?returnUrl={returnURL}"
+						href="/login/?redirectTo={redirectToUrl}"
 						on:click|preventDefault={() => {
 							showLoginWarning = true;
 						}}

@@ -7,10 +7,12 @@
 	import ValidationError from '$lib/components/ValidationError.svelte';
 	import ErrorMessage from '$lib/components/ErrorMessage.svelte';
 	import { superForm } from 'sveltekit-superforms/client';
+	import { page } from '$app/stores';
 
 	export let data: PageData;
 	export let form: ActionData;
 
+	let redirectTo = $page.url.searchParams.get('redirectTo') ?? '';
 	let isProcessing = false;
 
 	const { form: loginForm, errors } = superForm(data.form);
@@ -26,7 +28,6 @@
 	<div class="max-w-md custom-wrapper">
 		<form
 			method="POST"
-			action="?/login"
 			use:enhance={() => {
 				isProcessing = true;
 				return async ({ result, update }) => {
@@ -37,11 +38,6 @@
 				};
 			}}
 		>
-			<input
-				type="hidden"
-				name="returnUrl"
-				value={data.returnURL}
-			/>
 			<h1>Login</h1>
 			{#if form?.invalidUser}
 				<ErrorMessage>User Doesn't exist</ErrorMessage>
