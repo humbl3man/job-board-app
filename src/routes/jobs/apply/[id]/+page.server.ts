@@ -1,6 +1,6 @@
 import { db } from '$lib/db';
 import { handleLoginRedirectTo } from '$lib/utils/handleLoginRedirectTo';
-import { redirect } from '@sveltejs/kit';
+import { redirect, fail } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async (event) => {
@@ -16,10 +16,6 @@ export const load: PageServerLoad = async (event) => {
 	});
 
 	if (!job) {
-		throw redirect(302, '/jobs');
+		return fail(404);
 	}
-
-	return {
-		job
-	};
 };

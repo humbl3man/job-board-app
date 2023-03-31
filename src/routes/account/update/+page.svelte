@@ -18,8 +18,8 @@
 	{JSON.stringify(form, null, 2)}
 </pre> -->
 
-<section class="dashboard max-w-3xl custom-wrapper">
-	<div class="py-6 border-b border-slate-300">
+<section class="dashboard">
+	<div class="mb-6 py-6 border-b border-slate-300">
 		<h1 class="text-2xl mb-2">Account Information - Update</h1>
 		{#if form?.company_exists}
 			<ErrorMessage>Failed to update company name. Name is already taken.</ErrorMessage>
@@ -96,7 +96,7 @@
 		<div class="row">
 			<div class="col-left" />
 			<div class="col-right flex justify-end">
-				<button class="btn btn-primary mr-2">Save Changes</button>
+				<button class="btn btn-primary mr-2">Save</button>
 				<a
 					href="/account"
 					class="btn btn-ghost">Cancel</a

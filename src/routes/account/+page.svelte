@@ -9,8 +9,8 @@
 	{JSON.stringify(data, null, 2)}
 </pre> -->
 
-<section class="dashboard mx-auto max-w-3xl custom-wrapper">
-	<div class="py-6 border-b border-slate-300">
+<section class="dashboard">
+	<div class="mb-6 pb-6 border-b border-slate-300">
 		<h1 class="text-2xl mb-2">Account Information</h1>
 		<div class="text-slate-600 flex items-center justify-between">
 			<span

@@ -3,9 +3,8 @@ import { db } from '$lib/db';
 import { fail, redirect } from '@sveltejs/kit';
 import bcrypt from 'bcrypt';
 import { z } from 'zod';
-import type { Action, Actions, PageServerLoad } from './$types';
+import type { Actions, PageServerLoad } from './$types';
 import { superValidate } from 'sveltekit-superforms/server';
-import { handleLoginRedirectTo } from '$lib/utils/handleLoginRedirectTo';
 
 const registerSchema = z.object({
 	email: z
