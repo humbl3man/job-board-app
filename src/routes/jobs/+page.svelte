@@ -3,7 +3,6 @@
 	import Shell from '$lib/components/Shell.svelte';
 	import { Role } from '$lib/constants/Role';
 	import { APP_NAME } from '$lib/meta';
-	import { formatCurrency } from '$lib/utils/formatCurrency';
 	import { formatDate } from '$lib/utils/formatDate';
 	import { MagnifyingGlass, PlusCircled } from 'radix-icons-svelte';
 	import type { PageData } from './$types';

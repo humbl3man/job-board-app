@@ -1,12 +1,24 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { Role } from '$lib/constants/Role';
+	import { formatName } from '$lib/utils/formatName';
 
 	export let data;
+
+	function getUserName() {
+		if (data.user.role === Role.EMPLOYER) {
+			return data.user.company;
+		}
+		if (data.user.firstName && data.user.lastName) {
+			return formatName(data.user.firstName, data.user.lastName, true);
+		}
+		return data.user.email;
+	}
 </script>
 
 <div class="mx-auto max-w-screen-xl px-2">
 	<header class="py-8 md:py-12">
-		<h1>Welcome, {data.user.name || data.user.email}</h1>
+		<h1>Welcome, {getUserName()}</h1>
 	</header>
 	<div class="account">
 		<aside class="py-4 bg-white ring-1 ring-slate-700/5 shadow-sm">

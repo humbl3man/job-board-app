@@ -4,14 +4,11 @@
 	import ErrorMessage from '$lib/components/ErrorMessage.svelte';
 	import ValidationError from '$lib/components/ValidationError.svelte';
 	import { Role } from '$lib/constants/Role';
-	import { ExclamationTriangle } from 'radix-icons-svelte';
-	import type { ActionData, PageData } from './$types';
 
-	export let data: PageData;
-	export let form: ActionData;
+	export let data;
+	export let form;
 
 	let company = data.user.company;
-	let name = data.user.name || '';
 </script>
 
 <!-- <pre>
@@ -27,7 +24,6 @@
 	</div>
 	<form
 		method="POST"
-		action="?/updateaccount"
 		use:enhance={() => {
 			return async ({ result }) => {
 				await invalidateAll();
@@ -43,23 +39,46 @@
 		</div>
 		{#if data.user.role === Role.USER}
 			<div class="row">
-				<div class="col-left">Name</div>
+				<div class="col-left">First Name</div>
 				<div class="col-right">
 					<div class="form-control">
 						<label
-							for="name"
-							class="sr-only">Name</label
+							for="firstname"
+							class="sr-only">First Name</label
 						>
 						<input
 							type="text"
 							class="input input-primary w-full {form?.fieldErrors?.name ? 'input-error' : ''}"
-							id="name"
-							name="name"
-							bind:value={name}
+							id="firstname"
+							name="firstname"
+							bind:value={data.user.firstName}
 						/>
-						{#if form?.fieldErrors?.name}
-							<ValidationError label="name">
-								{form.fieldErrors?.name[0]}
+						{#if form?.fieldErrors?.firstName}
+							<ValidationError label="firstname">
+								{form.fieldErrors?.firstName[0]}
+							</ValidationError>
+						{/if}
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-left">Last Name</div>
+				<div class="col-right">
+					<div class="form-control">
+						<label
+							for="lastname"
+							class="sr-only">Last Name</label
+						>
+						<input
+							type="text"
+							class="input input-primary w-full {form?.fieldErrors?.lastName ? 'input-error' : ''}"
+							id="lastname"
+							name="lastname"
+							bind:value={data.user.lastName}
+						/>
+						{#if form?.fieldErrors?.lastName}
+							<ValidationError label="lastname">
+								{form.fieldErrors?.lastName[0]}
 							</ValidationError>
 						{/if}
 					</div>

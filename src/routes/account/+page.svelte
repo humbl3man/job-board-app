@@ -1,8 +1,7 @@
 <script lang="ts">
 	import { Role } from '$lib/constants/Role';
-	import type { PageData } from './$types';
 
-	export let data: PageData;
+	export let data;
 </script>
 
 <!-- <pre>
@@ -12,12 +11,6 @@
 <section class="dashboard">
 	<div class="mb-6 pb-6 border-b border-slate-300">
 		<h1 class="text-2xl mb-2">Account Information</h1>
-		<div class="text-slate-600 flex items-center justify-between">
-			<span
-				>Hello, <strong>{data?.user?.name || data?.user?.company || data?.user?.email}</strong
-				></span
-			>
-		</div>
 	</div>
 	<div class="row">
 		<div class="col-left">Email Address</div>
@@ -27,9 +20,15 @@
 	</div>
 	{#if data.user.role === Role.USER}
 		<div class="row">
-			<div class="col-left">Name</div>
+			<div class="col-left">First Name</div>
 			<div class="col-right">
-				{data.user.name ?? '[Not Set]'}
+				{data.user.firstName ?? '[Not Set]'}
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-left">Last Name</div>
+			<div class="col-right">
+				{data.user.lastName ?? '[Not Set]'}
 			</div>
 		</div>
 	{/if}

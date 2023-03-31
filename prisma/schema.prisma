@@ -11,19 +11,22 @@ datasource db {
 }
 
 model User {
-  id              Int              @id @default(autoincrement())
-  email           String           @unique
-  name            String?
-  bio             String?
-  passwordHash    String
-  userAuthToken   String           @unique
-  createdAt       DateTime         @default(now())
-  updatedAt       DateTime         @updatedAt
-  Company         Company?
-  role            Role             @relation(fields: [roleId], references: [id])
-  roleId          Int
-  resume          Resume?
-  jobApplications JobApplication[]
+  id                 Int               @id @default(autoincrement())
+  email              String            @unique
+  firstName          String?
+  lastName           String?
+  bio                String?
+  passwordHash       String
+  userAuthToken      String            @unique
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
+  Company            Company?
+  role               Role              @relation(fields: [roleId], references: [id])
+  roleId             Int
+  resume             Resume?
+  jobApplications    JobApplication[]
+  employmentStatus   EmploymentStatus? @relation(fields: [employmentStatusId], references: [id])
+  employmentStatusId Int?
 }
 
 model Resume {
@@ -82,6 +85,12 @@ model Category {
 }
 
 model Role {
+  id    Int    @id @default(autoincrement())
+  name  String
+  users User[]
+}
+
+model EmploymentStatus {
   id    Int    @id @default(autoincrement())
   name  String
   users User[]

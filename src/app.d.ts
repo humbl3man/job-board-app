@@ -9,7 +9,8 @@ declare global {
 				id: number;
 				company?: string;
 				companyId?: number;
-				name?: string | null;
+				firstName?: string | null;
+				lastName?: string | null;
 				role: number;
 			};
 		}

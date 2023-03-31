@@ -1,3 +1,4 @@
+import { Role } from '$lib/constants/Role';
 import { db } from '$lib/db';
 import type { Handle } from '@sveltejs/kit';
 
@@ -13,30 +14,35 @@ export const handle: Handle = async ({ event, resolve }) => {
 		select: {
 			email: true,
 			id: true,
-			name: true,
+			firstName: true,
+			lastName: true,
 			role: true
 		}
 	});
 
 	if (user) {
-		const company = await db.company.findUnique({
-			where: {
-				userId: user.id
-			},
-			select: {
-				id: true,
-				name: true
-			}
-		});
 		event.locals.user = {
 			email: user.email,
 			id: user.id,
-			name: user.name,
+			firstName: user.firstName,
+			lastName: user.lastName,
 			role: user.role.id
 		};
-		if (company) {
-			event.locals.user.company = company.name;
-			event.locals.user.companyId = company.id;
+
+		if (user.role.id === Role.EMPLOYER) {
+			const matchingCompany = await db.company.findUnique({
+				where: {
+					userId: user.id
+				},
+				select: {
+					id: true,
+					name: true
+				}
+			});
+			if (matchingCompany) {
+				event.locals.user.company = matchingCompany.name;
+				event.locals.user.companyId = matchingCompany.id;
+			}
 		}
 	}
 

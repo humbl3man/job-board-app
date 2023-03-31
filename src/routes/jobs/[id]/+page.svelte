@@ -10,6 +10,8 @@
 	import { page } from '$app/stores';
 
 	export let data: PageData;
+
+	let returnUrl = $page.url.searchParams.get('returnUrl');
 	let showDeleteConfirmation = false;
 	let deleteform: HTMLFormElement;
 	let showLoginWarning = false;
@@ -33,11 +35,11 @@
 		>
 		<svelte:fragment slot="footer">
 			<button
-				class="btn btn-sm btn-error"
+				class="btn-error btn-sm btn"
 				on:click={() => deleteform.submit()}>Yes, Delete it</button
 			>
 			<button
-				class="btn btn-sm btn-ghost"
+				class="btn-ghost btn-sm btn"
 				on:click={() => (showDeleteConfirmation = false)}>Cancel</button
 			>
 		</svelte:fragment>
@@ -59,31 +61,31 @@
 	<svelte:fragment slot="footer">
 		<button
 			type="button"
-			class="btn btn-sm btn-primary"
+			class="btn-primary btn-sm btn"
 			on:click={() => goto(`/login/?redirectTo=${redirectToUrl}`)}>Login</button
 		>
 		<button
-			class="btn btn-sm btn-ghost"
+			class="btn-ghost btn-sm btn"
 			on:click={() => goto(`/register?redirectTo=${redirectToUrl}`)}>Create Account</button
 		>
 	</svelte:fragment>
 </Modal>
 
 <Shell>
-	<div class="jobdetails max-w-3xl custom-wrapper">
-		<div class="py-6 border-b border-slate-300">
+	<div class="jobdetails custom-wrapper max-w-3xl">
+		<div class="border-b border-slate-300 py-6">
 			<div class="mb-8">
 				<a
-					href="/jobs"
-					class="btn btn-sm btn-primary btn-outline"
+					href={returnUrl ? `/${returnUrl.slice(1)}` : '/jobs'}
+					class="btn-outline btn-primary btn-sm btn"
 				>
-					<ChevronLeft /> All Jobs</a
+					<ChevronLeft /> {returnUrl ? 'Back' : 'All Jobs'}</a
 				>
 			</div>
-			<h1 class="text-2xl mb-2 flex items-start">
+			<h1 class="mb-2 flex items-start text-2xl">
 				{data.jobDetails.title}
 				{#if data.user?.companyId === data.jobDetails.company.id}
-					<div class="ml-2 px-2 py-1 w-max text-xs bg-indigo-50 text-indigo-800 rounded-md">
+					<div class="ml-2 w-max rounded-md bg-indigo-50 px-2 py-1 text-xs text-indigo-800">
 						Posted by you
 					</div>
 				{/if}
@@ -122,7 +124,7 @@
 			<div class="col-right flex justify-end">
 				{#if data.showEditButton}
 					<a
-						class="btn btn-primary btn-outline mr-2"
+						class="btn-outline btn-primary btn mr-2"
 						href="/jobs/update/{data.jobId}">Edit</a
 					>
 				{/if}
@@ -140,7 +142,7 @@
 					>
 						<button
 							type="button"
-							class="btn btn-error"
+							class="btn-error btn"
 							on:click={() => (showDeleteConfirmation = true)}>Delete</button
 						>
 					</form>
@@ -151,13 +153,13 @@
 						on:click|preventDefault={() => {
 							showLoginWarning = true;
 						}}
-						class="btn btn-primary">Apply for this job <ChevronRight /></a
+						class="btn-primary btn">Apply for this job <ChevronRight /></a
 					>
 				{/if}
 				{#if data.user?.role === Role.USER}
 					<a
 						href="/jobs/apply/{data.jobId}"
-						class="btn btn-primary">Apply for this job <ChevronRight /></a
+						class="btn-primary btn">Apply for this job <ChevronRight /></a
 					>
 				{/if}
 			</div>
@@ -167,7 +169,7 @@
 
 <style lang="postcss">
 	.jobdetails .row {
-		@apply py-6 border-b border-slate-300 grid gap-4 sm:gap-8 items-center sm:grid-cols-[200px_1fr] last-of-type:border-0;
+		@apply grid items-center gap-4 border-b border-slate-300 py-6 last-of-type:border-0 sm:grid-cols-[200px_1fr] sm:gap-8;
 	}
 	.jobdetails .col-left {
 		@apply text-slate-700;
