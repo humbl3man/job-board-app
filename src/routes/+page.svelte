@@ -2,11 +2,10 @@
 	import Typeahead from 'svelte-typeahead';
 	import JobHuntIllustration from '$lib/assets/JobHuntIllustration.svelte';
 	import { APP_NAME } from '$lib/meta';
-	import type { PageData } from './$types';
 	import { goto } from '$app/navigation';
 	import { MagnifyingGlass } from 'radix-icons-svelte';
 
-	export let data: PageData;
+	export let data;
 </script>
 
 <!-- <pre>

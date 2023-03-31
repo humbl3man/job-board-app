@@ -1,7 +1,6 @@
 import { db } from '$lib/db';
-import type { PageServerLoad } from './$types';
 
-export const load = (async () => {
+export async function load() {
 	const jobs = await db.job.findMany({
 		select: {
 			id: true,
@@ -11,4 +10,4 @@ export const load = (async () => {
 	});
 
 	return { jobs };
-}) satisfies PageServerLoad;
+}
