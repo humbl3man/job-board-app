@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { page } from '$app/stores';
-	import { Role } from '$lib/constants/Role';
 	import Footer from '$lib/layout/Footer.svelte';
 	import Header from '$lib/layout/Header.svelte';
 	import { APP_NAME } from '$lib/meta';
 	import '../app.css';
+
+	export let data;
 </script>
 
 <svelte:head>
@@ -26,10 +26,8 @@
 
 <div class="page">
 	<Header
-		isAdmin={$page.data?.user?.role === Role.ADMIN}
-		isEmployer={$page.data?.user?.role === Role.EMPLOYER}
-		isAuthenticated={!!$page.data?.user}
-		user={$page.data?.user}
+		user={data.user}
+		navigation={data.navigation}
 	/>
 	<main class="bg-slate-50/60"><slot /></main>
 	<Footer />
@@ -37,7 +35,7 @@
 
 <style lang="postcss">
 	:global(h1, h2, h3, h4) {
-		@apply font-bold text-neutral text-2xl sm:text-3xl;
+		@apply text-2xl font-bold text-neutral sm:text-3xl;
 	}
 	:global(.btn) {
 		@apply rounded-sm;
@@ -67,7 +65,7 @@
 		@apply text-base leading-relaxed;
 	}
 	:global(.custom-wrapper) {
-		@apply my-8 mb-16 mx-auto px-7 py-12 bg-white rounded-sm border-b-[3px] border-slate-500/25 ring-1 ring-slate-200/70;
+		@apply my-8 mx-auto mb-16 rounded-sm border-b-[3px] border-slate-500/25 bg-white px-7 py-12 ring-1 ring-slate-200/70;
 	}
 	.page {
 		@apply grid h-screen;

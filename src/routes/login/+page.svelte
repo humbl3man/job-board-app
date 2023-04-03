@@ -25,16 +25,13 @@
 <!-- <SuperDebug data={$errors} /> -->
 
 <Shell>
-	<div class="max-w-md custom-wrapper">
+	<div class="custom-wrapper max-w-md">
 		<form
 			method="POST"
 			use:enhance={() => {
-				isProcessing = true;
-				return async ({ result, update }) => {
-					await update();
+				return async ({ result }) => {
 					await invalidateAll();
 					await applyAction(result);
-					isProcessing = false;
 				};
 			}}
 		>
@@ -58,7 +55,7 @@
 					id="email"
 					name="email"
 					data-invalid={$errors?.email}
-					class="input w-full input-bordered input-primary"
+					class="input-bordered input-primary input w-full"
 				/>
 				{#if $errors?.email}
 					<ValidationError label="email">
@@ -66,7 +63,7 @@
 					</ValidationError>
 				{/if}
 			</div>
-			<div class="form-group w-full my-4">
+			<div class="form-group my-4 w-full">
 				<label
 					for="password"
 					class="label">Password</label
@@ -75,7 +72,7 @@
 					type="password"
 					id="password"
 					name="password"
-					class="input w-full input-bordered input-primary"
+					class="input-bordered input-primary input w-full"
 					bind:value={$loginForm.password}
 					data-invalid={$errors?.password}
 				/>
@@ -86,7 +83,7 @@
 				{/if}
 			</div>
 			<div class="grid gap-4">
-				<button class="btn btn-primary w-full {isProcessing ? 'btn-disabled' : ''}"> Login </button>
+				<button class="btn-primary btn w-full {isProcessing ? 'btn-disabled' : ''}"> Login </button>
 				<span class="text-center">
 					Don't have an account? <a
 						href="/register"
