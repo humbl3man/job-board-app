@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { formatDate } from '$lib/utils/formatDate';
-	import { ChevronRight } from 'radix-icons-svelte';
+	import { ChevronRight, PlusCircled } from 'radix-icons-svelte';
 
 	export let data;
 </script>
@@ -9,6 +9,15 @@
 <h1 class="mb-8 text-2xl">Created Jobs</h1>
 
 <section>
+	<div class="mb-4">
+		<a
+			class="btn-primary btn-sm btn gap-1"
+			href="/jobs/create"
+		>
+			<PlusCircled />
+			Create Job
+		</a>
+	</div>
 	{#each data.createdJobs as job (job.id)}
 		<div
 			class="flex items-center justify-between border-b border-slate-300 px-4 py-6 last-of-type:border-0 "
