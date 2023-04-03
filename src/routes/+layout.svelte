@@ -38,7 +38,7 @@
 		@apply text-2xl font-bold text-neutral sm:text-3xl;
 	}
 	:global(.btn) {
-		@apply rounded-sm;
+		@apply no-animation rounded-sm;
 	}
 	:global(.input),
 	:global(.select),
