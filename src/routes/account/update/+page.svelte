@@ -4,23 +4,21 @@
 	import ErrorMessage from '$lib/components/ErrorMessage.svelte';
 	import ValidationError from '$lib/components/ValidationError.svelte';
 	import { Role } from '$lib/constants/Role';
+	import { superForm } from 'sveltekit-superforms/client';
+	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
 
 	export let data;
-	export let form;
+	// export let form;
 
-	let company = data.user.company;
+	const { form: updateForm, errors } = superForm(data.form);
 </script>
 
-<!-- <pre>
-	{JSON.stringify(form, null, 2)}
-</pre> -->
+<!-- <SuperDebug data={$updateForm} />
+<SuperDebug data={$errors} /> -->
 
 <section class="dashboard">
-	<div class="mb-6 py-6 border-b border-slate-300">
-		<h1 class="text-2xl mb-2">Account Information - Update</h1>
-		{#if form?.company_exists}
-			<ErrorMessage>Failed to update company name. Name is already taken.</ErrorMessage>
-		{/if}
+	<div class="mb-6 border-b border-slate-300 py-6">
+		<h1 class="mb-2 text-2xl">Profile - Update</h1>
 	</div>
 	<form
 		method="POST"
@@ -37,88 +35,89 @@
 				{data.user.email}
 			</div>
 		</div>
-		{#if data.user.role === Role.USER}
-			<div class="row">
-				<div class="col-left">First Name</div>
-				<div class="col-right">
-					<div class="form-control">
-						<label
-							for="firstname"
-							class="sr-only">First Name</label
-						>
-						<input
-							type="text"
-							class="input input-primary w-full {form?.fieldErrors?.name ? 'input-error' : ''}"
-							id="firstname"
-							name="firstname"
-							bind:value={data.user.firstName}
-						/>
-						{#if form?.fieldErrors?.firstName}
-							<ValidationError label="firstname">
-								{form.fieldErrors?.firstName[0]}
-							</ValidationError>
-						{/if}
-					</div>
+		<div class="row">
+			<div class="col-left">First Name</div>
+			<div class="col-right">
+				<div class="form-control">
+					<label
+						for="firstName"
+						class="sr-only">First Name</label
+					>
+					<input
+						type="text"
+						class="input-primary input w-full {$errors?.firstName ? 'input-error' : ''}"
+						id="firstName"
+						name="firstName"
+						bind:value={$updateForm.firstName}
+					/>
+					{#if $errors?.firstName}
+						<ValidationError label="firstName">
+							{$errors.firstName[0]}
+						</ValidationError>
+					{/if}
 				</div>
 			</div>
-			<div class="row">
-				<div class="col-left">Last Name</div>
-				<div class="col-right">
-					<div class="form-control">
-						<label
-							for="lastname"
-							class="sr-only">Last Name</label
-						>
-						<input
-							type="text"
-							class="input input-primary w-full {form?.fieldErrors?.lastName ? 'input-error' : ''}"
-							id="lastname"
-							name="lastname"
-							bind:value={data.user.lastName}
-						/>
-						{#if form?.fieldErrors?.lastName}
-							<ValidationError label="lastname">
-								{form.fieldErrors?.lastName[0]}
-							</ValidationError>
-						{/if}
-					</div>
+		</div>
+		<div class="row">
+			<div class="col-left">Last Name</div>
+			<div class="col-right">
+				<div class="form-control">
+					<label
+						for="lastName"
+						class="sr-only">Last Name</label
+					>
+					<input
+						type="text"
+						class="input-primary input w-full {$errors?.lastName ? 'input-error' : ''}"
+						id="lastName"
+						name="lastName"
+						bind:value={$updateForm.lastName}
+					/>
+					{#if $errors?.lastName}
+						<ValidationError label="lastName">
+							{$errors.lastName[0]}
+						</ValidationError>
+					{/if}
 				</div>
 			</div>
-		{/if}
-		{#if data.user.role === Role.EMPLOYER}
-			<div class="row">
-				<div class="col-left">Company Name</div>
-				<div class="col-right">
-					<div class="relative pb-5">
-						<label
-							for="name"
-							class="sr-only">Company Name</label
+		</div>
+		<div class="row">
+			<div class="col-left">Employment Status</div>
+			<div class="col-right">
+				<div class="form-control">
+					<label
+						for="eStatus"
+						class="sr-only">Employment Status</label
+					>
+					<select
+						class="select-primary w-full {$errors?.employmentStatus ? 'select-error' : ''}"
+						id="eStatus"
+						name="employmentStatus"
+						bind:value={$updateForm.employmentStatus}
+					>
+						<option
+							disabled
+							selected={!$updateForm.employmentStatus}>Select Status...</option
 						>
-						<input
-							type="text"
-							class="input input-primary w-full {form?.fieldErrors?.companyName
-								? 'input-error'
-								: ''}"
-							id="name"
-							name="company"
-							bind:value={company}
-						/>
-						{#if form?.fieldErrors?.companyName}
-							<ValidationError label="company">
-								{form.fieldErrors?.companyName[0]}
-							</ValidationError>
-						{/if}
-					</div>
+						{#each data.employmentStatuses as status (status.id)}
+							<option value={String(status.id)}>{status.name}</option>
+						{/each}
+					</select>
+					{#if $errors?.employmentStatus}
+						<ValidationError label="eStatus">
+							{$errors.employmentStatus[0]}
+						</ValidationError>
+					{/if}
 				</div>
 			</div>
-		{/if}
+		</div>
 		<div class="row">
 			<div class="col-left" />
 			<div class="col-right flex justify-end">
-				<button class="btn btn-primary mr-2">Save</button>
+				<button class="btn-primary btn mr-2">Save</button>
 				<a
 					href="/account"
-					class="btn btn-ghost">Cancel</a
+					class="btn-ghost btn">Cancel</a
 				>
 			</div>
 		</div>
@@ -127,7 +126,7 @@
 
 <style lang="postcss">
 	.dashboard .row {
-		@apply py-6 border-b border-slate-300 grid gap-4 sm:gap-8 items-center sm:grid-cols-[200px_1fr] last-of-type:border-0;
+		@apply grid items-center gap-4 border-b border-slate-300 py-6 last-of-type:border-0 sm:grid-cols-[200px_1fr] sm:gap-8;
 	}
 	.dashboard .col-left {
 		@apply text-slate-500;

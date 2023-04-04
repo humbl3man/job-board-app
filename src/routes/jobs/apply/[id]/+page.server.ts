@@ -10,6 +10,12 @@ export const load: PageServerLoad = async (event) => {
 	// TODO: application
 
 	const job = await db.job.findUnique({
+		select: {
+			title: true,
+			location: true,
+			type: true,
+			salary: true
+		},
 		where: {
 			id: Number(event.params.id)
 		}
@@ -18,4 +24,8 @@ export const load: PageServerLoad = async (event) => {
 	if (!job) {
 		return fail(404);
 	}
+
+	return {
+		job
+	};
 };
