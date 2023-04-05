@@ -26,7 +26,7 @@ export async function load(event) {
 			},
 			{
 				href: '/account/employer/jobs',
-				label: 'Created Jobs'
+				label: 'Company Jobs'
 			}
 		];
 	}
