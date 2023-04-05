@@ -1,20 +1,13 @@
 <script lang="ts">
 	import { applyAction, enhance } from '$app/forms';
 	import { invalidateAll } from '$app/navigation';
-	import ErrorMessage from '$lib/components/ErrorMessage.svelte';
 	import ValidationError from '$lib/components/ValidationError.svelte';
-	import { Role } from '$lib/constants/Role';
 	import { superForm } from 'sveltekit-superforms/client';
-	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
 
 	export let data;
-	// export let form;
 
 	const { form: updateForm, errors } = superForm(data.form);
 </script>
-
-<!-- <SuperDebug data={$updateForm} />
-<SuperDebug data={$errors} /> -->
 
 <section class="dashboard">
 	<div class="mb-6 border-b border-slate-300 py-6">
