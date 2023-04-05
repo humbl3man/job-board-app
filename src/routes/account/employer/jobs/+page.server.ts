@@ -4,27 +4,30 @@ import { handleLoginRedirectTo } from '$lib/utils/handleLoginRedirectTo';
 import { redirect } from '@sveltejs/kit';
 
 export async function load(event) {
-	if (event.locals.user?.role === Role.EMPLOYER) {
-		throw redirect(302, '/account');
-	}
-
 	if (!event.locals.user) {
 		throw redirect(302, handleLoginRedirectTo(event));
 	}
 
-	const applications = await db.jobApplication.findMany({
+	if (event.locals.user.role !== Role.EMPLOYER) {
+		throw redirect(302, '/account/user');
+	}
+
+	const createdJobs = await db.job.findMany({
 		where: {
-			userId: event.locals.user.id
+			companyId: event.locals.user.companyId
 		},
 		select: {
 			id: true,
-			job: true,
-			status: true,
-			jobId: true
+			title: true,
+			createdAt: true,
+			updatedAt: true,
+			category: true,
+			location: true,
+			type: true
 		}
 	});
 
 	return {
-		applications
+		createdJobs
 	};
 }

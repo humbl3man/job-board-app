@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { Role } from '$lib/constants/Role';
 	import { getEmploymentStatus } from '$lib/utils/getEmploymentStatus';
-
+	import { Pencil2 } from 'radix-icons-svelte';
 	export let data;
+	let { accountData } = data;
 </script>
 
 <!-- <pre>
@@ -16,50 +16,50 @@
 	<div class="row">
 		<div class="col-left">Email Address</div>
 		<div class="col-right">
-			{data.user.email}
+			{accountData?.email ?? '[Not Set]'}
 		</div>
 	</div>
-	{#if data.user.role === Role.USER}
+
+	{#if accountData?.firstName}
 		<div class="row">
 			<div class="col-left">First Name</div>
 			<div class="col-right">
-				{data.user.firstName ?? '[Not Set]'}
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-left">Last Name</div>
-			<div class="col-right">
-				{data.user.lastName ?? '[Not Set]'}
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-left">Last Name</div>
-			<div class="col-right">
-				{data.user.lastName ?? '[Not Set]'}
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-left">Employment Status</div>
-			<div class="col-right">
-				{getEmploymentStatus(data.accountData?.employmentStatusId)}
+				{accountData.firstName}
 			</div>
 		</div>
 	{/if}
-	{#if data.user.role === Role.EMPLOYER}
+	{#if accountData?.lastName}
 		<div class="row">
-			<div class="col-left">Company Name</div>
+			<div class="col-left">Last Name</div>
 			<div class="col-right">
-				{data.user.company}
+				{accountData.lastName}
+			</div>
+		</div>
+	{/if}
+	{#if accountData?.bio}
+		<div class="row">
+			<div class="col-left">Bio</div>
+			<div class="col-right">
+				{@html accountData.bio}
 			</div>
 		</div>
 	{/if}
 	<div class="row">
+		<div class="col-left">Employment Status</div>
+		<div class="col-right">
+			{getEmploymentStatus(accountData?.employmentStatusId)}
+		</div>
+	</div>
+	<div class="row">
 		<div class="col-left" />
 		<div class="col-right flex justify-end">
 			<a
-				href="/account/update"
-				class="btn-primary btn-wide btn">Edit Profile</a
+				href="/account/user/update"
+				class="btn-primary btn gap-2"
 			>
+				<Pencil2 size={20} />
+				Edit
+			</a>
 		</div>
 	</div>
 </section>

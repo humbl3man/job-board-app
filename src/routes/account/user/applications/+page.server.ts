@@ -8,26 +8,23 @@ export async function load(event) {
 		throw redirect(302, handleLoginRedirectTo(event));
 	}
 
-	if (event.locals.user.role !== Role.EMPLOYER) {
-		throw redirect(302, '/account');
+	if (event.locals.user.role === Role.EMPLOYER) {
+		throw redirect(302, '/account/employer');
 	}
 
-	const createdJobs = await db.job.findMany({
+	const applications = await db.jobApplication.findMany({
 		where: {
-			companyId: event.locals.user.companyId
+			userId: event.locals.user.id
 		},
 		select: {
 			id: true,
-			title: true,
-			createdAt: true,
-			updatedAt: true,
-			category: true,
-			location: true,
-			type: true
+			job: true,
+			status: true,
+			jobId: true
 		}
 	});
 
 	return {
-		createdJobs
+		applications
 	};
 }

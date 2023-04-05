@@ -4,7 +4,7 @@ import { z } from 'zod';
 import bcrypt from 'bcrypt';
 import { superValidate } from 'sveltekit-superforms/server';
 
-import type { PageServerLoad, Action, Actions } from './$types';
+import type { Action, Actions } from './$types';
 import { Role } from '$lib/constants/Role';
 
 const loginSchema = z.object({
@@ -17,9 +17,17 @@ const loginSchema = z.object({
 	password: z.string({ required_error: 'Password is required' }).min(1, 'Password is required')
 });
 
-export const load: PageServerLoad = async (event) => {
+export async function load(event) {
 	if (event.locals.user) {
-		throw redirect(301, '/account');
+		switch (event.locals.user.role) {
+			case Role.ADMIN:
+				throw redirect(303, '/admin');
+			case Role.EMPLOYER:
+				throw redirect(303, '/account/employer');
+			case Role.USER:
+			default:
+				throw redirect(303, '/account/user');
+		}
 	}
 
 	const form = await superValidate(event, loginSchema);
@@ -27,7 +35,7 @@ export const load: PageServerLoad = async (event) => {
 	return {
 		form
 	};
-};
+}
 
 export const actions: Actions = {
 	default: async (event) => {
@@ -99,10 +107,14 @@ export const actions: Actions = {
 			throw redirect(303, `/${redirectTo.slice(1)}`);
 		}
 
-		if (authenticatedUser.roleId === Role.ADMIN) {
-			throw redirect(303, '/admin');
+		switch (authenticatedUser.roleId) {
+			case Role.ADMIN:
+				throw redirect(303, '/admin');
+			case Role.EMPLOYER:
+				throw redirect(303, '/account/employer');
+			case Role.USER:
+			default:
+				throw redirect(303, '/account/user');
 		}
-
-		throw redirect(303, '/account');
 	}
 };

@@ -2,6 +2,7 @@
 	import { applyAction, enhance } from '$app/forms';
 	import { invalidateAll } from '$app/navigation';
 	import { page } from '$app/stores';
+	import { Role } from '$lib/constants/Role';
 	import { formatName } from '$lib/utils/formatName';
 	import { ChevronDown } from 'radix-icons-svelte';
 
@@ -59,7 +60,7 @@
 						>
 							<li>
 								<a
-									href="/account"
+									href={user.role === Role.EMPLOYER ? '/account/employer' : '/account/user'}
 									class="btn-ghost btn-sm btn inline-flex w-full justify-start normal-case"
 									>Account</a
 								>

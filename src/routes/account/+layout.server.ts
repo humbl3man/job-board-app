@@ -15,19 +15,17 @@ export async function load(event) {
 		aliasHrefs?: string[];
 	};
 
-	let accountLinks: AccountLink[] = [
-		{
-			href: '/account',
-			label: 'Profile',
-			aliasHrefs: ['/account/update']
-		}
-	];
+	let accountLinks: AccountLink[] = [];
 
 	if (role === Role.EMPLOYER) {
 		accountLinks = [
-			...accountLinks,
 			{
-				href: '/account/jobs',
+				href: '/account/employer',
+				label: 'Company Profile',
+				aliasHrefs: ['/account/update/employer']
+			},
+			{
+				href: '/account/employer/jobs',
 				label: 'Created Jobs'
 			}
 		];
@@ -35,9 +33,13 @@ export async function load(event) {
 
 	if (role === Role.USER) {
 		accountLinks = [
-			...accountLinks,
 			{
-				href: '/account/applications',
+				href: '/account/user',
+				label: 'Profile',
+				aliasHrefs: ['/account/user/update']
+			},
+			{
+				href: '/account/user/applications',
 				label: 'Applications'
 			}
 		];

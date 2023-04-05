@@ -82,6 +82,29 @@
 			</div>
 		</div>
 		<div class="row">
+			<div class="col-left">Bio</div>
+			<div class="col-right">
+				<div class="form-control">
+					<label
+						for="bio"
+						class="sr-only">Bio</label
+					>
+					<textarea
+						class="textarea-primary textarea w-full {$errors?.bio ? 'textarea-error' : ''}"
+						id="bio"
+						name="bio"
+						rows={5}
+						bind:value={$updateForm.bio}
+					/>
+					{#if $errors?.bio}
+						<ValidationError label="bio">
+							{$errors.bio[0]}
+						</ValidationError>
+					{/if}
+				</div>
+			</div>
+		</div>
+		<div class="row">
 			<div class="col-left">Employment Status</div>
 			<div class="col-right">
 				<div class="form-control">
@@ -114,9 +137,9 @@
 		<div class="row">
 			<div class="col-left" />
 			<div class="col-right flex justify-end">
-				<button class="btn-primary btn mr-2">Save</button>
+				<button class="btn-primary btn mr-2">Save Changes</button>
 				<a
-					href="/account"
+					href="/account/user"
 					class="btn-ghost btn">Cancel</a
 				>
 			</div>
