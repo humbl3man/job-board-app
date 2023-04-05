@@ -38,11 +38,12 @@ model Resume {
 }
 
 model Company {
-  id     Int    @id @default(autoincrement())
-  name   String @unique
-  user   User   @relation(fields: [userId], references: [id])
-  userId Int    @unique
-  jobs   Job[]
+  id          Int     @id @default(autoincrement())
+  name        String  @unique
+  description String?
+  user        User    @relation(fields: [userId], references: [id])
+  userId      Int     @unique
+  jobs        Job[]
 }
 
 model Job {

@@ -1,56 +1,80 @@
-// TODO: create another route for updating company profile
+import { fail, redirect } from '@sveltejs/kit';
+import { z } from 'zod';
+import { db } from '$lib/db';
+import { handleLoginRedirectTo } from '$lib/utils/handleLoginRedirectTo';
+import { superValidate } from 'sveltekit-superforms/server';
+import { Role } from '$lib/constants/Role';
 
-// if (locals.user.role === Role.EMPLOYER) {
-// 	const companyName = (await request.formData()).get('company');
-// 	const updateSchemaForUser = z.object({
-// 		companyName: z
-// 			.string({ required_error: 'Company name is required' })
-// 			.min(1, 'Company name is required')
-// 			.max(32, 'Company name cannot exceed 32 characters')
-// 	});
+const updateSchema = z.object({
+	companyName: z
+		.string({ required_error: 'Company Name is required' })
+		.min(1, 'Company Name is required')
+		.max(64, 'Company Name cannot exceed 64 characters'),
+	companyDescription: z
+		.string()
+		.max(300, 'Company description cannot exceed 300 characters')
+		.optional()
+});
 
-// 	const result = updateSchemaForUser.safeParse({
-// 		companyName
-// 	});
+export async function load(event) {
+	if (!event.locals.user) {
+		throw redirect(302, handleLoginRedirectTo(event));
+	}
 
-// 	if (!result.success) {
-// 		return fail(400, {
-// 			...result.error.flatten(),
-// 			data: {
-// 				companyName: companyName?.toString().trim()
-// 			}
-// 		});
-// 	}
+	if (event.locals.user.role === Role.USER) {
+		throw redirect(302, '/account/user/update');
+	}
 
-// 	try {
-// 		// check if company name is taken
-// 		// TODO:
-// 		// const companyExists = await db.company.findFirst({
-// 		// 	where: {
-// 		// 		name: {
-// 		// 			startsWith: companyName?.toString().trim().toLowerCase()
-// 		// 		}
-// 		// 	}
-// 		// });
+	const accountData = await db.user.findUnique({
+		where: {
+			id: event.locals.user.id
+		},
+		select: {
+			email: true,
+			Company: {
+				select: {
+					name: true,
+					description: true
+				}
+			}
+		}
+	});
 
-// 		// // throw error if company name is taken
-// 		// if (companyExists?.id !== locals.user.companyId) {
-// 		// 	return fail(400, {
-// 		// 		company_exists: true
-// 		// 	});
-// 		// }
+	const form = await superValidate(
+		{
+			companyName: accountData?.Company?.name ?? '',
+			companyDescription: accountData?.Company?.description ?? ''
+		},
+		updateSchema
+	);
 
-// 		await db.company.update({
-// 			where: {
-// 				id: locals.user.companyId
-// 			},
-// 			data: {
-// 				name: companyName?.toString()
-// 			}
-// 		});
-// 	} catch {
-// 		return fail(400, {
-// 			error: true
-// 		});
-// 	}
-// }
+	return {
+		form
+	};
+}
+
+export const actions = {
+	default: async ({ request, locals }) => {
+		const form = await superValidate(request, updateSchema);
+
+		if (!form.valid) {
+			return fail(400, {
+				form
+			});
+		}
+
+		// TODO: check if company name already exists before updating it.
+
+		await db.company.update({
+			where: {
+				id: locals.user.companyId
+			},
+			data: {
+				name: form.data.companyName,
+				description: form.data.companyDescription
+			}
+		});
+
+		throw redirect(303, '/account/employer');
+	}
+};
