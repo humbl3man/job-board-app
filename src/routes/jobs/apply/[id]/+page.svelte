@@ -1,8 +1,11 @@
 <script lang="ts">
 	import Shell from '$lib/components/Shell.svelte';
 	import { formatCurrency } from '$lib/utils/formatCurrency';
+	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
 	export let data;
 </script>
+
+<SuperDebug {data} />
 
 <Shell>
 	<div class="custom-wrapper max-w-2xl">
@@ -29,19 +32,51 @@
 				{/if}
 			{/if}
 		</div>
-		<form>
+		<form method="POST">
 			<div class="form-control my-4">
 				<label
-					for="firstname"
+					for="firstName"
 					class="label">First Name</label
 				>
 				<input
 					class="input-bordered input-primary input"
-					id="firstname"
-					name="firstname"
+					id="firstName"
+					name="firstName"
 					type="text"
 					value={data.user.firstName ?? ''}
 				/>
+			</div>
+			<div class="form-control my-4">
+				<label
+					for="lastName"
+					class="label">Last Name</label
+				>
+				<input
+					class="input-bordered input-primary input"
+					id="lastName"
+					name="lastName"
+					type="text"
+					value={data.user.lastName ?? ''}
+				/>
+			</div>
+
+			<!-- <div class="form-control my-4">
+				<label for="resume">Resume</label>
+				<input
+					type="hidden"
+					name="resume_file"
+					value={fileInput}
+				/>
+				<input
+					type="file"
+					accept="application/pdf"
+					id="resume"
+					name="resume_file"
+					class="file-input-bordered file-input-primary file-input w-full max-w-xs"
+				/>
+			</div> -->
+			<div class="mt-8 flex justify-end">
+				<button class="btn-primary btn-wide btn">Submit</button>
 			</div>
 		</form>
 	</div>

@@ -1,9 +1,8 @@
 import { db } from '$lib/db';
 import { handleLoginRedirectTo } from '$lib/utils/handleLoginRedirectTo';
 import { redirect, fail } from '@sveltejs/kit';
-import type { PageServerLoad } from './$types';
 
-export const load: PageServerLoad = async (event) => {
+export async function load(event) {
 	if (!event.locals.user) {
 		throw redirect(302, handleLoginRedirectTo(event));
 	}
@@ -28,4 +27,4 @@ export const load: PageServerLoad = async (event) => {
 	return {
 		job
 	};
-};
+}
