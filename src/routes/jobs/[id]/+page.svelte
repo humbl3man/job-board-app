@@ -2,14 +2,14 @@
 	import { applyAction, enhance } from '$app/forms';
 	import { goto, invalidateAll } from '$app/navigation';
 	import { formatCurrency } from '$lib/utils/formatCurrency';
-	import type { PageData } from './$types';
 	import Shell from '$lib/components/Shell.svelte';
-	import { ChevronLeft, ChevronRight, Circle, InfoCircled } from 'radix-icons-svelte';
+	import { ChevronLeft, ChevronRight } from 'radix-icons-svelte';
 	import { Role } from '$lib/constants/Role';
 	import Modal from '$lib/components/Modal.svelte';
 	import { page } from '$app/stores';
+	import { formatDate } from '$lib/utils/formatDate';
 
-	export let data: PageData;
+	export let data;
 
 	let returnUrl = $page.url.searchParams.get('returnUrl');
 	let showDeleteConfirmation = false;
@@ -163,6 +163,15 @@
 					>
 				{/if}
 			</div>
+		</div>
+		<div class="pt-4 text-right">
+			<p class="text-xs text-slate-500">
+				Created <span class="italic">{formatDate(data.jobDetails.createdAt)}</span>
+			</p>
+
+			<p class="text-xs text-slate-500">
+				Last updated <span class="italic">{formatDate(data.jobDetails.updatedAt)}</span>
+			</p>
 		</div>
 	</div>
 </Shell>

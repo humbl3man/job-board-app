@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { formatDate } from '$lib/utils/formatDate';
 	import { ChevronRight, PlusCircled } from 'radix-icons-svelte';
 
 	export let data;
@@ -37,12 +36,6 @@
 			<div class="flex flex-col items-end text-right">
 				<div class="w-max rounded-lg bg-green-50 px-2 py-1 text-xs font-bold text-green-900">
 					{job.type.name}
-				</div>
-				<div class="mt-1 text-xs text-slate-500">
-					Posted on {formatDate(job.createdAt)}
-				</div>
-				<div class="mt-1 text-xs text-slate-500">
-					Updated on {formatDate(job.updatedAt)}
 				</div>
 			</div>
 		</div>

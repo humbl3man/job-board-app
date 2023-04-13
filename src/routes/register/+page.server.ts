@@ -4,7 +4,7 @@ import { fail, redirect } from '@sveltejs/kit';
 import bcrypt from 'bcrypt';
 import { z } from 'zod';
 import type { Actions, PageServerLoad } from './$types';
-import { superValidate } from 'sveltekit-superforms/server';
+import { setError, superValidate } from 'sveltekit-superforms/server';
 
 const registerSchema = z.object({
 	email: z
@@ -27,66 +27,60 @@ export const load: PageServerLoad = async (event) => {
 		throw redirect(302, '/account');
 	}
 
-	const form = await superValidate(event, registerSchema);
+	const registerForm = await superValidate(event, registerSchema);
 
 	return {
-		form
+		registerForm
 	};
 };
 
 export const actions: Actions = {
 	default: async (event) => {
 		const formData = await event.request.formData();
-		let form = await superValidate(formData, registerSchema);
+		let registerForm = await superValidate(formData, registerSchema);
 
 		// if user checks isEmployer, re-validate form company field
-		if (form.data.isEmployer) {
+		if (registerForm.data.isEmployer) {
 			const schemaWithCompanyRequired = registerSchema.merge(
 				z.object({
 					company: z.string().min(1, 'Company name is required')
 				})
 			);
-			form = await superValidate(formData, schemaWithCompanyRequired);
+			registerForm = await superValidate(formData, schemaWithCompanyRequired);
 		}
 
 		// check validity
-		if (!form.valid) {
-			return fail(400, { form });
+		if (!registerForm.valid) {
+			return fail(400, { registerForm });
 		}
 
 		// check if user already exists
 		const user = await db.user.findUnique({
 			where: {
-				email: form.data.email
+				email: registerForm.data.email
 			}
 		});
 
 		// if user already exists, throw error
 		if (user) {
-			return fail(400, {
-				form,
-				userExists: true
-			});
+			return setError(registerForm, 'email', 'User already exists. Please use a different email.');
 		}
 
-		if (form.data?.company) {
+		if (registerForm.data?.company) {
 			// check if user is trying to register as employer
 			const companyRecordFound = await db.company.findUnique({
 				where: {
-					name: form.data.company
+					name: registerForm.data.company
 				}
 			});
 			if (companyRecordFound) {
-				return fail(400, {
-					form,
-					companyExists: true
-				});
+				return setError(registerForm, 'company', 'This company name is taken.');
 			}
 
 			const newUser = await db.user.create({
 				data: {
-					email: form.data.email,
-					passwordHash: await bcrypt.hash(form.data.password, 10),
+					email: registerForm.data.email,
+					passwordHash: await bcrypt.hash(registerForm.data.password, 10),
 					userAuthToken: crypto.randomUUID(),
 					role: {
 						connect: {
@@ -98,7 +92,7 @@ export const actions: Actions = {
 
 			await db.company.create({
 				data: {
-					name: form.data.company,
+					name: registerForm.data.company,
 					userId: newUser.id
 				}
 			});
@@ -106,8 +100,8 @@ export const actions: Actions = {
 			// otherwise, create new user with USER role
 			await db.user.create({
 				data: {
-					email: form.data.email,
-					passwordHash: await bcrypt.hash(form.data.password, 10),
+					email: registerForm.data.email,
+					passwordHash: await bcrypt.hash(registerForm.data.password, 10),
 					userAuthToken: crypto.randomUUID(),
 					role: {
 						connect: {

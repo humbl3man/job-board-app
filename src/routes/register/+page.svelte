@@ -1,19 +1,15 @@
 <script lang="ts">
-	// import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
 	import { APP_NAME } from '$lib/meta';
 	import { applyAction, enhance } from '$app/forms';
-	import type { ActionData, PageData } from './$types';
 	import Shell from '$lib/components/Shell.svelte';
-	import ErrorMessage from '$lib/components/ErrorMessage.svelte';
 	import ValidationError from '$lib/components/ValidationError.svelte';
 	import { fly } from 'svelte/transition';
 	import { superForm } from 'sveltekit-superforms/client';
 
-	export let data: PageData;
-	export let form: ActionData;
+	export let data;
 	let isProcessing = false;
 
-	const { form: registerForm, errors } = superForm(data.form);
+	const { form, errors } = superForm(data.registerForm);
 
 	let isEmployeer = false;
 </script>
@@ -21,8 +17,6 @@
 <svelte:head>
 	<title>{APP_NAME} | Register</title>
 </svelte:head>
-
-<!-- <SuperDebug data={form} /> -->
 
 <Shell>
 	<div class="custom-wrapper max-w-md">
@@ -38,10 +32,7 @@
 			}}
 		>
 			<h1>Create Account</h1>
-			{#if form?.userExists}
-				<ErrorMessage>User Already Exists</ErrorMessage>
-			{/if}
-			<div class="form-group w-full my-4">
+			<div class="form-group my-4 w-full">
 				<label
 					for="email"
 					class="label">Email</label
@@ -50,8 +41,8 @@
 					type="text"
 					id="email"
 					name="email"
-					class="input input-primary w-full"
-					bind:value={$registerForm.email}
+					class="input-primary input w-full"
+					bind:value={$form.email}
 					data-invalid={$errors?.email}
 				/>
 				{#if $errors?.email}
@@ -60,7 +51,7 @@
 					</ValidationError>
 				{/if}
 			</div>
-			<div class="form-group w-full my-4">
+			<div class="form-group my-4 w-full">
 				<label
 					for="password"
 					class="label">Password</label
@@ -69,8 +60,8 @@
 					type="password"
 					id="password"
 					name="password"
-					class="input input-primary w-full"
-					bind:value={$registerForm.password}
+					class="input-primary input w-full"
+					bind:value={$form.password}
 					data-invalid={$errors?.password}
 				/>
 				{#if $errors?.password}
@@ -82,7 +73,7 @@
 					<input
 						type="checkbox"
 						checked={isEmployeer}
-						class="checkbox checkbox-primary mr-4"
+						class="checkbox-primary checkbox mr-4"
 						on:change={() => (isEmployeer = !isEmployeer)}
 						value={isEmployeer}
 						name="isEmployer"
@@ -103,17 +94,17 @@
 						type="text"
 						id="company_name"
 						name="company"
-						class="input input-primary w-full"
+						class="input-primary input w-full"
 						data-invalid={$errors?.company}
-						bind:value={$registerForm.company}
+						bind:value={$form.company}
 					/>
 					{#if $errors?.company}
 						<ValidationError label="company">{$errors?.company[0]}</ValidationError>
 					{/if}
 				</div>
 			{/if}
-			<div class="grid gap-4 mt-8">
-				<button class="btn btn-primary w-full {isProcessing ? 'btn-disabled' : ''}">
+			<div class="mt-8 grid gap-4">
+				<button class="btn-primary btn w-full {isProcessing ? 'btn-disabled' : ''}">
 					Register
 				</button>
 				<span class="text-center">

@@ -2,9 +2,9 @@ import { db } from '$lib/db';
 import { fail, redirect } from '@sveltejs/kit';
 import { z } from 'zod';
 import bcrypt from 'bcrypt';
-import { superValidate } from 'sveltekit-superforms/server';
+import { setError, superValidate } from 'sveltekit-superforms/server';
 
-import type { Action, Actions } from './$types';
+import type { Actions } from './$types';
 import { Role } from '$lib/constants/Role';
 
 const loginSchema = z.object({
@@ -57,10 +57,7 @@ export const actions: Actions = {
 		if (!user) {
 			form.data.password = '';
 
-			return fail(400, {
-				form,
-				invalidUser: true
-			});
+			return setError(form, 'email', 'Invalid credentials.');
 		}
 
 		// compare provided password to stored password hash
@@ -68,10 +65,7 @@ export const actions: Actions = {
 
 		if (!passwordMatch) {
 			form.data.password = '';
-			return fail(400, {
-				form,
-				invalidCredentials: true
-			});
+			return setError(form, 'email', 'Invalid credentials.');
 		}
 
 		let authenticatedUser;

@@ -1,28 +1,20 @@
 <script lang="ts">
 	import { APP_NAME } from '$lib/meta';
 	import { applyAction, enhance } from '$app/forms';
-	import type { PageData, ActionData } from './$types';
 	import { invalidateAll } from '$app/navigation';
 	import Shell from '$lib/components/Shell.svelte';
 	import ValidationError from '$lib/components/ValidationError.svelte';
-	import ErrorMessage from '$lib/components/ErrorMessage.svelte';
 	import { superForm } from 'sveltekit-superforms/client';
-	import { page } from '$app/stores';
 
-	export let data: PageData;
-	export let form: ActionData;
+	export let data;
 
-	let redirectTo = $page.url.searchParams.get('redirectTo') ?? '';
 	let isProcessing = false;
-
 	const { form: loginForm, errors } = superForm(data.form);
 </script>
 
 <svelte:head>
 	<title>{APP_NAME} | Login</title>
 </svelte:head>
-
-<!-- <SuperDebug data={$errors} /> -->
 
 <Shell>
 	<div class="custom-wrapper max-w-md">
@@ -36,12 +28,6 @@
 			}}
 		>
 			<h1>Login</h1>
-			{#if form?.invalidUser}
-				<ErrorMessage>User Doesn't exist</ErrorMessage>
-			{/if}
-			{#if form?.invalidCredentials}
-				<ErrorMessage>Invalid credentials</ErrorMessage>
-			{/if}
 			<div class="form-control my-4 w-full">
 				<label
 					for="email"

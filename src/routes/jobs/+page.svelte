@@ -1,6 +1,5 @@
 <script lang="ts">
 	import EmptyMessage from '$lib/components/EmptyMessage.svelte';
-	import Shell from '$lib/components/Shell.svelte';
 	import { Role } from '$lib/constants/Role';
 	import { APP_NAME } from '$lib/meta';
 	import { formatDate } from '$lib/utils/formatDate';
@@ -56,79 +55,71 @@
 	<title>{APP_NAME} | Job Search</title>
 </svelte:head>
 
-<Shell>
-	<div class="max-w-screen-2xl custom-wrapper">
-		<header class="mb-6 flex justify-between">
-			<div>
-				<h1 class="font-bold text-2xl mb-2">Job Listings</h1>
-				<p class="text-slate-600">Explore exciting job opportunities across various industries.</p>
-			</div>
-			{#if isEmployer}
-				<a
-					href="/jobs/create"
-					class="btn btn-primary btn-sm gap-2"
-				>
-					Add Job
-					<PlusCircled size={20} />
-				</a>
-			{/if}
-		</header>
+<div class="custom-wrapper max-w-screen-2xl">
+	<header class="mb-6 flex justify-between">
+		<div>
+			<h1 class="mb-2 text-2xl font-bold">Job Listings</h1>
+			<p class="text-slate-600">Explore exciting job opportunities across various industries.</p>
+		</div>
+		{#if isEmployer}
+			<a
+				href="/jobs/create"
+				class="btn-primary btn-sm btn gap-2"
+			>
+				Add Job
+				<PlusCircled size={20} />
+			</a>
+		{/if}
+	</header>
 
-		{#if data.jobs.length}
-			<div class="mb-6">
-				<label
-					for="search"
-					class="sr-only"
+	{#if data.jobs.length}
+		<div class="mb-6">
+			<label
+				for="search"
+				class="sr-only"
+			/>
+			<div class="relative w-full md:w-6/12">
+				<input
+					id="search"
+					class="input-primary input w-full pr-16"
+					bind:value={searchTerm}
+					type="text"
+					placeholder="Search Jobs..."
 				/>
-				<div class="relative w-full md:w-6/12">
-					<input
-						id="search"
-						class="input input-primary w-full pr-16"
-						bind:value={searchTerm}
-						type="text"
-						placeholder="Search Jobs..."
-					/>
-					<div class="absolute top-2/4 right-2 -z-1 -translate-y-[50%]">
-						<MagnifyingGlass size={24} />
-					</div>
+				<div class="-z-1 absolute top-2/4 right-2 -translate-y-[50%]">
+					<MagnifyingGlass size={24} />
 				</div>
 			</div>
-			<section>
-				{#each jobs as job (job.id)}
-					<a
-						href="/jobs/{job.id}"
-						class="px-4 py-6 flex justify-between items-center border-b border-slate-300 last-of-type:border-0 hover:bg-slate-50 transition-colors duration-[50ms]"
-					>
+		</div>
+		<section>
+			{#each jobs as job (job.id)}
+				<a
+					href="/jobs/{job.id}"
+					class="flex items-center justify-between border-b border-slate-300 px-4 py-6 transition-colors duration-[50ms] last-of-type:border-0 hover:bg-slate-50"
+				>
+					<div>
+						<div class="text-slate-500">
+							<span class="font-bold text-indigo-600">{job.title}</span>
+							<span class="text-sm text-slate-500">in {job.category.name}</span>
+						</div>
 						<div>
-							<div class="text-slate-500">
-								<span class="font-bold text-indigo-600">{job.title}</span>
-								<span class="text-slate-500 text-sm">in {job.category.name}</span>
-							</div>
-							<div>
-								<div class="text-sm text-slate-600 mb-2">{job.company.name}</div>
-								<div class="text-sm text-slate-600">{job.location}</div>
-							</div>
+							<div class="mb-2 text-sm text-slate-600">{job.company.name}</div>
+							<div class="text-sm text-slate-600">{job.location}</div>
 						</div>
-						<div class="text-right flex flex-col items-end">
-							<div class="px-2 w-max py-1 bg-green-50 text-green-900 font-bold text-xs rounded-lg">
-								{job.type.name}
-							</div>
-							<div class="text-slate-500 text-xs mt-1">
-								Posted on {formatDate(job.createdAt)}
-							</div>
-							<div class="text-slate-500 text-xs mt-1">
-								Updated on {formatDate(job.updatedAt)}
-							</div>
+					</div>
+					<div class="flex flex-col items-end text-right">
+						<div class="w-max rounded-lg bg-green-50 px-2 py-1 text-xs font-bold text-green-900">
+							{job.type.name}
 						</div>
-					</a>
-				{:else}
-					<EmptyMessage>No jobs found. Try refining your search.</EmptyMessage>
-				{/each}
-			</section>
-		{:else}
-			<EmptyMessage>
-				Currently, there are no jobs at this time. Please check back at a later time.
-			</EmptyMessage>
-		{/if}
-	</div>
-</Shell>
+					</div>
+				</a>
+			{:else}
+				<EmptyMessage>No jobs found. Try refining your search.</EmptyMessage>
+			{/each}
+		</section>
+	{:else}
+		<EmptyMessage>
+			Currently, there are no jobs at this time. Please check back at a later time.
+		</EmptyMessage>
+	{/if}
+</div>
