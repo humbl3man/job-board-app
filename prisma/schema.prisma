@@ -30,11 +30,11 @@ model User {
 }
 
 model Resume {
-  id       Int    @id @default(autoincrement())
-  filename String
+  id       Int     @id @default(autoincrement())
+  filename String?
   url      String
-  user     User   @relation(fields: [userId], references: [id])
-  userId   Int    @unique
+  user     User    @relation(fields: [userId], references: [id])
+  userId   Int     @unique
 }
 
 model Company {
@@ -65,12 +65,14 @@ model Job {
 }
 
 model JobApplication {
-  id     Int    @id @default(autoincrement())
-  user   User   @relation(fields: [userId], references: [id])
-  userId Int
-  job    Job    @relation(fields: [jobId], references: [id])
-  jobId  Int
-  status String
+  id        Int      @id @default(autoincrement())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  job       Job      @relation(fields: [jobId], references: [id])
+  jobId     Int
+  resumeURL String
+  status    String
+  createdAt DateTime @default(now())
 }
 
 model JobType {

@@ -41,6 +41,10 @@ export async function load(event) {
 			{
 				href: '/account/user/applications',
 				label: 'Applications'
+			},
+			{
+				href: '/account/user/resume',
+				label: 'Resume'
 			}
 		];
 	}

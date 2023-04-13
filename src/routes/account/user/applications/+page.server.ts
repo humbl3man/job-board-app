@@ -18,9 +18,13 @@ export async function load(event) {
 		},
 		select: {
 			id: true,
-			job: true,
+			createdAt: true,
 			status: true,
-			jobId: true
+			job: {
+				include: {
+					company: true
+				}
+			},
 		}
 	});
 

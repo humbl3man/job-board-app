@@ -5,10 +5,6 @@
 	let { accountData } = data;
 </script>
 
-<!-- <pre>
-	{JSON.stringify(data, null, 2)}
-</pre> -->
-
 <section class="dashboard">
 	<div class="mb-6 border-b border-slate-300 pb-6">
 		<h1 class="mb-2 text-2xl">Account Information</h1>
