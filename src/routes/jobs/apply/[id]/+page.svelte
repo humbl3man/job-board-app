@@ -4,9 +4,11 @@
 	import { formatCurrency } from '$lib/utils/formatCurrency';
 	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
 	export let data;
+
+	$: jobApplicationExists = data.jobApplicationExists;
 </script>
 
-<SuperDebug data={$page} />
+<!-- <SuperDebug {data} /> -->
 
 <Shell>
 	<div class="custom-wrapper max-w-2xl">
@@ -45,7 +47,11 @@
 				value={$page.params.id}
 			/>
 			<div class="mt-8 flex justify-end">
-				<button class="btn-primary btn-wide btn">Apply</button>
+				{#if !jobApplicationExists}
+					<button class="btn-primary btn-wide btn">Apply</button>
+				{:else}
+					<p>You already applied!</p>
+				{/if}
 			</div>
 		</form>
 	</div>

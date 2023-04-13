@@ -1,7 +1,7 @@
 import { Role } from '$lib/constants/Role.js';
 import { db } from '$lib/db';
 import { handleLoginRedirectTo } from '$lib/utils/handleLoginRedirectTo';
-import { redirect, error } from '@sveltejs/kit';
+import { redirect, error, fail } from '@sveltejs/kit';
 
 export async function load(event) {
 	if (!event.locals.user) {
@@ -42,6 +42,22 @@ export async function load(event) {
 
 	if (!job) {
 		throw error(404);
+	}
+
+	const jobApplicationExists = await db.jobApplication.findFirst({
+		where: {
+			jobId: job.id,
+			userId: event.locals.user.id,
+			status: 'pending'
+		}
+	})
+
+	if (jobApplicationExists) {
+		return ({
+			job,
+			resume,
+			jobApplicationExists: true
+		})
 	}
 
 	return {
