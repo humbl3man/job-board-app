@@ -27,6 +27,10 @@ export async function load(event) {
 			{
 				href: '/account/employer/jobs',
 				label: 'Company Jobs'
+			},
+			{
+				href: '/account/employer/applications',
+				label: 'Review Applications'
 			}
 		];
 	}
