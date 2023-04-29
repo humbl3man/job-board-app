@@ -9,9 +9,11 @@ const categories = [
 	'Retail',
 	'Marketing',
 	'Healthcare',
-	'Home Improvement'
+	'Home Improvement',
+	'Other'
 ];
 const roles = ['Admin', 'Employer', 'User'];
+const employmentStatuses = ['Unemployed', 'Employed Full-Time', 'Employed Part-Time'];
 
 async function main() {
 	for (const role of roles) {
@@ -34,6 +36,13 @@ async function main() {
 				name: jobType
 			}
 		});
+	}
+	for (const employmentStatus of employmentStatuses) {
+		await db.employmentStatus.create({
+			data: {
+				name: employmentStatus
+			}
+		})
 	}
 }
 
