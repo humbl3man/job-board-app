@@ -1,12 +1,10 @@
 <script lang="ts">
 	import Typeahead from 'svelte-typeahead';
-	import JobHuntIllustration from '$lib/assets/JobHuntIllustration.svelte';
 	import { APP_NAME } from '$lib/meta';
-	import type { PageData } from './$types';
 	import { goto } from '$app/navigation';
 	import { MagnifyingGlass } from 'radix-icons-svelte';
 
-	export let data: PageData;
+	export let data;
 </script>
 
 <!-- <pre>
@@ -17,20 +15,20 @@
 	<title>{APP_NAME}</title>
 </svelte:head>
 
-<div class="py-10 lg:py-24 bg-white h-full items-center flex">
+<div class="flex h-full bg-white py-10 md:items-center lg:py-24">
 	<div class="mx-auto max-w-screen-xl px-4">
-		<div class="grid gap-8 sm:gap-12 sm:grid-cols-2">
+		<div class="grid gap-8 md:grid-cols-2 md:gap-12">
 			<div>
 				<h1
-					class="text-[36px] md:text-[52px] xl:text-[72px] leading-none text-indigo-900 mb-8 font-serif font-extrabold"
+					class="mb-8 text-[36px] font-extrabold leading-none tracking-tight text-indigo-900 sm:text-[42px] md:text-[70px] xl:text-[90px]"
 				>
 					Discover your next career move with us.
 				</h1>
-				<p class="md:text-[20px] text-slate-600">
+				<p class="text-slate-600 md:text-[20px]">
 					Take the next step in your career. Browse job openings, create a profile, and apply with
 					ease!
 				</p>
-				<div class="mt-8 relative">
+				<div class="relative mt-8">
 					<Typeahead
 						type="text"
 						label="Search"
@@ -39,20 +37,27 @@
 						data={data.jobs}
 						extract={(job) => job.title}
 						let:result
+						let:value
 						on:select={({ detail }) => {
 							goto(`/jobs/${detail.original.id}`);
 						}}
 					>
 						<strong class="mr-1">{result.original.title}</strong>
 						<span class="text-sm text-slate-700">{result.original.company.name}</span>
+						<svelte:fragment slot="no-results">
+							No results found for <span class="italic">"{value}"</span>
+						</svelte:fragment>
 					</Typeahead>
-					<div class="absolute top-1/2 -translate-y-[50%] right-2">
+					<div class="absolute top-1/2 right-2 -translate-y-[50%]">
 						<MagnifyingGlass size={24} />
 					</div>
 				</div>
 			</div>
 			<div class="flex justify-center">
-				<svelte:component this={JobHuntIllustration} />
+				<img
+					src="/landing-illustration.svg"
+					alt=""
+				/>
 			</div>
 		</div>
 	</div>
@@ -60,10 +65,10 @@
 
 <style lang="postcss">
 	:global([data-svelte-search] input) {
-		@apply input input-primary w-full !important;
+		@apply input-primary input w-full border-2 !important;
 	}
 	:global([data-svelte-typeahead]) {
-		@apply w-full block !important;
+		@apply block w-full !important;
 	}
 	:global([data-svelte-typeahead] li) {
 		@apply bg-white text-slate-800;

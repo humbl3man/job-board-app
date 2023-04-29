@@ -1,17 +1,15 @@
 <script lang="ts">
-	// import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
 	import { APP_NAME } from '$lib/meta';
-	import { enhance } from '$app/forms';
-	import type { ActionData, PageData } from './$types';
+	import { applyAction, enhance } from '$app/forms';
 	import Shell from '$lib/components/Shell.svelte';
-	import ErrorMessage from '$lib/components/ErrorMessage.svelte';
 	import ValidationError from '$lib/components/ValidationError.svelte';
 	import { fly } from 'svelte/transition';
 	import { superForm } from 'sveltekit-superforms/client';
 
-	export let data: PageData;
-	export let form: ActionData;
-	const { form: registerForm, errors } = superForm(data.form);
+	export let data;
+	let isProcessing = false;
+
+	const { form, errors } = superForm(data.registerForm);
 
 	let isEmployeer = false;
 </script>
@@ -20,98 +18,102 @@
 	<title>{APP_NAME} | Register</title>
 </svelte:head>
 
-<!-- <SuperDebug data={form} /> -->
-
 <Shell>
-	<form
-		class="block mx-auto my-24 max-w-md bg-base-100 p-8 rounded-md shadow-sm"
-		method="POST"
-		action="?/register"
-		use:enhance
-	>
-		<h1>Create Account</h1>
-		{#if form?.userExists}
-			<ErrorMessage>User Already Exists</ErrorMessage>
-		{/if}
-		<div class="form-group w-full my-4">
-			<label
-				for="email"
-				class="label">Email</label
-			>
-			<input
-				type="text"
-				id="email"
-				name="email"
-				class="input input-primary w-full"
-				bind:value={$registerForm.email}
-				data-invalid={$errors?.email}
-			/>
-			{#if $errors?.email}
-				<ValidationError label="email">
-					{$errors?.email[0]}
-				</ValidationError>
-			{/if}
-		</div>
-		<div class="form-group w-full my-4">
-			<label
-				for="password"
-				class="label">Password</label
-			>
-			<input
-				type="password"
-				id="password"
-				name="password"
-				class="input input-primary w-full"
-				bind:value={$registerForm.password}
-				data-invalid={$errors?.password}
-			/>
-			{#if $errors?.password}
-				<ValidationError label="password">{$errors?.password[0]}</ValidationError>
-			{/if}
-		</div>
-		<div class="form-control w-max">
-			<label class="label cursor-pointer">
-				<input
-					type="checkbox"
-					checked={isEmployeer}
-					class="checkbox checkbox-primary mr-4"
-					on:change={() => (isEmployeer = !isEmployeer)}
-					value={isEmployeer}
-					name="isEmployer"
-				/>
-				<span class="label-text">I am an employer</span>
-			</label>
-		</div>
-		{#if isEmployeer}
-			<div
-				in:fly={{ y: 20, duration: 100 }}
-				class="my-4"
-			>
+	<div class="custom-wrapper max-w-md">
+		<form
+			method="POST"
+			use:enhance={() => {
+				isProcessing = true;
+				return async ({ update, result }) => {
+					await update();
+					await applyAction(result);
+					isProcessing = false;
+				};
+			}}
+		>
+			<h1>Create Account</h1>
+			<div class="form-group my-4 w-full">
 				<label
-					for="company_name"
-					class="label">Company Name</label
+					for="email"
+					class="label">Email</label
 				>
 				<input
 					type="text"
-					id="company_name"
-					name="company"
-					class="input input-primary w-full"
-					data-invalid={$errors?.company}
-					bind:value={$registerForm.company}
+					id="email"
+					name="email"
+					class="input-primary input w-full"
+					bind:value={$form.email}
+					data-invalid={$errors?.email}
 				/>
-				{#if $errors?.company}
-					<ValidationError label="company">{$errors?.company[0]}</ValidationError>
+				{#if $errors?.email}
+					<ValidationError label="email">
+						{$errors?.email[0]}
+					</ValidationError>
 				{/if}
 			</div>
-		{/if}
-		<div class="grid gap-4 mt-8">
-			<button class="btn btn-primary w-full"> Register </button>
-			<span class="text-center">
-				Already have account? <a
-					href="/login"
-					class="text-neutral underline">Login</a
+			<div class="form-group my-4 w-full">
+				<label
+					for="password"
+					class="label">Password</label
 				>
-			</span>
-		</div>
-	</form>
+				<input
+					type="password"
+					id="password"
+					name="password"
+					class="input-primary input w-full"
+					bind:value={$form.password}
+					data-invalid={$errors?.password}
+				/>
+				{#if $errors?.password}
+					<ValidationError label="password">{$errors?.password[0]}</ValidationError>
+				{/if}
+			</div>
+			<div class="form-control w-max">
+				<label class="label cursor-pointer">
+					<input
+						type="checkbox"
+						checked={isEmployeer}
+						class="checkbox-primary checkbox mr-4"
+						on:change={() => (isEmployeer = !isEmployeer)}
+						value={isEmployeer}
+						name="isEmployer"
+					/>
+					<span class="label-text">I am an employer</span>
+				</label>
+			</div>
+			{#if isEmployeer}
+				<div
+					in:fly={{ y: 20, duration: 100 }}
+					class="my-4"
+				>
+					<label
+						for="company_name"
+						class="label">Company Name</label
+					>
+					<input
+						type="text"
+						id="company_name"
+						name="company"
+						class="input-primary input w-full"
+						data-invalid={$errors?.company}
+						bind:value={$form.company}
+					/>
+					{#if $errors?.company}
+						<ValidationError label="company">{$errors?.company[0]}</ValidationError>
+					{/if}
+				</div>
+			{/if}
+			<div class="mt-8 grid gap-4">
+				<button class="btn-primary btn w-full {isProcessing ? 'btn-disabled' : ''}">
+					Register
+				</button>
+				<span class="text-center">
+					Already have account? <a
+						href="/login"
+						class="text-neutral underline">Login</a
+					>
+				</span>
+			</div>
+		</form>
+	</div>
 </Shell>

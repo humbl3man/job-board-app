@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { page } from '$app/stores';
-	import { Role } from '$lib/constants/Role';
 	import Footer from '$lib/layout/Footer.svelte';
 	import Header from '$lib/layout/Header.svelte';
 	import { APP_NAME } from '$lib/meta';
 	import '../app.css';
+
+	export let data;
 </script>
 
 <svelte:head>
@@ -24,23 +24,26 @@
 	/>
 </svelte:head>
 
-<div class="grid page h-full bg-slate-50">
+<div class="page">
 	<Header
-		isAdmin={$page.data?.user?.role === Role.ADMIN}
-		isEmployer={$page.data?.user?.role === Role.EMPLOYER}
-		isAuthenticated={!!$page.data?.user}
-		user={$page.data?.user}
+		user={data.user}
+		navigation={data.navigation}
 	/>
-	<main><slot /></main>
+	<main class="bg-slate-50/60"><slot /></main>
 	<Footer />
 </div>
 
 <style lang="postcss">
-	:global(html) {
-		@apply bg-slate-300;
-	}
 	:global(h1, h2, h3, h4) {
-		@apply font-bold text-neutral text-2xl sm:text-3xl;
+		@apply text-2xl font-bold text-neutral sm:text-3xl;
+	}
+	:global(.btn) {
+		@apply no-animation rounded-sm;
+	}
+	:global(.input),
+	:global(.select),
+	:global(.textarea) {
+		@apply rounded-sm;
 	}
 	:global(.btn-ghost) {
 		@apply hover:bg-indigo-50 hover:text-indigo-900 focus:bg-indigo-50 focus:text-indigo-900;
@@ -61,7 +64,11 @@
 	:global(.textarea) {
 		@apply text-base leading-relaxed;
 	}
+	:global(.custom-wrapper) {
+		@apply my-8 mx-auto mb-16 rounded-sm border-b-[3px] border-slate-500/25 bg-white px-7 py-12 ring-1 ring-slate-200/70;
+	}
 	.page {
+		@apply grid h-screen;
 		grid-template-rows: max-content 1fr max-content;
 	}
 </style>

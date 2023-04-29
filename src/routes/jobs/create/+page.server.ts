@@ -56,7 +56,7 @@ const createjob: Action = async (event) => {
 			error: 'Something went wrong. Failed to create job'
 		});
 	}
-	throw redirect(302, '/jobs');
+	throw redirect(303, '/jobs');
 };
 
 export const actions: Actions = {

@@ -35,7 +35,7 @@ export const load = (async (event) => {
 
 	// only allow updates if job belongs to same company
 	if (jobDetails.companyId !== event.locals.user.companyId) {
-		throw redirect(301, '/jobs');
+		throw redirect(302, '/jobs');
 	}
 
 	const jobTypes = await db.jobType.findMany({
@@ -91,7 +91,7 @@ const updatejob: Action = async (event) => {
 		}
 	});
 
-	throw redirect(302, `/jobs/${event.params.id}`);
+	throw redirect(303, `/jobs/${event.params.id}`);
 };
 
 export const actions: Actions = {

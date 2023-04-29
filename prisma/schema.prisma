@@ -6,29 +6,44 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  id            Int      @id @default(autoincrement())
-  email         String   @unique
-  name          String?
-  passwordHash  String
-  userAuthToken String   @unique
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  Company       Company?
-  role          Role     @relation(fields: [roleId], references: [id])
-  roleId        Int
+  id                 Int               @id @default(autoincrement())
+  email              String            @unique
+  firstName          String?
+  lastName           String?
+  bio                String?
+  passwordHash       String
+  userAuthToken      String            @unique
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
+  Company            Company?
+  role               Role              @relation(fields: [roleId], references: [id])
+  roleId             Int
+  resume             Resume?
+  jobApplications    JobApplication[]
+  employmentStatus   EmploymentStatus? @relation(fields: [employmentStatusId], references: [id])
+  employmentStatusId Int?
+}
+
+model Resume {
+  id       Int     @id @default(autoincrement())
+  filename String?
+  url      String
+  user     User    @relation(fields: [userId], references: [id])
+  userId   Int     @unique
 }
 
 model Company {
-  id     Int    @id @default(autoincrement())
-  name   String @unique
-  user   User   @relation(fields: [userId], references: [id])
-  userId Int    @unique
-  jobs   Job[]
+  id          Int     @id @default(autoincrement())
+  name        String  @unique
+  description String?
+  user        User    @relation(fields: [userId], references: [id])
+  userId      Int     @unique
+  jobs        Job[]
 }
 
 model Job {
@@ -45,6 +60,19 @@ model Job {
   typeId      Int
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  jobApplications JobApplication[]
+}
+
+model JobApplication {
+  id        Int      @id @default(autoincrement())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  job       Job      @relation(fields: [jobId], references: [id])
+  jobId     Int
+  resumeURL String
+  status    String
+  createdAt DateTime @default(now())
 }
 
 model JobType {
@@ -60,6 +88,12 @@ model Category {
 }
 
 model Role {
+  id    Int    @id @default(autoincrement())
+  name  String
+  users User[]
+}
+
+model EmploymentStatus {
   id    Int    @id @default(autoincrement())
   name  String
   users User[]

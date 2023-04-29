@@ -8,7 +8,7 @@ export const load: PageServerLoad = async () => {
 export const actions: Actions = {
 	default: ({ locals, cookies }) => {
 		if (!locals.user) {
-			throw redirect(301, '/login');
+			throw redirect(302, '/login');
 		}
 
 		cookies.set('app_session', '', {
@@ -16,6 +16,6 @@ export const actions: Actions = {
 			expires: new Date(0)
 		});
 
-		throw redirect(301, '/login');
+		throw redirect(303, '/login');
 	}
 };

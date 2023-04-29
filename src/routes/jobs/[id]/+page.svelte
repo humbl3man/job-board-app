@@ -1,68 +1,91 @@
 <script lang="ts">
 	import { applyAction, enhance } from '$app/forms';
-	import { invalidateAll } from '$app/navigation';
-	import {
-		Dialog,
-		DialogOverlay,
-		DialogTitle,
-		DialogDescription
-	} from '@rgossiaux/svelte-headlessui';
+	import { goto, invalidateAll } from '$app/navigation';
 	import { formatCurrency } from '$lib/utils/formatCurrency';
-	import type { PageData } from './$types';
 	import Shell from '$lib/components/Shell.svelte';
-	import { ChevronLeft } from 'radix-icons-svelte';
+	import { ChevronLeft, ChevronRight } from 'radix-icons-svelte';
+	import { Role } from '$lib/constants/Role';
+	import Modal from '$lib/components/Modal.svelte';
+	import { page } from '$app/stores';
+	import { formatDate } from '$lib/utils/formatDate';
 
-	export let data: PageData;
+	export let data;
+
+	let returnUrl = $page.url.searchParams.get('returnUrl');
 	let showDeleteConfirmation = false;
 	let deleteform: HTMLFormElement;
+	let showLoginWarning = false;
 	function getdeleteform(el: HTMLFormElement) {
 		deleteform = el;
 	}
+
+	let redirectToUrl: string;
+	$: redirectToUrl = $page.url.pathname + $page.url.search;
 </script>
 
-<!-- <pre>
-	{JSON.stringify(data, null, 2)}
-</pre> -->
+<!-- Delete warning -->
+{#if data.user?.role === Role.EMPLOYER}
+	<Modal
+		on:close={() => (showDeleteConfirmation = false)}
+		open={showDeleteConfirmation}
+	>
+		<svelte:fragment slot="title">Delete &quot;{data.jobDetails.title}&quot;?</svelte:fragment>
+		<svelte:fragment slot="body"
+			><p>Are you sure you want to delete this job? This can't be undone.</p></svelte:fragment
+		>
+		<svelte:fragment slot="footer">
+			<button
+				class="btn-error btn-sm btn"
+				on:click={() => deleteform.submit()}>Yes, Delete it</button
+			>
+			<button
+				class="btn-ghost btn-sm btn"
+				on:click={() => (showDeleteConfirmation = false)}>Cancel</button
+			>
+		</svelte:fragment>
+	</Modal>
+{/if}
 
-<Dialog
-	class="fixed inset-0 w-full h-full z-10 flex items-center justify-center"
-	open={showDeleteConfirmation}
-	on:close={() => (showDeleteConfirmation = false)}
+<!-- Login warning -->
+<Modal
+	on:close={() => (showLoginWarning = false)}
+	open={showLoginWarning}
 >
-	<DialogOverlay class="absolute backdrop-blur-sm bg-white/40 inset-0 w-full h-full z-20" />
-	<div class="bg-white p-10 relative z-50 border-2 border-slate-600 rounded-md">
-		<DialogTitle class="mb-2">Delete this job?</DialogTitle>
-		<DialogDescription>
-			<p>Are you sure you want to delete this job? This can't be undone.</p>
-			<div class="grid grid-flow-col gap-4 justify-end mt-6">
-				<button
-					class="btn btn-sm btn-error"
-					on:click={() => deleteform.submit()}>Yes, Delete it</button
-				>
-				<button
-					class="btn btn-sm btn-ghost"
-					on:click={() => (showDeleteConfirmation = false)}>Cancel</button
-				>
-			</div>
-		</DialogDescription>
-	</div>
-</Dialog>
+	<svelte:fragment slot="title">Applying for &quot;{data.jobDetails.title}&quot;?</svelte:fragment>
+	<svelte:fragment slot="body">
+		<p>
+			We kindly ask that you log in to your account before applying for this job. If you haven't
+			registered yet, don't worry - it only takes a moment to create an account.
+		</p>
+	</svelte:fragment>
+	<svelte:fragment slot="footer">
+		<button
+			type="button"
+			class="btn-primary btn-sm btn"
+			on:click={() => goto(`/login/?redirectTo=${redirectToUrl}`)}>Login</button
+		>
+		<button
+			class="btn-ghost btn-sm btn"
+			on:click={() => goto(`/register?redirectTo=${redirectToUrl}`)}>Create Account</button
+		>
+	</svelte:fragment>
+</Modal>
 
 <Shell>
-	<div class="jobdetails mx-auto max-w-3xl bg-white mt-16 mb-16">
-		<div class="p-6 border-b border-slate-300">
+	<div class="jobdetails custom-wrapper max-w-3xl">
+		<div class="border-b border-slate-300 py-6">
 			<div class="mb-8">
 				<a
-					href="/jobs"
-					class="btn btn-sm btn-ghost"
+					href={returnUrl ? `/${returnUrl.slice(1)}` : '/jobs'}
+					class="btn-outline btn-primary btn-sm btn"
 				>
-					<ChevronLeft /> All Jobs</a
+					<ChevronLeft /> {returnUrl ? 'Back' : 'All Jobs'}</a
 				>
 			</div>
-			<h1 class="text-2xl mb-2 flex items-start">
+			<h1 class="mb-2 flex items-start text-2xl">
 				{data.jobDetails.title}
 				{#if data.user?.companyId === data.jobDetails.company.id}
-					<div class="ml-2 px-2 py-1 w-max text-xs bg-indigo-50 text-indigo-800 rounded-md">
+					<div class="ml-2 w-max rounded-md bg-indigo-50 px-2 py-1 text-xs text-indigo-800">
 						Posted by you
 					</div>
 				{/if}
@@ -101,7 +124,7 @@
 			<div class="col-right flex justify-end">
 				{#if data.showEditButton}
 					<a
-						class="btn btn-primary btn-outline mr-2"
+						class="btn-outline btn-primary btn mr-2"
 						href="/jobs/update/{data.jobId}">Edit</a
 					>
 				{/if}
@@ -119,25 +142,43 @@
 					>
 						<button
 							type="button"
-							class="btn btn-error"
+							class="btn-error btn"
 							on:click={() => (showDeleteConfirmation = true)}>Delete</button
 						>
 					</form>
 				{/if}
-				{#if data.showApplyButton}
+				{#if !data.user}
 					<a
-						href="/jobs/{data.jobId}/apply"
-						class="button">Apply for this job</a
+						href="/login/?redirectTo={redirectToUrl}"
+						on:click|preventDefault={() => {
+							showLoginWarning = true;
+						}}
+						class="btn-primary btn">Apply for this job <ChevronRight /></a
+					>
+				{/if}
+				{#if data.user?.role === Role.USER}
+					<a
+						href="/jobs/apply/{data.jobId}"
+						class="btn-primary btn">Apply for this job <ChevronRight /></a
 					>
 				{/if}
 			</div>
+		</div>
+		<div class="pt-4 text-right">
+			<p class="text-xs text-slate-500">
+				Created <span class="italic">{formatDate(data.jobDetails.createdAt)}</span>
+			</p>
+
+			<p class="text-xs text-slate-500">
+				Last updated <span class="italic">{formatDate(data.jobDetails.updatedAt)}</span>
+			</p>
 		</div>
 	</div>
 </Shell>
 
 <style lang="postcss">
 	.jobdetails .row {
-		@apply p-6 border-b border-slate-300 grid gap-4 sm:gap-8 items-center sm:grid-cols-[200px_1fr];
+		@apply grid items-center gap-4 border-b border-slate-300 py-6 last-of-type:border-0 sm:grid-cols-[200px_1fr] sm:gap-8;
 	}
 	.jobdetails .col-left {
 		@apply text-slate-700;

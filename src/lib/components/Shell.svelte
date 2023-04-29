@@ -1,8 +1,7 @@
 <script lang="ts">
-
-	import { fly } from "svelte/transition";
-
+	import { fly } from 'svelte/transition';
 </script>
-<div in:fly={{ y: 50, duration: 200 }}>
-  <slot />
+
+<div in:fly={{ y: 15, duration: 100 }}>
+	<slot />
 </div>

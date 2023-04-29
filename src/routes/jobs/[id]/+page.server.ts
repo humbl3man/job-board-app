@@ -1,8 +1,9 @@
 import { error, fail, redirect } from '@sveltejs/kit';
 import { db } from '$lib/db';
-import type { PageServerLoad, Action, Actions } from './$types';
+import { Role } from '$lib/constants/Role';
+import type { Action } from './$types.js';
 
-export const load: PageServerLoad = async ({ locals, params }) => {
+export async function load({ locals, params }) {
 	const jobDetails = await db.job.findUnique({
 		where: {
 			id: Number(params.id)
@@ -14,7 +15,9 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 			company: true,
 			category: true,
 			location: true,
-			type: true
+			type: true,
+			createdAt: true,
+			updatedAt: true
 		}
 	});
 
@@ -23,7 +26,7 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 	}
 
 	const allowModifications = locals.user?.companyId === jobDetails.company.id;
-	const showApplyButton = !locals.user?.companyId;
+	const showApplyButton = locals.user?.role === Role.USER;
 
 	return {
 		jobDetails,
@@ -32,9 +35,9 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 		showEditButton: allowModifications,
 		showApplyButton
 	};
-};
+}
 
-const deletejob: Action = async ({ request, params, locals }) => {
+const deletejob: Action = async ({ params, locals }) => {
 	const jobToDelete = await db.job.findUnique({
 		where: {
 			id: +params.id
@@ -59,7 +62,7 @@ const deletejob: Action = async ({ request, params, locals }) => {
 		}
 	});
 
-	throw redirect(301, '/jobs');
+	throw redirect(303, '/jobs');
 };
 
 export const actions = {
