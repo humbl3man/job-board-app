@@ -35,25 +35,39 @@
 				{/if}
 			{/if}
 		</div>
-		<form method="POST">
-			<input
-				type="hidden"
-				name="resume_url"
-				value={data.resume.url}
-			/>
-			<input
-				type="hidden"
-				name="job_id"
-				value={$page.params.id}
-			/>
-			<div class="mt-8 flex justify-end">
-				{#if !jobApplicationExists}
+		{#if data.resume?.url && !jobApplicationExists}
+			<form method="POST">
+				<input
+					type="hidden"
+					name="resume_url"
+					value={data.resume.url}
+				/>
+				<input
+					type="hidden"
+					name="job_id"
+					value={$page.params.id}
+				/>
+				<div class="mt-8 flex justify-end">
 					<button class="btn-primary btn-wide btn">Apply</button>
-				{:else}
-					<p>You already applied!</p>
-				{/if}
+				</div>
+			</form>
+		{/if}
+		{#if data.resume?.url && jobApplicationExists}
+			<div class="bg-slate-50 p-4 ring-1 ring-slate-400/60">
+				Thanks for applying! Please visit <a
+					class="link-primary"
+					href="/account/user/applications">applications page</a
+				> to check the status.
 			</div>
-		</form>
+		{/if}
+		{#if !data.resume?.url}
+			<div class="bg-slate-50 p-4 ring-1 ring-slate-400/60">
+				Please create a <a
+					href="/account/user/resume"
+					class="link-primary">resume profile</a
+				> before applying.
+			</div>
+		{/if}
 	</div>
 </Shell>
 

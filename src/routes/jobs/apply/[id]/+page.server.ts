@@ -1,7 +1,7 @@
 import { Role } from '$lib/constants/Role.js';
 import { db } from '$lib/db';
 import { handleLoginRedirectTo } from '$lib/utils/handleLoginRedirectTo';
-import { redirect, error, fail } from '@sveltejs/kit';
+import { redirect, error } from '@sveltejs/kit';
 
 export async function load(event) {
 	if (!event.locals.user) {
@@ -35,9 +35,11 @@ export async function load(event) {
 	});
 
 	if (!resume) {
-		throw error(401, {
-			message: 'You need to provide a resume URL or file to apply'
-		});
+		return {
+			job,
+			resume: null,
+			jobApplicationExists: true
+		}
 	}
 
 	if (!job) {
@@ -80,13 +82,6 @@ export const actions = {
 				resumeURL
 			}
 		})
-		
-		// await db.jobApplication.create({
-		// 	data: {
-		// 		status: 'pending',
-		// 		jobId: 
-		// 	}
-		// })
 
 	}
 };
