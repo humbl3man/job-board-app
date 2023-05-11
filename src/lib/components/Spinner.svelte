@@ -3,7 +3,10 @@
 	export let height = 20;
 </script>
 
-<div class="spinner h-[{width}px] w-[{height}px]">
+<div
+	class="spinner"
+	style="width: {width}px; height: {height}px"
+>
 	<div class="double-bounce1" />
 	<div class="double-bounce2" />
 </div>
@@ -20,6 +23,7 @@
 			transform: rotate(-360deg);
 		}
 	}
+
 	.spinner {
 		position: relative;
 	}
@@ -38,18 +42,7 @@
 	}
 
 	.double-bounce2 {
-		-webkit-animation-delay: -1s;
 		animation-delay: -1s;
-	}
-
-	@-webkit-keyframes sk-bounce {
-		0%,
-		100% {
-			-webkit-transform: scale(0);
-		}
-		50% {
-			-webkit-transform: scale(1);
-		}
 	}
 
 	@keyframes sk-bounce {

@@ -34,9 +34,12 @@
 	{#if $navigationIsDelayed}
 		<div class="toast-center toast toast-bottom z-[999]">
 			<div
-				class="flex min-w-max gap-2 rounded-lg bg-indigo-700 p-3 text-sm text-white drop-shadow-lg"
+				class="flex min-w-max items-center gap-2 rounded-lg bg-indigo-700 p-3 text-sm text-white drop-shadow-lg"
 			>
-				<Spinner /> Loading, please wait...
+				<Spinner
+					width={30}
+					height={30}
+				/> Loading, please wait...
 			</div>
 		</div>
 	{/if}
