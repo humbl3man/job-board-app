@@ -31,7 +31,7 @@
 				};
 			}}
 		>
-			<h1>Create Account</h1>
+			<h1 class="text-2xl font-bold">Create Account</h1>
 			<div class="form-group my-4 w-full">
 				<label
 					for="email"
@@ -105,7 +105,11 @@
 			{/if}
 			<div class="mt-8 grid gap-4">
 				<button class="btn-primary btn w-full {isProcessing ? 'btn-disabled' : ''}">
-					Register
+					{#if isProcessing}
+						Processing...
+					{:else}
+						Register
+					{/if}
 				</button>
 				<span class="text-center">
 					Already have account? <a
