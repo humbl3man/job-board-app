@@ -21,13 +21,15 @@
 		<form
 			method="POST"
 			use:enhance={() => {
+				isProcessing = true;
 				return async ({ result }) => {
 					await invalidateAll();
 					await applyAction(result);
+					isProcessing = false;
 				};
 			}}
 		>
-			<h1>Login</h1>
+			<h1 class="text-2xl font-bold">Login</h1>
 			<div class="form-control my-4 w-full">
 				<label
 					for="email"
@@ -69,7 +71,13 @@
 				{/if}
 			</div>
 			<div class="grid gap-4">
-				<button class="btn-primary btn w-full {isProcessing ? 'btn-disabled' : ''}"> Login </button>
+				<button class="btn-primary btn w-full {isProcessing ? 'btn-disabled' : ''}">
+					{#if isProcessing}
+						Processing...
+					{:else}
+						Login
+					{/if}
+				</button>
 				<span class="text-center">
 					Don't have an account? <a
 						href="/register"

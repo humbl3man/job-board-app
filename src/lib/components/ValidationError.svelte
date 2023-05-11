@@ -1,11 +1,9 @@
 <script lang="ts">
-	import { InfoCircled } from 'radix-icons-svelte';
-
 	export let label: string = '';
 </script>
 
 <label
-	class="label"
+	class="mt-[2px]"
 	for={label}
 >
 	<span class="label-text-alt text-red-600">

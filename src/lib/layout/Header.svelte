@@ -88,7 +88,7 @@
 				{#if !isAuthenticated}
 					<a
 						href="/login"
-						class="btn-primary btn-sm btn">Login</a
+						class="btn-ghost btn-sm btn">Login</a
 					>
 					<a
 						href="/register"
