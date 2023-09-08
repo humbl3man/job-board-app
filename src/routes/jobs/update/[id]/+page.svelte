@@ -1,8 +1,6 @@
 <script lang="ts">
-	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
 	import { applyAction, enhance } from '$app/forms';
 	import { invalidateAll } from '$app/navigation';
-	import Shell from '$lib/components/Shell.svelte';
 	import ValidationError from '$lib/components/ValidationError.svelte';
 	import type { ActionData, PageData } from './$types';
 	import { superForm } from 'sveltekit-superforms/client';
@@ -13,9 +11,7 @@
 	const { form: updateForm, errors } = superForm(data.form);
 </script>
 
-<!-- <SuperDebug data={$errors} /> -->
 
-<Shell>
 	<div class="update custom-wrapper max-w-3xl">
 		<form
 			method="POST"
@@ -190,7 +186,6 @@
 			</div>
 		</form>
 	</div>
-</Shell>
 
 <style lang="postcss">
 	.update .row {

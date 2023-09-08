@@ -2,7 +2,6 @@
 	import { applyAction, enhance } from '$app/forms';
 	import { goto, invalidateAll } from '$app/navigation';
 	import { formatCurrency } from '$lib/utils/formatCurrency';
-	import Shell from '$lib/components/Shell.svelte';
 	import { ChevronLeft, ChevronRight } from 'radix-icons-svelte';
 	import { Role } from '$lib/constants/Role';
 	import Modal from '$lib/components/Modal.svelte';
@@ -35,11 +34,11 @@
 		>
 		<svelte:fragment slot="footer">
 			<button
-				class="btn-error btn-sm btn"
+				class="btn btn-error btn-sm"
 				on:click={() => deleteform.submit()}>Yes, Delete it</button
 			>
 			<button
-				class="btn-ghost btn-sm btn"
+				class="btn btn-ghost btn-sm"
 				on:click={() => (showDeleteConfirmation = false)}>Cancel</button
 			>
 		</svelte:fragment>
@@ -61,120 +60,118 @@
 	<svelte:fragment slot="footer">
 		<button
 			type="button"
-			class="btn-primary btn-sm btn"
+			class="btn btn-primary btn-sm"
 			on:click={() => goto(`/login/?redirectTo=${redirectToUrl}`)}>Login</button
 		>
 		<button
-			class="btn-ghost btn-sm btn"
+			class="btn btn-ghost btn-sm"
 			on:click={() => goto(`/register?redirectTo=${redirectToUrl}`)}>Create Account</button
 		>
 	</svelte:fragment>
 </Modal>
 
-<Shell>
-	<div class="jobdetails custom-wrapper max-w-3xl">
-		<div class="border-b border-slate-300 py-6">
-			<div class="mb-8">
-				<a
-					href={returnUrl ? `/${returnUrl.slice(1)}` : '/jobs'}
-					class="btn-outline btn-primary btn-sm btn"
-				>
-					<ChevronLeft /> {returnUrl ? 'Back' : 'All Jobs'}</a
-				>
-			</div>
-			<h1 class="mb-2 flex items-start text-2xl">
-				{data.jobDetails.title}
-				{#if data.user?.companyId === data.jobDetails.company.id}
-					<div class="ml-2 w-max rounded-md bg-indigo-50 px-2 py-1 text-xs text-indigo-800">
-						Posted by you
-					</div>
-				{/if}
-			</h1>
-			<p class="text-slate-600">{data.jobDetails.company.name}</p>
+<div class="jobdetails custom-wrapper max-w-3xl">
+	<div class="border-b border-slate-300 py-6">
+		<div class="mb-8">
+			<a
+				href={returnUrl ? `/${returnUrl.slice(1)}` : '/jobs'}
+				class="btn btn-outline btn-primary btn-sm"
+			>
+				<ChevronLeft /> {returnUrl ? 'Back' : 'All Jobs'}</a
+			>
 		</div>
-		<div class="row">
-			<div class="col-left">Location</div>
-			<div class="col-right">
-				{data.jobDetails.location}
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-left">Type</div>
-			<div class="col-right">
-				{data.jobDetails.type.name}
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-left">Description</div>
-			<div class="col-right">
-				{data.jobDetails.description}
-			</div>
-		</div>
-
-		<div class="row">
-			<div class="col-left">Salary</div>
-			<div class="col-right">{formatCurrency(data.jobDetails.salary)}</div>
-		</div>
-		<div class="row">
-			<div class="col-left">Category</div>
-			<div class="col-right">{data.jobDetails.category.name}</div>
-		</div>
-		<div class="row">
-			<div class="col-left" />
-			<div class="col-right flex justify-end">
-				{#if data.showEditButton}
-					<a
-						class="btn-outline btn-primary btn mr-2"
-						href="/jobs/update/{data.jobId}">Edit</a
-					>
-				{/if}
-				{#if data.showDeleteButton}
-					<form
-						method="POST"
-						action="?/deletejob"
-						use:getdeleteform
-						use:enhance={({ form, data }) => {
-							return async ({ result }) => {
-								await invalidateAll();
-								await applyAction(result);
-							};
-						}}
-					>
-						<button
-							type="button"
-							class="btn-error btn"
-							on:click={() => (showDeleteConfirmation = true)}>Delete</button
-						>
-					</form>
-				{/if}
-				{#if !data.user}
-					<a
-						href="/login/?redirectTo={redirectToUrl}"
-						on:click|preventDefault={() => {
-							showLoginWarning = true;
-						}}
-						class="btn-primary btn">Apply for this job <ChevronRight /></a
-					>
-				{/if}
-				{#if data.user?.role === Role.USER}
-					<a
-						href="/jobs/apply/{data.jobId}"
-						class="btn-primary btn">Apply for this job <ChevronRight /></a
-					>
-				{/if}
-			</div>
-		</div>
-		<div class="pt-4 text-right">
-			<p class="text-xs text-slate-500">
-				Created <span class="italic">{formatDate(data.jobDetails.createdAt)}</span>
-			</p>
-
-			<p class="text-xs text-slate-500">
-				Last updated <span class="italic">{formatDate(data.jobDetails.updatedAt)}</span>
-			</p>
+		<h1 class="mb-2 flex items-start text-2xl">
+			{data.jobDetails.title}
+			{#if data.user?.companyId === data.jobDetails.company.id}
+				<div class="ml-2 w-max rounded-md bg-indigo-50 px-2 py-1 text-xs text-indigo-800">
+					Posted by you
+				</div>
+			{/if}
+		</h1>
+		<p class="text-slate-600">{data.jobDetails.company.name}</p>
+	</div>
+	<div class="row">
+		<div class="col-left">Location</div>
+		<div class="col-right">
+			{data.jobDetails.location}
 		</div>
 	</div>
-</Shell>
+	<div class="row">
+		<div class="col-left">Type</div>
+		<div class="col-right">
+			{data.jobDetails.type.name}
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-left">Description</div>
+		<div class="col-right">
+			{data.jobDetails.description}
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-left">Salary</div>
+		<div class="col-right">{formatCurrency(data.jobDetails.salary)}</div>
+	</div>
+	<div class="row">
+		<div class="col-left">Category</div>
+		<div class="col-right">{data.jobDetails.category.name}</div>
+	</div>
+	<div class="row">
+		<div class="col-left" />
+		<div class="col-right flex justify-end">
+			{#if data.showEditButton}
+				<a
+					class="btn btn-outline btn-primary mr-2"
+					href="/jobs/update/{data.jobId}">Edit</a
+				>
+			{/if}
+			{#if data.showDeleteButton}
+				<form
+					method="POST"
+					action="?/deletejob"
+					use:getdeleteform
+					use:enhance={({ form, data }) => {
+						return async ({ result }) => {
+							await invalidateAll();
+							await applyAction(result);
+						};
+					}}
+				>
+					<button
+						type="button"
+						class="btn btn-error"
+						on:click={() => (showDeleteConfirmation = true)}>Delete</button
+					>
+				</form>
+			{/if}
+			{#if !data.user}
+				<a
+					href="/login/?redirectTo={redirectToUrl}"
+					on:click|preventDefault={() => {
+						showLoginWarning = true;
+					}}
+					class="btn btn-primary">Apply for this job <ChevronRight /></a
+				>
+			{/if}
+			{#if data.user?.role === Role.USER}
+				<a
+					href="/jobs/apply/{data.jobId}"
+					class="btn btn-primary">Apply for this job <ChevronRight /></a
+				>
+			{/if}
+		</div>
+	</div>
+	<div class="pt-4 text-right">
+		<p class="text-xs text-slate-500">
+			Created <span class="italic">{formatDate(data.jobDetails.createdAt)}</span>
+		</p>
+
+		<p class="text-xs text-slate-500">
+			Last updated <span class="italic">{formatDate(data.jobDetails.updatedAt)}</span>
+		</p>
+	</div>
+</div>
 
 <style lang="postcss">
 	.jobdetails .row {
